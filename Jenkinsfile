@@ -17,6 +17,18 @@ pipeline {
         git branch: 'develop', credentialsId: 'github', url: 'https://github.com/tierlist-projects/tierlist-api'
       }
     }
+
+    stage('Build Application') {
+      steps {
+        sh 'gradle clean build'
+      }
+    }
+
+    stage('Test Application') {
+      steps {
+        sh 'gradle test'
+      }
+    }
   }
 
 }
