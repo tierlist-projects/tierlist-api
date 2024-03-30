@@ -50,6 +50,31 @@ pipeline {
         }
       }
     }
+
+    stage('Update the Deployment Tags at Git Ops Repo') {
+      steps {
+        cleanWs()
+
+        git branch: 'develop', credentialsId: 'github', url: 'https://github.com/tierlist-projects/tierlist-git-ops'
+
+        sh """
+          cat app/Deployment.yaml
+          set -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' app/Deployment.yaml
+          cat app/Deployment.yaml
+
+          git config --global user.name "dukcode"
+          git config --global user.email "duk9741@gmail.com"
+          git add app/Deployment.yaml
+          git commit -m "Update Deployment Manifest"
+        """
+
+        withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+          sh "git push 'https://github.com/tierlist-projects/tierlist-git-ops' main"
+        }
+
+      }
+    }
+
   }
 
 }
