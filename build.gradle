@@ -31,7 +31,7 @@ jar {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "tierlist-api-dev"
-		property "sonar.projectName", "tierlist-api-dev"
+		property "sonar.projectKey", "tierlist-projects_tierlist-api_AY6lQTmVDYEzFItR_8lF"
+		property "sonar.projectName", "tierlist-api"
 	}
 }

@@ -2,11 +2,9 @@ name: pr-sonarbot
 
 on:
   pull_request:
-    branches:
-      - main
-      - develop
+    types: [opened, synchronize, reopened]
 jobs:
-  ci:
+  check-code-smell:
 
     runs-on: ubuntu-latest
 
