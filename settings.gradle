@@ -1,1 +1,2 @@
 rootProject.name = 'tierlist'
+System.setProperty("sonar.gradle.skipCompile", "true")
