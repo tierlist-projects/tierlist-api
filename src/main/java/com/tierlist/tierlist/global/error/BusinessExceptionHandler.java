@@ -2,6 +2,7 @@ package com.tierlist.tierlist.global.error;
 
 import com.tierlist.tierlist.global.error.exception.BusinessException;
 import com.tierlist.tierlist.global.error.exception.DuplicationException;
+import com.tierlist.tierlist.global.error.exception.InvalidRequestException;
 import com.tierlist.tierlist.global.error.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,13 @@ public class BusinessExceptionHandler {
       DuplicationException duplicationException) {
     ErrorCode errorCode = duplicationException.getErrorCode();
     return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(InvalidRequestException.class)
+  public ResponseEntity<ErrorResponse> handleDuplicationException(
+      InvalidRequestException invalidRequestException) {
+    ErrorCode errorCode = invalidRequestException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
   }
 
 }

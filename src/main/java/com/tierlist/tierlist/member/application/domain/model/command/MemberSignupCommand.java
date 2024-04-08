@@ -1,5 +1,6 @@
 package com.tierlist.tierlist.member.application.domain.model.command;
 
+import com.tierlist.tierlist.member.application.domain.model.EmailVerificationCode;
 import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.domain.model.Password;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,8 @@ public class MemberSignupCommand {
   private String rawPassword;
 
   private String email;
+
+  private EmailVerificationCode code;
 
   public Member toMember(PasswordEncoder passwordEncoder) {
     return Member.builder()

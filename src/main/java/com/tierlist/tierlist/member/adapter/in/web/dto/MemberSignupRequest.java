@@ -1,5 +1,6 @@
 package com.tierlist.tierlist.member.adapter.in.web.dto;
 
+import com.tierlist.tierlist.member.application.domain.model.EmailVerificationCode;
 import com.tierlist.tierlist.member.application.domain.model.command.MemberSignupCommand;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,12 +16,15 @@ public class MemberSignupRequest {
 
   private String password;
 
+  private String code;
+
 
   public MemberSignupCommand toCommand() {
     return MemberSignupCommand.builder()
         .email(email)
         .nickname(nickname)
         .rawPassword(password)
+        .code(EmailVerificationCode.of(code))
         .build();
   }
 }
