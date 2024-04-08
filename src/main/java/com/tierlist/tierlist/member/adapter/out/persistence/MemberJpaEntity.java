@@ -48,6 +48,7 @@ public class MemberJpaEntity {
 
   public Member toMember() {
     return Member.builder()
+        .id(id)
         .nickname(this.getNickname())
         .password(Password.fromEncodedPassword(this.getEncodedPassword()))
         .email(this.getEmail())
