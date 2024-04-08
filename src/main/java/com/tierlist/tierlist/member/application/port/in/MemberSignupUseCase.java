@@ -5,4 +5,9 @@ import com.tierlist.tierlist.member.application.domain.model.command.MemberSignu
 public interface MemberSignupUseCase {
 
   Long signup(MemberSignupCommand command);
+
+  void validateEmailDuplication(String email);
+
+  void validateNicknameDuplication(String nickname);
+
 }
