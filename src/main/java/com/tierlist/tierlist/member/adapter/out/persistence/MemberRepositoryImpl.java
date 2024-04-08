@@ -2,6 +2,7 @@ package com.tierlist.tierlist.member.adapter.out.persistence;
 
 import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.port.out.persistence.MemberRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +25,11 @@ public class MemberRepositoryImpl implements MemberRepository {
   @Override
   public boolean existsByNickname(String nickname) {
     return memberJpaRepository.existsByNickname(nickname);
+  }
+
+  @Override
+  public Optional<Member> findByEmail(String email) {
+    Optional<MemberJpaEntity> memberJpaEntity = memberJpaRepository.findByEmail(email);
+    return memberJpaEntity.map(MemberJpaEntity::toMember);
   }
 }
