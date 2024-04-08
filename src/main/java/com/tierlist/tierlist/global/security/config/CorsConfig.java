@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.global.security;
+package com.tierlist.tierlist.global.security.config;
 
 import java.util.Collections;
 import org.springframework.context.annotation.Bean;
