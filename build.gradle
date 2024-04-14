@@ -51,7 +51,7 @@ dependencies {
 
 sonar {
     properties {
-        property "sonar.projectKey", "tierlist-projects_tierlist-api_AY6lQTmVDYEzFItR_8lF"
+        property "sonar.projectKey", "tierlist-projects_tierlist-api_0cbc19e1-745b-4824-9fac-d45af18dcc77"
         property "sonar.projectName", "tierlist-api"
     }
 }
