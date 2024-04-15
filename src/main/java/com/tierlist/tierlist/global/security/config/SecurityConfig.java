@@ -9,8 +9,6 @@ import com.tierlist.tierlist.global.security.filter.JwtAuthenticationProcessingF
 import com.tierlist.tierlist.global.security.filter.TokenReissueFilter;
 import com.tierlist.tierlist.global.security.handler.ErrorResponseAuthenticationFailureHandler;
 import com.tierlist.tierlist.global.security.handler.JwtAuthenticationSuccessHandler;
-import com.tierlist.tierlist.global.security.service.UserDetailServiceImpl;
-import com.tierlist.tierlist.member.application.port.out.persistence.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +18,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -37,7 +34,6 @@ public class SecurityConfig {
   private final CorsConfigurationSource corsConfigurationSource;
   private final ObjectMapper objectMapper;
   private final AuthenticationConfiguration authenticationConfiguration;
-  private final MemberRepository memberRepository;
   private final JwtService jwtService;
   private final JwtProperties jwtProperties;
 
@@ -97,10 +93,6 @@ public class SecurityConfig {
     return new ErrorResponseAuthenticationFailureHandler(objectMapper);
   }
 
-  @Bean
-  public UserDetailsService userDetailsService() {
-    return new UserDetailServiceImpl(memberRepository);
-  }
 
   @Bean
   public AuthenticationManager authenticationManager() throws Exception {

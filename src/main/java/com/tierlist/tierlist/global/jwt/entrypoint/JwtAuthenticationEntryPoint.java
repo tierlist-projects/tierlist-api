@@ -30,7 +30,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         (JWTVerificationException) request.getAttribute("jwtVerificationException");
 
     if (jwtVerificationException instanceof TokenExpiredException) {
-      sendErrorResponse(response, ErrorCode.TOKEN_EXPIRED, 499);
+      sendErrorResponse(response, ErrorCode.TOKEN_EXPIRED, HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
 
