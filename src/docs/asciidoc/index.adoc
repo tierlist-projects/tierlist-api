@@ -1,0 +1,32 @@
+= Tierlist API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+:error: {name}[snippets='http-response,response-fields']
+
+== Member 관련 API
+
+=== 로그인
+
+operation::login-docs-test/login_200[snippets='http-request,request-fields,http-response,response-fields']
+
+=== 토큰 재발급
+
+operation::reissue-docs-test/reissue_200[snippets='http-request,http-response,response-fields']
+
+==== 에러 응답
+
+===== 토큰 만료
+
+operation::reissue-docs-test/reissue_401_expired[snippets='http-response,response-fields']
+
+===== 비정상적 토큰
+
+operation::reissue-docs-test/reissue_401_invalid_token[snippets='http-response,response-fields']
+
+===== 비정상적 접속
+
+operation::reissue-docs-test/reissue_401_unexpected_token[snippets='http-response,response-fields']
