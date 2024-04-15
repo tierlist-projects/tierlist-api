@@ -94,10 +94,12 @@ public class LoginDocsTest extends RestDocsTestSupport {
             requestFields(
                 fieldWithPath("email")
                     .type(STRING)
-                    .description("사용자 이메일"),
+                    .description("사용자 이메일")
+                    .attributes(constraints("이메일 형식")),
                 fieldWithPath("password")
                     .type(STRING)
                     .description("사용자 패스워드")
+                    .attributes(constraints("8자 이상 20자 이하의 문자열"))
             ),
             responseFields(
                 fieldWithPath("tokenType")
