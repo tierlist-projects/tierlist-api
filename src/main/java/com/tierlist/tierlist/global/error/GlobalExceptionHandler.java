@@ -1,13 +1,15 @@
 package com.tierlist.tierlist.global.error;
 
 import com.tierlist.tierlist.global.error.response.ErrorResponse;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 @Slf4j
 @RestControllerAdvice
@@ -24,15 +26,32 @@ public class GlobalExceptionHandler {
     return ResponseEntity.badRequest().body(response);
   }
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  protected ResponseEntity<ErrorResponse> handleConstraintViolationException(
-      final ConstraintViolationException e) {
+  /*
+   * reqeustbody validation
+   */
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorResponse> exampleResponseValidation(
+      MethodArgumentNotValidException e) {
 
     final ErrorCode errorCode = ErrorCode.INVALID_REQUEST_VALUE;
 
-    String[] reasons = e.getConstraintViolations().stream()
-        .map(ConstraintViolation::getMessage)
-        .toArray(String[]::new);
+    String[] reasons = e.getAllErrors().stream().map(
+        c -> (((FieldError) c).getField() + ": " + c.getDefaultMessage())).toArray(String[]::new);
+
+    return ResponseEntity.badRequest().body(ErrorResponse.from(errorCode, reasons));
+  }
+
+  /*
+   * pathvariable validation
+   */
+  @ExceptionHandler(HandlerMethodValidationException.class)
+  public ResponseEntity<ErrorResponse> exampleResponseValidation(
+      HandlerMethodValidationException e) {
+
+    final ErrorCode errorCode = ErrorCode.INVALID_REQUEST_VALUE;
+
+    String[] reasons = e.getAllErrors().stream().map(
+        MessageSourceResolvable::getDefaultMessage).toArray(String[]::new);
 
     return ResponseEntity.badRequest().body(ErrorResponse.from(errorCode, reasons));
   }
