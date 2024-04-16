@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface EmailVerificationCode {
 
-  String message() default "emailVerificationCode는 6자리 숫자로 이루어져야 합니다.";
+  String message() default "code는 6자리 숫자로 이루어져야 합니다.";
 
   Class<?>[] groups() default {};
 
