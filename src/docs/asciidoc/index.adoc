@@ -31,6 +31,34 @@ operation::reissue-docs-test/reissue_401_unexpected_token[snippets='http-respons
 
 == Member 관련 API
 
+=== 이메일 중복 검증
+
+operation::member-validation-docs-test/validate_email_duplication_200[snippets='http-request,query-parameters,http-response']
+
+==== 에러 응답
+
+===== 이메일 중복 시
+
+operation::member-validation-docs-test/validate_email_duplication_409[snippets='http-response,response-fields']
+
+===== 이메일 형식 불만족
+
+operation::member-validation-docs-test/validate_email_duplication_400[snippets='http-response,response-fields']
+
+=== 닉네임 중복 검증
+
+operation::member-validation-docs-test/validate_nickname_duplication_200[snippets='http-request,query-parameters,http-response']
+
+==== 에러 응답
+
+===== 닉네임 중복 시
+
+operation::member-validation-docs-test/validate_nickname_duplication_409[snippets='http-response,response-fields']
+
+===== 닉네임 형식 불만족
+
+operation::member-validation-docs-test/validate_nickname_duplication_400[snippets='http-response,response-fields']
+
 === 회원 가입
 
 operation::member-signup-docs-test/signup_201[snippets='http-request,request-fields,http-response,response-headers']
@@ -44,3 +72,4 @@ operation::member-signup-docs-test/signup_400_invalid_verification_code[snippets
 ===== 요청 값 요구 조건 불만족 시
 
 operation::member-signup-docs-test/signup_400_invalid_request_value[snippets='http-response,response-fields']
+

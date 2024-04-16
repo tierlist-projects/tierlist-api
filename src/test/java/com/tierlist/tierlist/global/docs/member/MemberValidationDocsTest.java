@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.member.adapter.in.web.MemberValidationController;
 import com.tierlist.tierlist.member.application.domain.exception.EmailDuplicationException;
+import com.tierlist.tierlist.member.application.domain.exception.NicknameDuplicationException;
 import com.tierlist.tierlist.member.application.port.in.service.MemberValidationUseCase;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -84,6 +85,78 @@ public class MemberValidationDocsTest extends RestDocsTestSupport {
             queryParameters(
                 parameterWithName("email")
                     .description("unique함을 검증할 이메일")
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지"),
+                fieldWithPath("reasons")
+                    .type(ARRAY)
+                    .description("에러 원인")
+            )
+        ));
+  }
+
+  @Test
+  public void validate_nickname_duplication_200() throws Exception {
+
+    String nickname = "test";
+
+    mvc.perform(get("/member/nickname/unique")
+            .param("nickname", nickname))
+        .andExpect(status().isOk())
+        .andDo(restDocs.document(
+            queryParameters(
+                parameterWithName("nickname")
+                    .description("unique함을 검증할 닉네임")
+            )
+        ));
+  }
+
+  @Test
+  public void validate_nickname_duplication_409() throws Exception {
+
+    String nickname = "test";
+
+    BDDMockito.doThrow(new NicknameDuplicationException())
+        .when(memberValidationUseCase).validateNicknameDuplication(any());
+
+    mvc.perform(get("/member/nickname/unique")
+            .param("nickname", nickname))
+        .andExpect(jsonPath("$.errorCode").value("D-003"))
+        .andExpect(status().isConflict())
+        .andDo(restDocs.document(
+            queryParameters(
+                parameterWithName("nickname")
+                    .description("unique함을 검증할 닉네임")
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
+            )
+        ));
+  }
+
+  @Test
+  public void validate_nickname_duplication_400() throws Exception {
+
+    String nickname = "t";
+
+    mvc.perform(get("/member/nickname/unique")
+            .param("nickname", nickname))
+        .andExpect(jsonPath("$.errorCode").value("IR-004"))
+        .andExpect(status().isBadRequest())
+        .andDo(restDocs.document(
+            queryParameters(
+                parameterWithName("nickname")
+                    .description("unique함을 검증할 닉네임")
             ),
             responseFields(
                 fieldWithPath("errorCode")
