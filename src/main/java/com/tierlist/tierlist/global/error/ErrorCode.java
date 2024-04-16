@@ -15,6 +15,7 @@ public enum ErrorCode {
 
   INVALID_REQUEST_EXCEPTION("IR-001", "적절한 요청이 아닙니다."),
   INVALID_EMAIL_VERIFICATION_CODE_EXCEPTION("IR-002", "이메일 검증 코드를 확인할 수 없습니다."),
+  INVALID_TYPE_VALUE("IR-003", "요청 내용의 타입이 일치하지 않습니다."),
 
   AUTHENTICATION_ERROR("A-001", "인증에 실패하였습니다."),
   INVALID_USERNAME_OR_PASSWORD("A-002", "아이디 또는 비밀번호가 일치하지 않습니다."),
