@@ -6,6 +6,7 @@ import com.tierlist.tierlist.member.application.domain.model.command.EmailVerifi
 import com.tierlist.tierlist.member.application.domain.model.command.SendEmailVerificationCommand;
 import com.tierlist.tierlist.member.application.port.in.service.EmailVerificationUseCase;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class EmailVerificationController {
 
   @PostMapping("/email/verification/request")
   public ResponseEntity<Void> sendVerificationMail(
-      @RequestBody SendEmailVerificationRequest request) {
+      @RequestBody @Valid SendEmailVerificationRequest request) {
     SendEmailVerificationCommand command = request.toCommand();
     emailVerificationUseCase.sendVerificationEmail(command);
     return ResponseEntity.status(HttpServletResponse.SC_CREATED).build();
@@ -30,7 +31,7 @@ public class EmailVerificationController {
 
   @PostMapping("/email/verification/confirm")
   public ResponseEntity<Void> confirmEmailVerification(
-      @RequestBody EmailVerificationConfirmRequest request) {
+      @RequestBody @Valid EmailVerificationConfirmRequest request) {
 
     EmailVerificationConfirmCommand command = request.toCommand();
 
