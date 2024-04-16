@@ -4,6 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
+
+  INTERNAL_SERVER_ERROR("S-001", "Internal Server Error"),
+
   BUSINESS_ERROR("B-001", "요청에 오류가 존재합니다."),
 
   DUPLICATION_ERROR("D-001", "요청의 내용이 중복되었습니다."),
@@ -22,7 +25,9 @@ public enum ErrorCode {
   INVALID_USERNAME_OR_PASSWORD("A-002", "아이디 또는 비밀번호가 일치하지 않습니다."),
   TOKEN_EXPIRED("A-003", "토큰이 만료되었습니다."),
   INVALID_TOKEN("A-004", "토큰이 유효하지 않습니다."),
-  UNEXPECTED_REFRESH_TOKEN("A-005", "에상치 못한 토큰입니다. 비정상적인 접속이 예상됩니다.");
+  UNEXPECTED_REFRESH_TOKEN("A-005", "에상치 못한 토큰입니다. 비정상적인 접속이 예상됩니다."),
+
+  NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다.");
 
   private final String errorCode;
   private final String message;
