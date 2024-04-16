@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
   protected ResponseEntity<ErrorResponse> handleConstraintViolationException(
       final ConstraintViolationException e) {
 
-    final ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+    final ErrorCode errorCode = ErrorCode.INVALID_REQUEST_VALUE;
 
     String[] reasons = e.getConstraintViolations().stream()
         .map(ConstraintViolation::getMessage)
