@@ -1,6 +1,8 @@
 package com.tierlist.tierlist.global.error;
 
 import com.tierlist.tierlist.global.error.response.ErrorResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,6 +22,19 @@ public class GlobalExceptionHandler {
     ErrorCode errorCode = ErrorCode.INVALID_TYPE_VALUE;
     final ErrorResponse response = ErrorResponse.from(errorCode);
     return ResponseEntity.badRequest().body(response);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  protected ResponseEntity<ErrorResponse> handleConstraintViolationException(
+      final ConstraintViolationException e) {
+
+    final ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+
+    String[] reasons = e.getConstraintViolations().stream()
+        .map(ConstraintViolation::getMessage)
+        .toArray(String[]::new);
+
+    return ResponseEntity.badRequest().body(ErrorResponse.from(errorCode, reasons));
   }
 
 }

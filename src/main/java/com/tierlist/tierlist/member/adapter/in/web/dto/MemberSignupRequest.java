@@ -1,11 +1,14 @@
 package com.tierlist.tierlist.member.adapter.in.web.dto;
 
-import com.tierlist.tierlist.member.application.domain.model.EmailVerificationCode;
 import com.tierlist.tierlist.member.application.domain.model.command.MemberSignupCommand;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberSignupRequest {
@@ -24,7 +27,7 @@ public class MemberSignupRequest {
         .email(email)
         .nickname(nickname)
         .rawPassword(password)
-        .code(EmailVerificationCode.of(code))
+        .code(code)
         .build();
   }
 }
