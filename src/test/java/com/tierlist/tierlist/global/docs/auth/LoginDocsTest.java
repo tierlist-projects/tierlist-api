@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
+import com.tierlist.tierlist.global.docs.SpringSecurityRestDocsTestSupport;
 import com.tierlist.tierlist.global.jwt.property.JwtProperties;
 import com.tierlist.tierlist.global.jwt.service.JwtService;
 import com.tierlist.tierlist.global.security.config.PasswordEncoderConfig;
@@ -43,7 +43,7 @@ import org.springframework.stereotype.Controller;
         PasswordEncoderConfig.class,
     }
 )
-public class LoginDocsTest extends RestDocsTestSupport {
+public class LoginDocsTest extends SpringSecurityRestDocsTestSupport {
 
   @MockBean
   private UserDetailsService userDetailsService;

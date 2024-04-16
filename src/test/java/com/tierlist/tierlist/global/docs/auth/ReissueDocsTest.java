@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
+import com.tierlist.tierlist.global.docs.SpringSecurityRestDocsTestSupport;
 import com.tierlist.tierlist.global.jwt.exception.UnexpectedRefreshTokenException;
 import com.tierlist.tierlist.global.jwt.property.JwtProperties;
 import com.tierlist.tierlist.global.jwt.service.JwtService;
@@ -45,7 +45,7 @@ import org.springframework.stereotype.Controller;
         JwtProperties.class
     }
 )
-public class ReissueDocsTest extends RestDocsTestSupport {
+public class ReissueDocsTest extends SpringSecurityRestDocsTestSupport {
 
   @MockBean
   private UserDetailsService userDetailsService;
