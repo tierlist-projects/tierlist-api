@@ -3,4 +3,3 @@ spring:
     name: tierlist
   profiles:
     active: test
-
