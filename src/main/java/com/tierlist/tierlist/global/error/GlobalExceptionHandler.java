@@ -66,7 +66,9 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleException(
-      HandlerMethodValidationException e) {
+      Exception e) {
+
+    log.error(e.getMessage(), e);
 
     final ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
 
