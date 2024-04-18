@@ -1,0 +1,99 @@
+= Tierlist API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 인증 관련 API
+
+=== 로그인
+
+operation::login-docs-test/login_200[snippets='http-request,request-fields,http-response,response-fields']
+
+=== 토큰 재발급
+
+operation::reissue-docs-test/reissue_200[snippets='http-request,http-response,response-fields']
+
+==== 에러 응답
+
+===== 토큰 만료
+
+operation::reissue-docs-test/reissue_401_expired[snippets='http-response,response-fields']
+
+===== 비정상적 토큰
+
+operation::reissue-docs-test/reissue_401_invalid_token[snippets='http-response,response-fields']
+
+===== 비정상적 접속
+
+operation::reissue-docs-test/reissue_401_unexpected_token[snippets='http-response,response-fields']
+
+== Member 관련 API
+
+=== 이메일 중복 검증
+
+operation::member-validation-docs-test/validate_email_duplication_200[snippets='http-request,query-parameters,http-response']
+
+==== 에러 응답
+
+===== 이메일 중복 시
+
+operation::member-validation-docs-test/validate_email_duplication_409[snippets='http-response,response-fields']
+
+===== 이메일 형식 불만족
+
+operation::member-validation-docs-test/validate_email_duplication_400[snippets='http-response,response-fields']
+
+=== 닉네임 중복 검증
+
+operation::member-validation-docs-test/validate_nickname_duplication_200[snippets='http-request,query-parameters,http-response']
+
+==== 에러 응답
+
+===== 닉네임 중복 시
+
+operation::member-validation-docs-test/validate_nickname_duplication_409[snippets='http-response,response-fields']
+
+===== 닉네임 형식 불만족
+
+operation::member-validation-docs-test/validate_nickname_duplication_400[snippets='http-response,response-fields']
+
+=== 이메일 인증 요청
+
+operation::email-verification-docs-test/request_email_verification_200[snippets='http-request,request-fields,http-response']
+
+==== 에러 응답
+
+===== 이메일 형식 불일치 시
+
+operation::email-verification-docs-test/request_email_verification_400[snippets='http-response,response-fields']
+
+=== 이메일 인증 확인
+
+operation::email-verification-docs-test/confirm_email_verification_200[snippets='http-request,request-fields,http-response']
+
+==== 에러 응답
+
+===== 코드 불일치 시
+
+operation::email-verification-docs-test/confirm_email_verification_404[snippets='http-response']
+
+===== 형식 불일치 시
+
+operation::email-verification-docs-test/confirm_email_verification_400[snippets='http-response,response-fields']
+
+=== 회원 가입
+
+operation::member-signup-docs-test/signup_201[snippets='http-request,request-fields,http-response,response-headers']
+
+==== 에러 응답
+
+===== 이메일 인증 코드 불일치 시
+
+operation::member-signup-docs-test/signup_400_invalid_verification_code[snippets='http-response,response-fields']
+
+===== 요청 값 요구 조건 불만족 시
+
+operation::member-signup-docs-test/signup_400_invalid_request_value[snippets='http-response,response-fields']
+

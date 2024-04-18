@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.docs;
+package com.tierlist.tierlist.global.docs;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -25,12 +25,14 @@ public class RestDocsConfiguration {
         preprocessResponse(  // 공통 헤더 설정
             modifyHeaders()
                 .remove("Content-Length")
+                .remove("Content-Type")
                 .remove("X-Content-Type-Options")
                 .remove("X-XSS-Protection")
                 .remove("Cache-Control")
                 .remove("Pragma")
                 .remove("Expires")
-                .remove("X-Frame-Options"),
+                .remove("X-Frame-Options")
+                .remove("Vary"),
             prettyPrint())    // pretty json 적용
     );
   }

@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.docs;
+package com.tierlist.tierlist.global.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +13,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.snippet.Attributes.Attribute;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -22,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @Import(RestDocsConfiguration.class)
 @ExtendWith(RestDocumentationExtension.class)
-public class RestDocsTestSupport {
+public class SpringSecurityRestDocsTestSupport {
 
   @Autowired
   protected RestDocumentationResultHandler restDocs;
@@ -43,6 +44,7 @@ public class RestDocsTestSupport {
   void setUp(final WebApplicationContext context,
       final RestDocumentationContextProvider provider) {
     this.mvc = MockMvcBuilders.webAppContextSetup(context)
+        .apply(SecurityMockMvcConfigurers.springSecurity())
         .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
         .alwaysDo(MockMvcResultHandlers.print()) // print 적용
         .alwaysDo(restDocs) // RestDocsConfiguration 클래스의 bean 적용

@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: tierlist
+  cloud:
+    config:
+      enabled: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+tierlist:
+  email:
+    verified:
+      expire-minute: 60
+    verification:
+      expire-minute: 15
+  jwt:
+    properties:
+      secret: ${JWT_SECRET}
+      access-token-expiration-seconds: 900 # 900 15?
+      refresh-token-expiration-seconds: 1209600 # 1209600 14?
+      token-type: Bearer
