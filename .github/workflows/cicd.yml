@@ -1,8 +1,8 @@
 name: ci
 
 on:
-    push:
-      branches: [ develop ]
+  push:
+    branches: [ develop ]
 jobs:
   ci:
 
@@ -89,7 +89,7 @@ jobs:
             linux/amd64
             linux/arm64
             linux/arm/v7
-      
+
       - name: Checkout Git Ops Repo
         uses: actions/checkout@v4
         with:
@@ -106,4 +106,10 @@ jobs:
           git add .
           git commit -m "action: update image tag to ${{ steps.meta.outputs.tags }}"
           git push origin main
+
+      - name: Send Webhook to Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_CICD_WEBHOOK }}
           
