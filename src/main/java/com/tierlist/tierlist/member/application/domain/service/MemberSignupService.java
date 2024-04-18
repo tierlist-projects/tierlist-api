@@ -33,7 +33,7 @@ public class MemberSignupService implements MemberSignupUseCase {
     memberValidationUseCase.validateNicknameDuplication(command.getNickname());
 
     String email = command.getEmail();
-    EmailVerificationCode code = EmailVerificationCode.of(command.getCode());
+    EmailVerificationCode code = command.getCode();
     if (!verifyCode(email, code)) {
       throw new InvalidEmailVerificationCodeException();
     }
