@@ -11,7 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
-import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -58,8 +58,8 @@ public class GlobalExceptionHandler {
     return ResponseEntity.badRequest().body(ErrorResponse.from(errorCode, reasons));
   }
 
-  @ExceptionHandler(NoHandlerFoundException.class)
-  public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException e) {
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
     final ErrorCode errorCode = ErrorCode.NOT_FOUND_ERROR;
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.from(errorCode));
   }
