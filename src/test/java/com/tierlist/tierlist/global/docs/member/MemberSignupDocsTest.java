@@ -26,13 +26,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(MemberSignupController.class)
-public class MemberSignupDocsTest extends RestDocsTestSupport {
+class MemberSignupDocsTest extends RestDocsTestSupport {
 
   @MockBean
   private MemberSignupUseCase memberSignupUseCase;
 
   @Test
-  public void signup_201() throws Exception {
+  void signup_201() throws Exception {
 
     MemberSignupRequest request = MemberSignupRequest.builder()
         .email("test@test.com")
@@ -77,7 +77,7 @@ public class MemberSignupDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void signup_400_invalid_verification_code() throws Exception {
+  void signup_400_invalid_verification_code() throws Exception {
 
     MemberSignupRequest request = MemberSignupRequest.builder()
         .email("test@test.com")
@@ -121,7 +121,7 @@ public class MemberSignupDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void signup_400_invalid_request_value() throws Exception {
+  void signup_400_invalid_request_value() throws Exception {
 
     MemberSignupRequest request = MemberSignupRequest.builder()
         .email("testtestcom")

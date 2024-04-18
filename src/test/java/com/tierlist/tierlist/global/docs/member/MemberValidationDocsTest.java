@@ -22,14 +22,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(MemberValidationController.class)
-public class MemberValidationDocsTest extends RestDocsTestSupport {
+class MemberValidationDocsTest extends RestDocsTestSupport {
 
 
   @MockBean
   private MemberValidationUseCase memberValidationUseCase;
 
   @Test
-  public void validate_email_duplication_200() throws Exception {
+  void validate_email_duplication_200() throws Exception {
 
     String email = "test@test.com";
 
@@ -45,7 +45,7 @@ public class MemberValidationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void validate_email_duplication_409() throws Exception {
+  void validate_email_duplication_409() throws Exception {
 
     String email = "test@test.com";
 
@@ -73,7 +73,7 @@ public class MemberValidationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void validate_email_duplication_400() throws Exception {
+  void validate_email_duplication_400() throws Exception {
 
     String email = "testtestcom";
 
@@ -101,7 +101,7 @@ public class MemberValidationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void validate_nickname_duplication_200() throws Exception {
+  void validate_nickname_duplication_200() throws Exception {
 
     String nickname = "test";
 
@@ -117,7 +117,7 @@ public class MemberValidationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void validate_nickname_duplication_409() throws Exception {
+  void validate_nickname_duplication_409() throws Exception {
 
     String nickname = "test";
 
@@ -145,7 +145,7 @@ public class MemberValidationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void validate_nickname_duplication_400() throws Exception {
+  void validate_nickname_duplication_400() throws Exception {
 
     String nickname = "t";
 

@@ -45,7 +45,7 @@ import org.springframework.stereotype.Controller;
         JwtProperties.class
     }
 )
-public class ReissueDocsTest extends SpringSecurityRestDocsTestSupport {
+class ReissueDocsTest extends SpringSecurityRestDocsTestSupport {
 
   @MockBean
   private UserDetailsService userDetailsService;
@@ -108,7 +108,7 @@ public class ReissueDocsTest extends SpringSecurityRestDocsTestSupport {
   }
 
   @Test
-  public void reissue_401_expired() throws Exception {
+  void reissue_401_expired() throws Exception {
 
     String refreshToken = "Bearer refresh.token.example";
 
@@ -138,7 +138,7 @@ public class ReissueDocsTest extends SpringSecurityRestDocsTestSupport {
   }
 
   @Test
-  public void reissue_401_unexpected_token() throws Exception {
+  void reissue_401_unexpected_token() throws Exception {
 
     String refreshToken = "Bearer refresh.token.example";
 
@@ -168,7 +168,7 @@ public class ReissueDocsTest extends SpringSecurityRestDocsTestSupport {
   }
 
   @Test
-  public void reissue_401_invalid_token() throws Exception {
+  void reissue_401_invalid_token() throws Exception {
 
     String refreshToken = "Bearer refresh.token.example";
 

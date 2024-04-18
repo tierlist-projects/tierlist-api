@@ -43,7 +43,7 @@ import org.springframework.stereotype.Controller;
         PasswordEncoderConfig.class,
     }
 )
-public class LoginDocsTest extends SpringSecurityRestDocsTestSupport {
+class LoginDocsTest extends SpringSecurityRestDocsTestSupport {
 
   @MockBean
   private UserDetailsService userDetailsService;
@@ -58,7 +58,7 @@ public class LoginDocsTest extends SpringSecurityRestDocsTestSupport {
   private JwtProperties jwtProperties;
 
   @Test
-  public void login_200() throws Exception {
+  void login_200() throws Exception {
 
     String email = "test@test.com";
     String password = "sample_password";
@@ -122,7 +122,7 @@ public class LoginDocsTest extends SpringSecurityRestDocsTestSupport {
   }
 
   @Test
-  public void login_401() throws Exception {
+  void login_401() throws Exception {
 
     String email = "test@test.com";
     String password = "sample_password";

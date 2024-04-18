@@ -22,13 +22,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(EmailVerificationController.class)
-public class EmailVerificationDocsTest extends RestDocsTestSupport {
+class EmailVerificationDocsTest extends RestDocsTestSupport {
 
   @MockBean
   private EmailVerificationUseCase emailVerificationUseCase;
 
   @Test
-  public void request_email_verification_200() throws Exception {
+  void request_email_verification_200() throws Exception {
     SendEmailVerificationRequest request = new SendEmailVerificationRequest("test@test.com");
 
     mvc.perform(post("/member/email/verification/request")
@@ -47,7 +47,7 @@ public class EmailVerificationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void request_email_verification_400() throws Exception {
+  void request_email_verification_400() throws Exception {
     SendEmailVerificationRequest request = new SendEmailVerificationRequest("testtestcom");
 
     mvc.perform(post("/member/email/verification/request")
@@ -78,7 +78,7 @@ public class EmailVerificationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void confirm_email_verification_200() throws Exception {
+  void confirm_email_verification_200() throws Exception {
     EmailVerificationConfirmRequest request =
         new EmailVerificationConfirmRequest("test@test.com", "123456");
 
@@ -104,7 +104,7 @@ public class EmailVerificationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void confirm_email_verification_404() throws Exception {
+  void confirm_email_verification_404() throws Exception {
     EmailVerificationConfirmRequest request =
         new EmailVerificationConfirmRequest("test@test.com", "123456");
 
@@ -130,7 +130,7 @@ public class EmailVerificationDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  public void confirm_email_verification_400() throws Exception {
+  void confirm_email_verification_400() throws Exception {
     EmailVerificationConfirmRequest request =
         new EmailVerificationConfirmRequest("testtestcom", "1234567");
 
