@@ -2,8 +2,6 @@ package com.tierlist.tierlist.global.security.filter;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tierlist.tierlist.global.error.ErrorCode;
-import com.tierlist.tierlist.global.error.response.ErrorResponse;
 import com.tierlist.tierlist.global.jwt.property.JwtProperties;
 import com.tierlist.tierlist.global.jwt.service.JwtService;
 import com.tierlist.tierlist.global.security.dto.response.TokenResponse;
@@ -12,10 +10,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -56,17 +52,6 @@ public class TokenReissueFilter extends OncePerRequestFilter {
       authenticationEntryPoint.commence(request, response, null);
     }
 
-  }
-
-  private void sendErrorResponse(HttpServletResponse response, ErrorCode errorCode, int status)
-      throws IOException {
-    ErrorResponse errorResponse = ErrorResponse.from(errorCode);
-
-    String body = objectMapper.writeValueAsString(errorResponse);
-    response.setStatus(status);
-    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-    response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-    response.getWriter().write(body);
   }
 
   private String extractRefreshToken(HttpServletRequest request) {
