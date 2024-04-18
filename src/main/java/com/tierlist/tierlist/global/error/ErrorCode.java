@@ -29,11 +29,11 @@ public enum ErrorCode {
 
   NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다.");
 
-  private final String errorCode;
+  private final String code;
   private final String message;
 
-  ErrorCode(final String errorCode, final String message) {
-    this.errorCode = errorCode;
+  ErrorCode(final String code, final String message) {
+    this.code = code;
     this.message = message;
   }
 }

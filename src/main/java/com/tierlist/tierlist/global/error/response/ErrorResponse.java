@@ -28,10 +28,10 @@ public class ErrorResponse {
   }
 
   public static ErrorResponse from(final ErrorCode errorCode) {
-    return new ErrorResponse(errorCode.getErrorCode(), errorCode.getMessage());
+    return new ErrorResponse(errorCode.getCode(), errorCode.getMessage());
   }
 
   public static ErrorResponse from(final ErrorCode errorCode, final String[] reasons) {
-    return new ErrorResponse(errorCode.getErrorCode(), errorCode.getMessage(), reasons);
+    return new ErrorResponse(errorCode.getCode(), errorCode.getMessage(), reasons);
   }
 }
