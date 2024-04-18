@@ -66,8 +66,9 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleException(
-      HandlerMethodValidationException e) {
+      Exception e) {
 
+    log.error("알 수 없는 예외 발생", e);
     final ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
 
     return ResponseEntity.internalServerError().body(ErrorResponse.from(errorCode));
