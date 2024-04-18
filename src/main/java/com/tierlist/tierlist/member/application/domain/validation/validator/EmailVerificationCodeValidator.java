@@ -8,7 +8,7 @@ import java.util.Objects;
 public class EmailVerificationCodeValidator implements
     ConstraintValidator<EmailVerificationCode, String> {
 
-  private static final String REGEX = "^[0-9]{6}$";
+  private static final String REGEX = "^\\d{6}$";
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
