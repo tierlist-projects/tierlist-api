@@ -19,5 +19,5 @@ public @interface EmailVerificationCode {
 
   Class<?>[] groups() default {};
 
-  Class<? extends String>[] payload() default {};
+  Class<String>[] payload() default {};
 }
