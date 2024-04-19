@@ -27,7 +27,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(MemberInformationController.class)
-public class MemberInformationDocsTest extends RestDocsTestSupport {
+class MemberInformationDocsTest extends RestDocsTestSupport {
 
   @MockBean
   private MemberInformationUseCase memberInformationUseCase;
