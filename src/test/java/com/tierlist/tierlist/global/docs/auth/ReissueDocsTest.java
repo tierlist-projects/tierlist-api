@@ -57,7 +57,7 @@ class ReissueDocsTest extends SpringSecurityRestDocsTestSupport {
   private JwtService jwtService;
 
   @Test
-  public void reissue_200() throws Exception {
+  void reissue_200() throws Exception {
 
     String refreshToken = "Bearer refresh.token.example";
 
