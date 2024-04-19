@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.member.adapter.in.web.MemberSignupController;
-import com.tierlist.tierlist.member.adapter.in.web.dto.MemberSignupRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.MemberSignupRequest;
 import com.tierlist.tierlist.member.application.domain.exception.InvalidEmailVerificationCodeException;
 import com.tierlist.tierlist.member.application.port.in.service.MemberSignupUseCase;
 import org.junit.jupiter.api.Test;

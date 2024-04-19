@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.member.adapter.in.web.dto;
+package com.tierlist.tierlist.member.adapter.in.web.dto.request;
 
 import com.tierlist.tierlist.member.application.domain.model.command.EmailVerificationConfirmCommand;
 import com.tierlist.tierlist.member.application.domain.validation.EmailVerificationCode;

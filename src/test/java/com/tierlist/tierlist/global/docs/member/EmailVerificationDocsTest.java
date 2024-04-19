@@ -13,8 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.member.adapter.in.web.EmailVerificationController;
-import com.tierlist.tierlist.member.adapter.in.web.dto.EmailVerificationConfirmRequest;
-import com.tierlist.tierlist.member.adapter.in.web.dto.SendEmailVerificationRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.EmailVerificationConfirmRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.SendEmailVerificationRequest;
 import com.tierlist.tierlist.member.application.port.in.service.EmailVerificationUseCase;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;

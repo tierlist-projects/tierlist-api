@@ -1,7 +1,7 @@
 package com.tierlist.tierlist.member.adapter.in.web;
 
-import com.tierlist.tierlist.member.adapter.in.web.dto.EmailVerificationConfirmRequest;
-import com.tierlist.tierlist.member.adapter.in.web.dto.SendEmailVerificationRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.EmailVerificationConfirmRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.SendEmailVerificationRequest;
 import com.tierlist.tierlist.member.application.domain.model.command.EmailVerificationConfirmCommand;
 import com.tierlist.tierlist.member.application.domain.model.command.SendEmailVerificationCommand;
 import com.tierlist.tierlist.member.application.port.in.service.EmailVerificationUseCase;
