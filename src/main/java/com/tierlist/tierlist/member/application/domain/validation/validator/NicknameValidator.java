@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class NicknameValidator implements ConstraintValidator<Nickname, String> {
 
-  private static final String REGEX = "^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$";
+  private static final String REGEX = "^(?=.*[a-zA-Z0-9가-힣])[a-zA-Z0-9가-힣]{2,10}$";
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
