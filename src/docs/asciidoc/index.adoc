@@ -97,3 +97,7 @@ operation::member-signup-docs-test/signup_400_invalid_verification_code[snippets
 
 operation::member-signup-docs-test/signup_400_invalid_request_value[snippets='http-response,response-fields']
 
+=== 내 정보 조회
+
+operation::member-information-docs-test/get_own_information_200[snippets='http-request,http-response,response-fields']
+
