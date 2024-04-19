@@ -99,11 +99,11 @@ operation::member-signup-docs-test/signup_400_invalid_request_value[snippets='ht
 
 === 내 정보 조회
 
-operation::member-information-docs-test/get_own_information_200[snippets='http-request,http-response,response-fields']
+operation::member-information-docs-test/get_own_information_200[snippets='http-request,request-headers,http-response,response-fields']
 
 === 닉네임 변경
 
-operation::member-information-docs-test/change_member_nickname_200[snippets='http-request,request-fields,http-response,response-fields']
+operation::member-information-docs-test/change_member_nickname_200[snippets='http-request,request-headers,request-fields,http-response']
 
 ==== 에러 응답
 
