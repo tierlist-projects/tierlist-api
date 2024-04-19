@@ -46,7 +46,9 @@ public class SecurityConfig {
     http.sessionManagement(
         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+    http.authorizeHttpRequests(auth -> auth
+        .requestMatchers("/member/me/**").authenticated()
+        .anyRequest().permitAll());
 
     http.addFilterAt(jsonLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
     http.addFilterBefore(tokenReissueFilter(), JsonLoginProcessingFilter.class);
