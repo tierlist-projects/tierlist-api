@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.member.adapter.in.web.dto;
+package com.tierlist.tierlist.member.adapter.in.web.dto.request;
 
 import com.tierlist.tierlist.member.application.domain.model.command.SendEmailVerificationCommand;
 import jakarta.validation.constraints.Email;

@@ -12,6 +12,7 @@ import com.tierlist.tierlist.global.security.handler.JwtAuthenticationSuccessHan
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,7 +47,10 @@ public class SecurityConfig {
     http.sessionManagement(
         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+    http.authorizeHttpRequests(auth -> auth
+        .requestMatchers("/member/me/**").authenticated()
+        .requestMatchers(HttpMethod.POST, "/image").authenticated()
+        .anyRequest().permitAll());
 
     http.addFilterAt(jsonLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
     http.addFilterBefore(tokenReissueFilter(), JsonLoginProcessingFilter.class);

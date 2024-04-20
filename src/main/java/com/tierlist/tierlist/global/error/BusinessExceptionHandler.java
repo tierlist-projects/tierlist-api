@@ -1,7 +1,9 @@
 package com.tierlist.tierlist.global.error;
 
+import com.tierlist.tierlist.global.error.exception.AuthenticationException;
 import com.tierlist.tierlist.global.error.exception.BusinessException;
 import com.tierlist.tierlist.global.error.exception.DuplicationException;
+import com.tierlist.tierlist.global.error.exception.InfraStructureErrorException;
 import com.tierlist.tierlist.global.error.exception.InvalidRequestException;
 import com.tierlist.tierlist.global.error.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,22 @@ public class BusinessExceptionHandler {
       InvalidRequestException invalidRequestException) {
     ErrorCode errorCode = invalidRequestException.getErrorCode();
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(InfraStructureErrorException.class)
+  public ResponseEntity<ErrorResponse> handleInfraStructureException(
+      InfraStructureErrorException infraStructureErrorException) {
+    ErrorCode errorCode = infraStructureErrorException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<ErrorResponse> handleAuthenticationException(
+      AuthenticationException authenticationException) {
+    ErrorCode errorCode = authenticationException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        .body(ErrorResponse.from(errorCode));
   }
 
 }

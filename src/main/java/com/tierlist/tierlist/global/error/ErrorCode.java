@@ -15,6 +15,9 @@ public enum ErrorCode {
 
   INFRASTRUCTURE_ERROR("I-001", "외부 서버에 이상이 있습니다."),
   MAIL_DELIVERY_ERROR("I-002", "메일 전송 서버에 이상이 있습니다."),
+  IMAGE_UPLOAD_ERROR("I-002", "이미지 업로드에 이상이 있습니다."),
+
+  IMAGE_SIZE_EXCEEDED_ERROR("IM-002", "이미지 업로드 용량이 초과되었습니다."),
 
   INVALID_REQUEST_EXCEPTION("IR-001", "적절한 요청이 아닙니다."),
   INVALID_EMAIL_VERIFICATION_CODE_EXCEPTION("IR-002", "이메일 검증 코드를 확인할 수 없습니다."),
@@ -26,6 +29,7 @@ public enum ErrorCode {
   TOKEN_EXPIRED("A-003", "토큰이 만료되었습니다."),
   INVALID_TOKEN("A-004", "토큰이 유효하지 않습니다."),
   UNEXPECTED_REFRESH_TOKEN("A-005", "에상치 못한 토큰입니다. 비정상적인 접속이 예상됩니다."),
+  INVALID_PASSWORD("A-006", "비밀번호가 일치하지 않습니다."),
 
   NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다.");
 

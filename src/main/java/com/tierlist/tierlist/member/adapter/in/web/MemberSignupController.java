@@ -1,6 +1,6 @@
 package com.tierlist.tierlist.member.adapter.in.web;
 
-import com.tierlist.tierlist.member.adapter.in.web.dto.MemberSignupRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.MemberSignupRequest;
 import com.tierlist.tierlist.member.application.port.in.service.MemberSignupUseCase;
 import jakarta.validation.Valid;
 import java.net.URI;
