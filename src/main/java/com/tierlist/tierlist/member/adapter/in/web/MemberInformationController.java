@@ -1,6 +1,7 @@
 package com.tierlist.tierlist.member.adapter.in.web;
 
 import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberNicknameRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberPasswordRequest;
 import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberProfileImageRequest;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.member.application.port.in.service.MemberInformationUseCase;
@@ -37,6 +38,13 @@ public class MemberInformationController {
   public ResponseEntity<Void> updateProfileImage(@AuthenticationPrincipal String email,
       @RequestBody ChangeMemberProfileImageRequest request) {
     memberInformationUseCase.changeMemberProfileImage(email, request.toCommand());
+    return ResponseEntity.ok().build();
+  }
+
+  @PatchMapping("/me/password")
+  public ResponseEntity<Void> updateProfileImage(@AuthenticationPrincipal String email,
+      @RequestBody @Valid ChangeMemberPasswordRequest request) {
+    memberInformationUseCase.changeMemberPassword(email, request.toCommand());
     return ResponseEntity.ok().build();
   }
 

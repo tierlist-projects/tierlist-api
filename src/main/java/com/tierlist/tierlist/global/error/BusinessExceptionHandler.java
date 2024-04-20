@@ -1,5 +1,6 @@
 package com.tierlist.tierlist.global.error;
 
+import com.tierlist.tierlist.global.error.exception.AuthenticationException;
 import com.tierlist.tierlist.global.error.exception.BusinessException;
 import com.tierlist.tierlist.global.error.exception.DuplicationException;
 import com.tierlist.tierlist.global.error.exception.InfraStructureErrorException;
@@ -42,6 +43,14 @@ public class BusinessExceptionHandler {
       InfraStructureErrorException infraStructureErrorException) {
     ErrorCode errorCode = infraStructureErrorException.getErrorCode();
     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<ErrorResponse> handleAuthenticationException(
+      AuthenticationException authenticationException) {
+    ErrorCode errorCode = authenticationException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body(ErrorResponse.from(errorCode));
   }
 

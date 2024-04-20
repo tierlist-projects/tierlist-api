@@ -29,6 +29,7 @@ public enum ErrorCode {
   TOKEN_EXPIRED("A-003", "토큰이 만료되었습니다."),
   INVALID_TOKEN("A-004", "토큰이 유효하지 않습니다."),
   UNEXPECTED_REFRESH_TOKEN("A-005", "에상치 못한 토큰입니다. 비정상적인 접속이 예상됩니다."),
+  INVALID_PASSWORD("A-006", "비밀번호가 일치하지 않습니다."),
 
   NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다.");
 
