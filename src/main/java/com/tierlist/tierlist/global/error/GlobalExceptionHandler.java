@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
@@ -62,6 +63,13 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
     final ErrorCode errorCode = ErrorCode.NOT_FOUND_ERROR;
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(
+      MaxUploadSizeExceededException e) {
+    final ErrorCode errorCode = ErrorCode.IMAGE_SIZE_EXCEEDED_ERROR;
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
   }
 
   @ExceptionHandler(Exception.class)

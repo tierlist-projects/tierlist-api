@@ -15,6 +15,9 @@ public enum ErrorCode {
 
   INFRASTRUCTURE_ERROR("I-001", "외부 서버에 이상이 있습니다."),
   MAIL_DELIVERY_ERROR("I-002", "메일 전송 서버에 이상이 있습니다."),
+  IMAGE_UPLOAD_ERROR("I-002", "이미지 업로드에 이상이 있습니다."),
+
+  IMAGE_SIZE_EXCEEDED_ERROR("IM-002", "이미지 업로드 용량이 초과되었습니다."),
 
   INVALID_REQUEST_EXCEPTION("IR-001", "적절한 요청이 아닙니다."),
   INVALID_EMAIL_VERIFICATION_CODE_EXCEPTION("IR-002", "이메일 검증 코드를 확인할 수 없습니다."),
