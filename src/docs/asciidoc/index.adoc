@@ -5,6 +5,47 @@
 :toc: left
 :toclevels: 2
 
+== 이미지 관련 API
+
+=== 이미지 업로드
+
+operation::image-upload-docs-test/upload_image_201[snippets='http-request,request-parts,http-response,response-fields']
+
+==== 에러 응답
+
+===== 이미지 서버 오류
+
+operation::image-upload-docs-test/upload_image_503[snippets='http-response,response-fields']
+
+===== 용량 초과
+
+====== HTTP response
+
+[source,http,options="nowrap"]
+----
+HTTP/1.1 400 Bad Request
+
+{
+  "errorCode": "IM-002",
+  "message": "이미지 업로드 용량이 초과되었습니다."
+}
+----
+
+====== Response fields
+
+|===
+|Path|Type|Description
+
+|`+errorCode+`
+|`+String+`
+|에러 코드
+
+|`+message+`
+|`+String+`
+|에러 메세지
+
+|===
+
 == 인증 관련 API
 
 === 로그인
