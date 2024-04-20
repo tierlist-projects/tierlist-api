@@ -19,6 +19,7 @@ import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.global.support.security.WithMockMember;
 import com.tierlist.tierlist.member.adapter.in.web.MemberInformationController;
 import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberNicknameRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberProfileImageRequest;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.member.application.domain.exception.NicknameDuplicationException;
 import com.tierlist.tierlist.member.application.port.in.service.MemberInformationUseCase;
@@ -166,6 +167,32 @@ class MemberInformationDocsTest extends RestDocsTestSupport {
                 fieldWithPath("reasons")
                     .type(ARRAY)
                     .description("에러 원인")
+            )
+        ));
+  }
+
+  @WithMockMember
+  @Test
+  void change_member_profile_image_200() throws Exception {
+
+    ChangeMemberProfileImageRequest request = new ChangeMemberProfileImageRequest(
+        "profile-image-name");
+
+    mvc.perform(patch("/member/me/profile-image")
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+            .content(objectMapper.writeValueAsString(request))
+        )
+        .andExpect(status().isOk())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            requestFields(
+                fieldWithPath("profileImageName")
+                    .type(STRING)
+                    .description("변경할 프로필 이미지 이름")
             )
         ));
   }
