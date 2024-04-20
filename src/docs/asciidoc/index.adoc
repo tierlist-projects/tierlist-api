@@ -159,3 +159,17 @@ operation::member-information-docs-test/change_member_nickname_400[snippets='htt
 === 프로필 이미지 변경
 
 operation::member-information-docs-test/change_member_profile_image_200[snippets='http-request,request-headers,request-fields,http-response']
+
+=== 비밀번호 변경
+
+operation::member-information-docs-test/change_member_password_200[snippets='http-request,request-headers,request-fields,http-response']
+
+==== 에러 응답
+
+===== 기존 비밀번호 불일치 시
+
+operation::member-information-docs-test/change_member_password_401[snippets='http-response,response-fields']
+
+===== 새로운 패스워드가 요구조건 불만족 시
+
+operation::member-information-docs-test/change_member_password_400[snippets='http-response,response-fields']

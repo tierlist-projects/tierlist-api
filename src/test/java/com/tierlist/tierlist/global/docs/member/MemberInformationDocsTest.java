@@ -19,8 +19,10 @@ import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.global.support.security.WithMockMember;
 import com.tierlist.tierlist.member.adapter.in.web.MemberInformationController;
 import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberNicknameRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberPasswordRequest;
 import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberProfileImageRequest;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
+import com.tierlist.tierlist.member.application.domain.exception.InvalidPasswordException;
 import com.tierlist.tierlist.member.application.domain.exception.NicknameDuplicationException;
 import com.tierlist.tierlist.member.application.port.in.service.MemberInformationUseCase;
 import org.junit.jupiter.api.Test;
@@ -193,6 +195,124 @@ class MemberInformationDocsTest extends RestDocsTestSupport {
                 fieldWithPath("profileImageName")
                     .type(STRING)
                     .description("변경할 프로필 이미지 이름")
+            )
+        ));
+  }
+
+  @WithMockMember
+  @Test
+  void change_member_password_200() throws Exception {
+
+    ChangeMemberPasswordRequest request = new ChangeMemberPasswordRequest("pasword!@",
+        "newPassword!@");
+
+    mvc.perform(patch("/member/me/password")
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+            .content(objectMapper.writeValueAsString(request))
+        )
+        .andExpect(status().isOk())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            requestFields(
+                fieldWithPath("password")
+                    .type(STRING)
+                    .description("기존 패스워드"),
+                fieldWithPath("newPassword")
+                    .type(STRING)
+                    .description("변경할 패스워드")
+                    .attributes(constraints(
+                        "password는 8자 이상, 20자 이상이어야 하고,"
+                            + "영문 대문자, 소문자, 숫자, 특수문자 ! _ @ $ % ^ & + = 만 허용합니다."))
+            )
+        ));
+  }
+
+  @WithMockMember
+  @Test
+  void change_member_password_400() throws Exception {
+
+    ChangeMemberPasswordRequest request = new ChangeMemberPasswordRequest("pasword!@",
+        "short");
+
+    mvc.perform(patch("/member/me/password")
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+            .content(objectMapper.writeValueAsString(request))
+        )
+        .andExpect(status().isBadRequest())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            requestFields(
+                fieldWithPath("password")
+                    .type(STRING)
+                    .description("기존 패스워드"),
+                fieldWithPath("newPassword")
+                    .type(STRING)
+                    .description("변경할 패스워드")
+                    .attributes(constraints(
+                        "password는 8자 이상, 20자 이상이어야 하고,"
+                            + "영문 대문자, 소문자, 숫자, 특수문자 ! _ @ $ % ^ & + = 만 허용합니다."))
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지"),
+                fieldWithPath("reasons")
+                    .type(ARRAY)
+                    .description("에러 원인")
+            )
+        ));
+  }
+
+  @WithMockMember
+  @Test
+  void change_member_password_401() throws Exception {
+
+    ChangeMemberPasswordRequest request = new ChangeMemberPasswordRequest("pasword!@",
+        "newPassword!@");
+
+    doThrow(new InvalidPasswordException())
+        .when(memberInformationUseCase).changeMemberPassword(any(), any());
+
+    mvc.perform(patch("/member/me/password")
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+            .content(objectMapper.writeValueAsString(request))
+        )
+        .andExpect(status().isUnauthorized())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            requestFields(
+                fieldWithPath("password")
+                    .type(STRING)
+                    .description("기존 패스워드"),
+                fieldWithPath("newPassword")
+                    .type(STRING)
+                    .description("변경할 패스워드")
+                    .attributes(constraints(
+                        "password는 8자 이상, 20자 이상이어야 하고,"
+                            + "영문 대문자, 소문자, 숫자, 특수문자 ! _ @ $ % ^ & + = 만 허용합니다."))
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
             )
         ));
   }
