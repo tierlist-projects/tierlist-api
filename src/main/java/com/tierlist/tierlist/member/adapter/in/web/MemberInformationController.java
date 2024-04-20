@@ -1,6 +1,7 @@
 package com.tierlist.tierlist.member.adapter.in.web;
 
 import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberNicknameRequest;
+import com.tierlist.tierlist.member.adapter.in.web.dto.request.ChangeMemberProfileImageRequest;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.member.application.port.in.service.MemberInformationUseCase;
 import jakarta.validation.Valid;
@@ -28,8 +29,15 @@ public class MemberInformationController {
   @PatchMapping("/me/nickname")
   public ResponseEntity<Void> updateNickname(@AuthenticationPrincipal String email,
       @RequestBody @Valid ChangeMemberNicknameRequest request) {
-    System.out.println("*********************************" + email);
     memberInformationUseCase.changeMemberNickname(email, request.toCommand());
     return ResponseEntity.ok().build();
   }
+
+  @PatchMapping("/me/profile-image")
+  public ResponseEntity<Void> updateProfileImage(@AuthenticationPrincipal String email,
+      @RequestBody ChangeMemberProfileImageRequest request) {
+    memberInformationUseCase.changeMemberProfileImage(email, request.toCommand());
+    return ResponseEntity.ok().build();
+  }
+
 }
