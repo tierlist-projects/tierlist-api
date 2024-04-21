@@ -26,7 +26,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(CategoryCreateController.class)
-public class CategoryCreateDocsTest extends RestDocsTestSupport {
+class CategoryCreateDocsTest extends RestDocsTestSupport {
 
   @MockBean
   CategoryCreateUseCase categoryCreateUseCase;
