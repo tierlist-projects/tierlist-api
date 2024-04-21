@@ -106,7 +106,7 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
     int pageCount = 1;
     int pageSize = 10;
 
-    given(categoryReadUseCase.getFavoriteCategories(anyInt(), anyInt())).willReturn(
+    given(categoryReadUseCase.getFavoriteCategories(any(), anyInt(), anyInt())).willReturn(
         List.of(
             CategoryResponse.builder()
                 .id(1L)

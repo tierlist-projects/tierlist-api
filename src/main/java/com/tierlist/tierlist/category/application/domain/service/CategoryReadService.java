@@ -16,7 +16,7 @@ public class CategoryReadService implements CategoryReadUseCase {
   }
 
   @Override
-  public List<CategoryResponse> getFavoriteCategories(int pageCount, int pageSize) {
+  public List<CategoryResponse> getFavoriteCategories(String email, int pageCount, int pageSize) {
     return List.of();
   }
 }

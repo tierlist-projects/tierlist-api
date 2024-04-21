@@ -6,6 +6,7 @@ import com.tierlist.tierlist.category.application.port.in.service.dto.response.C
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,9 +30,10 @@ public class CategoryReadController {
 
   @GetMapping("/favorite")
   public ResponseEntity<List<CategoryResponse>> getFavoriteCategories(
+      @AuthenticationPrincipal String email,
       @RequestParam int pageCount,
       @RequestParam int pageSize) {
-    return ResponseEntity.ok(categoryReadUseCase.getFavoriteCategories(pageCount, pageSize));
+    return ResponseEntity.ok(categoryReadUseCase.getFavoriteCategories(email, pageCount, pageSize));
   }
 
 }

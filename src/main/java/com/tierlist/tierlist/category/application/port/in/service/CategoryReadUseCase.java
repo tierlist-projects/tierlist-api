@@ -9,6 +9,6 @@ public interface CategoryReadUseCase {
   List<CategoryResponse> getCategories(int pageCount, int pageSize, String query,
       CategoryFilter filter);
 
-  List<CategoryResponse> getFavoriteCategories(int pageCount, int pageSize);
+  List<CategoryResponse> getFavoriteCategories(String email, int pageCount, int pageSize);
 
 }
