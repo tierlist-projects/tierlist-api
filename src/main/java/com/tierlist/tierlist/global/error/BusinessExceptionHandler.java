@@ -5,6 +5,7 @@ import com.tierlist.tierlist.global.error.exception.BusinessException;
 import com.tierlist.tierlist.global.error.exception.DuplicationException;
 import com.tierlist.tierlist.global.error.exception.InfraStructureErrorException;
 import com.tierlist.tierlist.global.error.exception.InvalidRequestException;
+import com.tierlist.tierlist.global.error.exception.NotFoundException;
 import com.tierlist.tierlist.global.error.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,14 @@ public class BusinessExceptionHandler {
       AuthenticationException authenticationException) {
     ErrorCode errorCode = authenticationException.getErrorCode();
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        .body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFoundException(
+      NotFoundException notFoundException) {
+    ErrorCode errorCode = notFoundException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(ErrorResponse.from(errorCode));
   }
 
