@@ -198,7 +198,7 @@ operation::category-read-docs-test/read_category_200[snippets='http-request,requ
 
 operation::category-read-docs-test/read_favorite_category_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
 
-=== 카테고리 좋아요 토글
+=== 카테고리 즐겨찾기 토글
 
 operation::category-favorite-docs-test/toggle_category_favorite_200[snippets='http-request,request-headers,path-parameters,http-response']
 
@@ -237,3 +237,15 @@ operation::topic-favorite-docs-test/toggle_topic_favorite_200[snippets='http-req
 ===== 토픽이 존재하지 않을 시
 
 operation::topic-favorite-docs-test/toggle_topic_favorite_404[snippets='http-response,response-fields']
+
+=== 토픽 목록 조회
+
+operation::topic-read-docs-test/read_topic_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+=== 카테고리 내 토픽 목록 조회
+
+operation::topic-read-docs-test/read_topic_of_category_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
+
+=== 토픽 즐겨찾기 목록 조회
+
+operation::topic-read-docs-test/read_favorite_topic_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
