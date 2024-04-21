@@ -77,7 +77,7 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                     .description("페이지 넘버")
                     .attributes(constraints("1부터 시작")),
                 parameterWithName("pageSize")
-                    .description("페이지 사이즈")
+                    .description("페이지 당 컨텐츠 갯수")
                     .attributes(constraints("1부터 시작")),
                 parameterWithName("query")
                     .description("검색어")
@@ -86,6 +86,60 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                 parameterWithName("filter")
                     .description("정렬 필터 HOT: 즐겨찾기 많은 순서 NONE: 이름 오름차순")
                     .attributes(constraints("HOT, NONE 중 하나여야 함."))
+            ),
+            responseFields(
+                fieldWithPath("[]")
+                    .description("카테고리 목록"),
+                fieldWithPath("[].id")
+                    .description("카테고리 식별번호"),
+                fieldWithPath("[].name")
+                    .description("카테고리 이름"),
+                fieldWithPath("[].isFavorite")
+                    .description("즐겨찾기 여부. 로그인 안했을 시 모두 false")
+            )
+        ));
+  }
+
+  @Test
+  void read_favorite_category_200() throws Exception {
+
+    int pageCount = 1;
+    int pageSize = 10;
+
+    given(categoryReadUseCase.getFavoriteCategories(anyInt(), anyInt())).willReturn(
+        List.of(
+            CategoryResponse.builder()
+                .id(1L)
+                .name("카테고리1")
+                .isFavorite(true)
+                .build(),
+            CategoryResponse.builder()
+                .id(2L)
+                .name("카테고리2")
+                .isFavorite(true)
+                .build()
+        )
+    );
+
+    mvc.perform(get("/category/favorite")
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+            .queryParam("pageCount", String.valueOf(pageCount))
+            .queryParam("pageSize", String.valueOf(pageSize))
+        )
+        .andExpect(status().isOk())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            queryParameters(
+                parameterWithName("pageCount")
+                    .description("페이지 넘버")
+                    .attributes(constraints("1부터 시작")),
+                parameterWithName("pageSize")
+                    .description("페이지 당 컨텐츠 갯수")
+                    .attributes(constraints("1부터 시작"))
             ),
             responseFields(
                 fieldWithPath("[]")

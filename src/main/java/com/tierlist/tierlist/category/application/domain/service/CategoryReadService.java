@@ -14,4 +14,9 @@ public class CategoryReadService implements CategoryReadUseCase {
       CategoryFilter filter) {
     return List.of();
   }
+
+  @Override
+  public List<CategoryResponse> getFavoriteCategories(int pageCount, int pageSize) {
+    return List.of();
+  }
 }

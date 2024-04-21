@@ -27,4 +27,11 @@ public class CategoryReadController {
     return ResponseEntity.ok(categoryReadUseCase.getCategories(pageCount, pageSize, query, filter));
   }
 
+  @GetMapping("/favorite")
+  public ResponseEntity<List<CategoryResponse>> getFavoriteCategories(
+      @RequestParam int pageCount,
+      @RequestParam int pageSize) {
+    return ResponseEntity.ok(categoryReadUseCase.getFavoriteCategories(pageCount, pageSize));
+  }
+
 }
