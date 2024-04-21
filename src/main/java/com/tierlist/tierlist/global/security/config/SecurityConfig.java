@@ -50,6 +50,7 @@ public class SecurityConfig {
     http.authorizeHttpRequests(auth -> auth
         .requestMatchers("/member/me/**").authenticated()
         .requestMatchers(HttpMethod.POST, "/image").authenticated()
+        .requestMatchers(HttpMethod.POST, "/category").authenticated()
         .anyRequest().permitAll());
 
     http.addFilterAt(jsonLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);

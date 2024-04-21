@@ -12,6 +12,7 @@ public enum ErrorCode {
   DUPLICATION_ERROR("D-001", "요청의 내용이 중복되었습니다."),
   EMAIL_DUPLICATION_ERROR("D-004", "사용자 이메일이 중복되었습니다."),
   NICKNAME_DUPLICATION_ERROR("D-003", "사용자 닉네임이 중복되었습니다."),
+  CATEGORY_NAME_DUPLICATION_ERROR("D-004", "카테고리 이름이 중복되었습니다."),
 
   INFRASTRUCTURE_ERROR("I-001", "외부 서버에 이상이 있습니다."),
   MAIL_DELIVERY_ERROR("I-002", "메일 전송 서버에 이상이 있습니다."),
