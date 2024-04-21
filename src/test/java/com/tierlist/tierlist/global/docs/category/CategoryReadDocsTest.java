@@ -40,14 +40,17 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
     given(categoryReadUseCase.getCategories(anyInt(), anyInt(), any(), any())).willReturn(
         List.of(
             CategoryResponse.builder()
+                .id(1L)
                 .name("카테고리1")
                 .isFavorite(false)
                 .build(),
             CategoryResponse.builder()
+                .id(2L)
                 .name("카테고리2")
                 .isFavorite(true)
                 .build(),
             CategoryResponse.builder()
+                .id(3L)
                 .name("카테고리3")
                 .isFavorite(false)
                 .build()
@@ -87,6 +90,8 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
             responseFields(
                 fieldWithPath("[]")
                     .description("카테고리 목록"),
+                fieldWithPath("[].id")
+                    .description("카테고리 식별번호"),
                 fieldWithPath("[].name")
                     .description("카테고리 이름"),
                 fieldWithPath("[].isFavorite")

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryResponse {
 
+  private Long id;
   private String name;
   private Boolean isFavorite;
 
