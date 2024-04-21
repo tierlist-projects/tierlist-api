@@ -32,7 +32,8 @@ public enum ErrorCode {
   UNEXPECTED_REFRESH_TOKEN("A-005", "에상치 못한 토큰입니다. 비정상적인 접속이 예상됩니다."),
   INVALID_PASSWORD("A-006", "비밀번호가 일치하지 않습니다."),
 
-  NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다.");
+  NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다."),
+  CATEGORY_NOT_FOUND_ERROR("NF-002", "해당 카테고리를 찾을 수 없습니다.");
 
   private final String code;
   private final String message;
