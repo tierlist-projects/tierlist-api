@@ -193,3 +193,13 @@ operation::category-create-docs-test/create_category_400[snippets='http-response
 === 카테고리 조회
 
 operation::category-read-docs-test/read_category_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+=== 카테고리 좋아요 토글
+
+operation::category-favorite-docs-test/toggle_category_favorite_200[snippets='http-request,request-headers,path-parameters,http-response']
+
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::category-favorite-docs-test/toggle_category_favorite_404[snippets='http-response,response-fields']
