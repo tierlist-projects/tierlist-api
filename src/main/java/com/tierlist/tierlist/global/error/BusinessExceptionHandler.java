@@ -1,6 +1,7 @@
 package com.tierlist.tierlist.global.error;
 
 import com.tierlist.tierlist.global.error.exception.AuthenticationException;
+import com.tierlist.tierlist.global.error.exception.AuthorizationException;
 import com.tierlist.tierlist.global.error.exception.BusinessException;
 import com.tierlist.tierlist.global.error.exception.DuplicationException;
 import com.tierlist.tierlist.global.error.exception.InfraStructureErrorException;
@@ -60,6 +61,14 @@ public class BusinessExceptionHandler {
       NotFoundException notFoundException) {
     ErrorCode errorCode = notFoundException.getErrorCode();
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(AuthorizationException.class)
+  public ResponseEntity<ErrorResponse> handleAuthorizationException(
+      AuthorizationException authorizationException) {
+    ErrorCode errorCode = authorizationException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
         .body(ErrorResponse.from(errorCode));
   }
 
