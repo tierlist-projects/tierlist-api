@@ -40,7 +40,7 @@ class TierlistCreateDocsTest extends RestDocsTestSupport {
         .title("test")
         .build();
 
-    given(tierlistCreateUseCase.create(any())).willReturn(1L);
+    given(tierlistCreateUseCase.create(any(), any())).willReturn(1L);
 
     mvc.perform(post("/tierlist")
             .contentType(APPLICATION_JSON)
@@ -80,7 +80,7 @@ class TierlistCreateDocsTest extends RestDocsTestSupport {
         .title("test")
         .build();
 
-    given(tierlistCreateUseCase.create(any())).willThrow(new TopicNotFoundException());
+    given(tierlistCreateUseCase.create(any(), any())).willThrow(new TopicNotFoundException());
 
     mvc.perform(post("/tierlist")
             .contentType(APPLICATION_JSON)
@@ -123,7 +123,7 @@ class TierlistCreateDocsTest extends RestDocsTestSupport {
         .title("t")
         .build();
 
-    given(tierlistCreateUseCase.create(any())).willReturn(1L);
+    given(tierlistCreateUseCase.create(any(), any())).willReturn(1L);
 
     mvc.perform(post("/tierlist")
             .contentType(APPLICATION_JSON)

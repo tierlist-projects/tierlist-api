@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class TierlistCreateService implements TierlistCreateUseCase {
 
   @Override
-  public Long create(TierlistCreateCommand command) {
+  public Long create(String email, TierlistCreateCommand command) {
     return 0L;
   }
 }

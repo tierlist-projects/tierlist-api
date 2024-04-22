@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,9 @@ public class TierlistCreateController {
   private final TierlistCreateUseCase tierlistCreateUseCase;
 
   @PostMapping
-  public ResponseEntity<Void> createTierlist(@RequestBody @Valid TierlistCreateRequest request) {
-    Long tierlistId = tierlistCreateUseCase.create(request.toCommand());
+  public ResponseEntity<Void> createTierlist(@AuthenticationPrincipal String email,
+      @RequestBody @Valid TierlistCreateRequest request) {
+    Long tierlistId = tierlistCreateUseCase.create(email, request.toCommand());
     return ResponseEntity.created(URI.create("/tierlist/" + tierlistId)).build();
   }
 }

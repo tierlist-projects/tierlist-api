@@ -4,6 +4,6 @@ import com.tierlist.tierlist.tierlist.application.domain.model.command.TierlistC
 
 public interface TierlistCreateUseCase {
 
-  Long create(TierlistCreateCommand command);
+  Long create(String email, TierlistCreateCommand command);
 
 }
