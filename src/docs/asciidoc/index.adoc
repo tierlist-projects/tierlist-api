@@ -276,3 +276,16 @@ operation::tierlist-like-docs-test/toggle_tierlist_like_200[snippets='http-reque
 
 operation::tierlist-like-docs-test/toggle_tierlist_like_404[snippets='http-response,response-fields']
 
+=== 티어리스트 발행 상태 토글
+
+operation::tierlist-publish-docs-test/toggle_tierlist_publish_200[snippets='http-request,request-headers,path-parameters,http-response']
+
+==== 에러 응답
+
+===== 티어리스트가 존재하지 않을 시
+
+operation::tierlist-publish-docs-test/toggle_tierlist_like_404[snippets='http-response,response-fields']
+
+===== 자신이 작성한 티어리스트가 아닐 시
+
+operation::tierlist-publish-docs-test/toggle_tierlist_like_403[snippets='http-response,response-fields']
