@@ -246,6 +246,12 @@ operation::topic-read-docs-test/read_topic_200[snippets='http-request,request-he
 
 operation::topic-read-docs-test/read_topic_of_category_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
 
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::topic-read-docs-test/read_topic_of_category_404[snippets='http-response,response-fields']
+
 === 토픽 즐겨찾기 목록 조회
 
 operation::topic-read-docs-test/read_favorite_topic_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
