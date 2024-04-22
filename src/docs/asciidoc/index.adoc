@@ -327,3 +327,23 @@ operation::tierlist-comment-docs-test/get_tierlist_comments_200[snippets='http-r
 ===== 해당 티어리스트가 존재하지 않을 시
 
 operation::tierlist-comment-docs-test/get_tierlist_comments_404[snippets='http-response,response-fields']
+
+== 아이템 관련 API
+
+=== 아이템 생성
+
+operation::item-create-docs-test/create_item_201[snippets='http-request,request-headers,request-fields,http-response']
+
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::item-create-docs-test/create_item_404_category_not_exist[snippets='http-response,response-fields']
+
+===== 카테고리 내 아이템 이름 중복 시
+
+operation::item-create-docs-test/create_item_409_item_name_duplication[snippets='http-response,response-fields']
+
+===== 토픽 이름 요구조건 불일치 시
+
+operation::item-create-docs-test/create_item_400_invalid_input[snippets='http-response,response-fields']
