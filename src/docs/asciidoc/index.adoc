@@ -265,3 +265,14 @@ operation::tierlist-create-docs-test/create_tierlist_404[snippets='http-response
 ===== 티어리스트 제목 요구조건 불일치 시
 
 operation::tierlist-create-docs-test/create_tierlist_400[snippets='http-response,response-fields']
+
+=== 티어리스트 좋아요 토글
+
+operation::tierlist-like-docs-test/toggle_tierlist_like_200[snippets='http-request,request-headers,path-parameters,http-response']
+
+==== 에러 응답
+
+===== 티어리스트가 존재하지 않을 시
+
+operation::tierlist-like-docs-test/toggle_tierlist_like_404[snippets='http-response,response-fields']
+
