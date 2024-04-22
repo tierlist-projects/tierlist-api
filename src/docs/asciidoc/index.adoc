@@ -289,3 +289,25 @@ operation::tierlist-publish-docs-test/toggle_tierlist_like_404[snippets='http-re
 ===== 자신이 작성한 티어리스트가 아닐 시
 
 operation::tierlist-publish-docs-test/toggle_tierlist_like_403[snippets='http-response,response-fields']
+
+=== 티어리스트 댓글 생성
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_201[snippets='http-request,request-headers,request-fields,http-response']
+
+==== 에러 응답
+
+===== 티어리스트가 존재하지 않을 시
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_404_tierlist[snippets='http-response,response-fields']
+
+===== 상위 댓글이 존재하지 않을 시
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_404_comment[snippets='http-response,response-fields']
+
+===== 티어리스트가 PUBLISH 상태가 아닐 때
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_403_not_published[snippets='http-response,response-fields']
+
+===== 댓글 내용이 공백일 시
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_400_content_not_blank[snippets='http-response,response-fields']
