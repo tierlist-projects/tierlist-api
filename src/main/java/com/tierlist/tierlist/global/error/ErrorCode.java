@@ -14,6 +14,7 @@ public enum ErrorCode {
   NICKNAME_DUPLICATION_ERROR("D-003", "사용자 닉네임이 중복되었습니다."),
   CATEGORY_NAME_DUPLICATION_ERROR("D-004", "카테고리 이름이 중복되었습니다."),
   TOPIC_NAME_DUPLICATION_ERROR("D-005", "카테고리 내에서 토픽 이름이 중복되었습니다."),
+  ITEM_NAME_DUPLICATION_ERROR("D-006", "카테고리 내에서 아이템 이름이 중복되었습니다."),
 
   INFRASTRUCTURE_ERROR("I-001", "외부 서버에 이상이 있습니다."),
   MAIL_DELIVERY_ERROR("I-002", "메일 전송 서버에 이상이 있습니다."),
