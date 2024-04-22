@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.category.adaptor.in.web;
+package com.tierlist.tierlist.category.adapter.in.web;
 
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUseCase;

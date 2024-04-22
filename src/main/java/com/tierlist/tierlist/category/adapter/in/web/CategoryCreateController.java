@@ -1,6 +1,6 @@
-package com.tierlist.tierlist.category.adaptor.in.web;
+package com.tierlist.tierlist.category.adapter.in.web;
 
-import com.tierlist.tierlist.category.adaptor.in.web.dto.request.CreateCategoryRequest;
+import com.tierlist.tierlist.category.adapter.in.web.dto.request.CreateCategoryRequest;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryCreateUseCase;
 import jakarta.validation.Valid;
 import java.net.URI;

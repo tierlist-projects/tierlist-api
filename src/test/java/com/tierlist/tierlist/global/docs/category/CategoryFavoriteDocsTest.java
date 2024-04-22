@@ -13,7 +13,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.category.adaptor.in.web.CategoryFavoriteController;
+import com.tierlist.tierlist.category.adapter.in.web.CategoryFavoriteController;
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryFavoriteUseCase;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;

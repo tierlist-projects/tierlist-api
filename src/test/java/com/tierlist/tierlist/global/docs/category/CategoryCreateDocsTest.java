@@ -16,8 +16,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.category.adaptor.in.web.CategoryCreateController;
-import com.tierlist.tierlist.category.adaptor.in.web.dto.request.CreateCategoryRequest;
+import com.tierlist.tierlist.category.adapter.in.web.CategoryCreateController;
+import com.tierlist.tierlist.category.adapter.in.web.dto.request.CreateCategoryRequest;
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNameDuplicationException;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryCreateUseCase;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;

@@ -13,7 +13,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.category.adaptor.in.web.CategoryReadController;
+import com.tierlist.tierlist.category.adapter.in.web.CategoryReadController;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUseCase;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
