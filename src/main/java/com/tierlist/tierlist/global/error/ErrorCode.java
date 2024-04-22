@@ -35,7 +35,8 @@ public enum ErrorCode {
 
   NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다."),
   CATEGORY_NOT_FOUND_ERROR("NF-002", "해당 카테고리를 찾을 수 없습니다."),
-  TOPIC_NOT_FOUND_ERROR("NF-002", "해당 토픽을 찾을 수 없습니다.");
+  TOPIC_NOT_FOUND_ERROR("NF-002", "해당 토픽을 찾을 수 없습니다."),
+  TIERLIST_NOT_FOUND_ERROR("NF-003", "해당 티어리스트를 찾을 수 없습니다.");
 
   private final String code;
   private final String message;
