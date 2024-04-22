@@ -311,3 +311,13 @@ operation::tierlist-comment-docs-test/create_tierlist_comment_403_not_published[
 ===== 댓글 내용이 공백일 시
 
 operation::tierlist-comment-docs-test/create_tierlist_comment_400_content_not_blank[snippets='http-response,response-fields']
+
+=== 티어리스트 댓글 목록 조회
+
+operation::tierlist-comment-docs-test/get_tierlist_comments_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 해당 티어리스트가 존재하지 않을 시
+
+operation::tierlist-comment-docs-test/get_tierlist_comments_404[snippets='http-response,response-fields']

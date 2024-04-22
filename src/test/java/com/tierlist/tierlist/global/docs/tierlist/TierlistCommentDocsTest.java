@@ -1,12 +1,14 @@
 package com.tierlist.tierlist.global.docs.tierlist;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
@@ -16,16 +18,22 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
+import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistCommentController;
 import com.tierlist.tierlist.tierlist.adapter.in.web.dto.request.TierlistCommentCreateRequest;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistAuthorizationException;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistCommentNotFoundException;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistNotFoundException;
+import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistCommentResponse;
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistCommentCreateUseCase;
+import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistCommentReadUseCase;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,6 +43,9 @@ public class TierlistCommentDocsTest extends RestDocsTestSupport {
 
   @MockBean
   TierlistCommentCreateUseCase tierlistCommentCreateUseCase;
+
+  @MockBean
+  TierlistCommentReadUseCase tierlistCommentReadUseCase;
 
   @Test
   void create_tierlist_comment_201() throws Exception {
@@ -268,6 +279,160 @@ public class TierlistCommentDocsTest extends RestDocsTestSupport {
                 fieldWithPath("reasons")
                     .type(ARRAY)
                     .description("에러 원인")
+            )
+        ));
+  }
+
+  @Test
+  void get_tierlist_comments_200() throws Exception {
+
+    Long tierlistId = 1L;
+    int pageCount = 1;
+    int pageSize = 10;
+
+    given(tierlistCommentReadUseCase.getTierlistComments(any(), any(), anyInt(), anyInt()))
+        .willReturn(
+            List.of(
+                TierlistCommentResponse.builder()
+                    .id(1L)
+                    .writer(MemberResponse.builder()
+                        .id(1L)
+                        .nickname("nickname1")
+                        .profileImage("profile-image-name-1")
+                        .build())
+                    .createdAt(LocalDateTime.of(2024, 4, 23, 12, 27, 40))
+                    .content("댓글 내용 1")
+                    .liked(true)
+                    .likesCount(9)
+                    .isMyComment(true)
+                    .isParentComment(false)
+                    .isTierlistWriter(true)
+                    .build(),
+                TierlistCommentResponse.builder()
+                    .id(3L)
+                    .writer(MemberResponse.builder()
+                        .id(1L)
+                        .nickname("nickname1")
+                        .profileImage("profile-image_name-1")
+                        .build())
+                    .createdAt(LocalDateTime.of(2024, 4, 23, 12, 29, 40))
+                    .content("대댓글 내용 1")
+                    .liked(true)
+                    .likesCount(1)
+                    .isMyComment(true)
+                    .isParentComment(true)
+                    .isTierlistWriter(false)
+                    .build(),
+                TierlistCommentResponse.builder()
+                    .id(2L)
+                    .writer(MemberResponse.builder()
+                        .id(2L)
+                        .nickname("nickname2")
+                        .profileImage("profile-image_name")
+                        .build())
+                    .createdAt(LocalDateTime.of(2024, 4, 23, 12, 28, 40))
+                    .content("댓글 내용 2")
+                    .liked(false)
+                    .likesCount(0)
+                    .isMyComment(true)
+                    .isParentComment(true)
+                    .isTierlistWriter(false)
+                    .build()
+            )
+        );
+
+    mvc.perform(get("/tierlist/{tierlistId}/comment", tierlistId)
+            .contentType(APPLICATION_JSON)
+            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("pageCount", String.valueOf(pageCount))
+            .header("Access-Token", "sample.access.token")
+        )
+        .andExpect(status().isOk())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            pathParameters(
+                parameterWithName("tierlistId").description("Tierlist ID")
+            ),
+            queryParameters(
+                parameterWithName("pageCount")
+                    .description("페이지 넘버")
+                    .attributes(constraints("1부터 시작")),
+                parameterWithName("pageSize")
+                    .description("페이지 당 컨텐츠 갯수")
+                    .attributes(constraints("1부터 시작"))
+            ),
+            responseFields(
+                fieldWithPath("[].id")
+                    .description("댓글 식별번호"),
+                fieldWithPath("[].writer")
+                    .description("작성자 정보"),
+                fieldWithPath("[].writer.id")
+                    .description("작성자 식별번호"),
+                fieldWithPath("[].writer.nickname")
+                    .description("작성자 닉네임"),
+                fieldWithPath("[].writer.profileImage")
+                    .description("작성자 프로필 이미지 파일명"),
+                fieldWithPath("[].content")
+                    .description("댓글 내용"),
+                fieldWithPath("[].createdAt")
+                    .description("댓글 작성 시간"),
+                fieldWithPath("[].liked")
+                    .description("사용자가 좋아요를 눌렀는지 여부"),
+                fieldWithPath("[].likesCount")
+                    .description("댓글 좋아요 갯수"),
+                fieldWithPath("[].myComment")
+                    .description("해당 댓글이 작성자가 작성한 댓글인지 여부"),
+                fieldWithPath("[].parentComment")
+                    .description("해당 댓글이 댓글인지 대댓글인지 여부 (댓글이면 true)"),
+                fieldWithPath("[].tierlistWriter")
+                    .description("해당 댓글이 해당 티어리스트의 작성자가 생성했는지 여부")
+            )
+        ));
+  }
+
+  @Test
+  void get_tierlist_comments_404() throws Exception {
+
+    Long tierlistId = 1L;
+    int pageCount = 1;
+    int pageSize = 10;
+
+    given(tierlistCommentReadUseCase.getTierlistComments(any(), any(), anyInt(), anyInt()))
+        .willThrow(new TierlistNotFoundException());
+
+    mvc.perform(get("/tierlist/{tierlistId}/comment", tierlistId)
+            .contentType(APPLICATION_JSON)
+            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("pageCount", String.valueOf(pageCount))
+            .header("Access-Token", "sample.access.token")
+        )
+        .andExpect(status().isNotFound())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            pathParameters(
+                parameterWithName("tierlistId").description("Tierlist ID")
+            ),
+            queryParameters(
+                parameterWithName("pageCount")
+                    .description("페이지 넘버")
+                    .attributes(constraints("1부터 시작")),
+                parameterWithName("pageSize")
+                    .description("페이지 당 컨텐츠 갯수")
+                    .attributes(constraints("1부터 시작"))
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
             )
         ));
   }
