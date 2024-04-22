@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
-import com.tierlist.tierlist.item.adapter.in.web.ItemController;
+import com.tierlist.tierlist.item.adapter.in.web.ItemCreateController;
 import com.tierlist.tierlist.item.adapter.in.web.dto.request.ItemCreateRequest;
 import com.tierlist.tierlist.item.application.domain.exception.ItemNameDuplicationException;
 import com.tierlist.tierlist.item.application.port.in.service.ItemCreateUseCase;
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@WebMvcTest(ItemController.class)
+@WebMvcTest(ItemCreateController.class)
 public class ItemCreateDocsTest extends RestDocsTestSupport {
 
   @MockBean
