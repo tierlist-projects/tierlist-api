@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class ItemController {
+public class ItemCreateController {
 
   private final ItemCreateUseCase itemCreateUseCase;
 
