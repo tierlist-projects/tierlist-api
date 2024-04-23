@@ -21,7 +21,8 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
-
+  jpa:
+    open-in-view: false
 aws:
   s3:
     access-key: ${S3_ACCESS_KEY}
