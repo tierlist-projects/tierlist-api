@@ -296,6 +296,20 @@ operation::tierlist-like-docs-test/toggle_tierlist_like_200[snippets='http-reque
 
 operation::tierlist-like-docs-test/toggle_tierlist_like_404[snippets='http-response,response-fields']
 
+=== 티어리스트 디테일 조회
+
+operation::tierlist-read-docs-test/read_tierlist_detail_200[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 해당 티어리스트가 존재하지 않을 시
+
+operation::tierlist-read-docs-test/read_tierlist_detail_404[snippets='http-response,response-fields']
+
+===== 내가 작성하지 않은 티어리스트가 UNPUBLISH 상태일 시
+
+operation::tierlist-read-docs-test/read_tierlist_detail_403[snippets='http-response,response-fields']
+
 === 티어리스트 발행 상태 토글
 
 operation::tierlist-publish-docs-test/toggle_tierlist_publish_200[snippets='http-request,request-headers,path-parameters,http-response']
