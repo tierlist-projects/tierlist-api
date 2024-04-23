@@ -36,6 +36,7 @@ public class S3Config {
         .region(Region.of(region))
         .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
         .endpointOverride(URI.create(endpointUri))
+        .forcePathStyle(true)
         .build();
   }
 
