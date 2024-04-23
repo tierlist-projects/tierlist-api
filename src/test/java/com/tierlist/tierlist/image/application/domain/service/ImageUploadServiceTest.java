@@ -45,7 +45,7 @@ class ImageUploadServiceTest {
     ImagesResponse result = imageUploadService.upload(images);
 
     // then
-    assertThat(result.getImageNames().size()).isEqualTo(2);
+    assertThat(result.getImageNames()).hasSize(2);
   }
 
 }
