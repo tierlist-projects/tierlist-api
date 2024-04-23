@@ -44,6 +44,7 @@ public class BusinessExceptionHandler {
   @ExceptionHandler(InfraStructureErrorException.class)
   public ResponseEntity<ErrorResponse> handleInfraStructureException(
       InfraStructureErrorException infraStructureErrorException) {
+    log.error("InfraStructure Error Occurred", infraStructureErrorException);
     ErrorCode errorCode = infraStructureErrorException.getErrorCode();
     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
         .body(ErrorResponse.from(errorCode));
