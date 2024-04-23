@@ -29,7 +29,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(ItemCreateController.class)
-public class ItemCreateDocsTest extends RestDocsTestSupport {
+class ItemCreateDocsTest extends RestDocsTestSupport {
 
   @MockBean
   private ItemCreateUseCase itemCreateUseCase;

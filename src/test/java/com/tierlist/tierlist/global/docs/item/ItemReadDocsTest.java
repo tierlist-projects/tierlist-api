@@ -26,7 +26,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(ItemReadController.class)
-public class ItemReadDocsTest extends RestDocsTestSupport {
+class ItemReadDocsTest extends RestDocsTestSupport {
 
   @MockBean
   private ItemReadUseCase itemReadUseCase;

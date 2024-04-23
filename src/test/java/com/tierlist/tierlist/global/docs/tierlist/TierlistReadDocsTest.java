@@ -36,7 +36,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(TierlistReadController.class)
-public class TierlistReadDocsTest extends RestDocsTestSupport {
+class TierlistReadDocsTest extends RestDocsTestSupport {
 
   @MockBean
   TierlistReadUseCase tierlistReadUseCase;

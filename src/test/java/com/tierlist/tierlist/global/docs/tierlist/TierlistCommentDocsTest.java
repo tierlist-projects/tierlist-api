@@ -39,7 +39,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(TierlistCommentController.class)
-public class TierlistCommentDocsTest extends RestDocsTestSupport {
+class TierlistCommentDocsTest extends RestDocsTestSupport {
 
   @MockBean
   TierlistCommentCreateUseCase tierlistCommentCreateUseCase;
