@@ -26,4 +26,9 @@ public class TierlistDetailResponse {
   private List<ItemRankResponse> fRanks;
   private List<ItemRankResponse> noneRanks;
 
+  private boolean liked;
+  private int likesCount;
+
+  private boolean isMyTierlist;
+
 }

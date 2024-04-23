@@ -83,6 +83,9 @@ public class TierlistReadDocsTest extends RestDocsTestSupport {
                         .itemRankImage("item-rank-image-5")
                         .build()
                 ))
+            .liked(true)
+            .likesCount(13)
+            .isMyTierlist(true)
             .build()
     );
 
@@ -129,7 +132,13 @@ public class TierlistReadDocsTest extends RestDocsTestSupport {
                 fieldWithPath("*[].name")
                     .description("아이템 이름"),
                 fieldWithPath("*[].itemRankImage")
-                    .description("아이템 이미지 파일 이름")
+                    .description("아이템 이미지 파일 이름"),
+                fieldWithPath("liked")
+                    .description("사용자가 좋아요를 눌렀는지 여부"),
+                fieldWithPath("likesCount")
+                    .description("티어리스트 좋아요 갯수"),
+                fieldWithPath("myTierlist")
+                    .description("사용자가 작성한 티어리스트인지 여부")
             )
         ));
   }
