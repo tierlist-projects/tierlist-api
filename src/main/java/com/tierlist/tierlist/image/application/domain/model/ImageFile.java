@@ -1,5 +1,6 @@
 package com.tierlist.tierlist.image.application.domain.model;
 
+import com.tierlist.tierlist.global.error.exception.InternalServerException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -46,7 +47,7 @@ public class ImageFile {
       return new String(Hex.encode(hashBytes)) + EXTENSION_DELIMITER + filenameExtension;
 
     } catch (final NoSuchAlgorithmException e) {
-      throw new RuntimeException();
+      throw new InternalServerException();
     }
   }
 
