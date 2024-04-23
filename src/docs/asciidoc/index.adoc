@@ -272,6 +272,20 @@ operation::tierlist-create-docs-test/create_tierlist_404[snippets='http-response
 
 operation::tierlist-create-docs-test/create_tierlist_400[snippets='http-response,response-fields']
 
+=== 티어리스트 수정
+
+operation::tierlist-edit-docs-test/edit_tierlist_200[snippets='http-request,request-headers,path-parameters,request-fields,http-response']
+
+==== 에러 응답
+
+===== 해당 티어리스트가 존재하지 않을 시
+
+operation::tierlist-edit-docs-test/edit_tierlist_404[snippets='http-response,response-fields']
+
+===== 요청 요구조건 불만족 시
+
+operation::tierlist-edit-docs-test/edit_tierlist_400[snippets='http-response,response-fields']
+
 === 티어리스트 좋아요 토글
 
 operation::tierlist-like-docs-test/toggle_tierlist_like_200[snippets='http-request,request-headers,path-parameters,http-response']
