@@ -3,7 +3,6 @@ package com.tierlist.tierlist.image.adapter.out.infrastructure;
 import com.tierlist.tierlist.image.application.domain.model.ImageFile;
 import com.tierlist.tierlist.image.application.exception.ImageUploadException;
 import com.tierlist.tierlist.image.application.port.out.ImageUploader;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +38,7 @@ public class S3ImageUploader implements ImageUploader {
     try {
       RequestBody requestBody = RequestBody.fromBytes(imageFile.getBytes());
       s3Client.putObject(putObjectRequest, requestBody);
-    } catch (IOException e) {
+    } catch (Exception e) {
       throw new ImageUploadException();
     }
 
