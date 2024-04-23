@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.global.docs.category;
+package com.tierlist.tierlist.global.docs.tierlist;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -8,6 +8,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -16,82 +17,90 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.category.adapter.in.web.CategoryCreateController;
-import com.tierlist.tierlist.category.adapter.in.web.dto.request.CreateCategoryRequest;
-import com.tierlist.tierlist.category.application.domain.exception.CategoryNameDuplicationException;
-import com.tierlist.tierlist.category.application.port.in.service.CategoryCreateUseCase;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
+import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistCreateController;
+import com.tierlist.tierlist.tierlist.adapter.in.web.dto.request.TierlistCreateRequest;
+import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistCreateUseCase;
+import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@WebMvcTest(CategoryCreateController.class)
-class CategoryCreateDocsTest extends RestDocsTestSupport {
+@WebMvcTest(TierlistCreateController.class)
+class TierlistCreateDocsTest extends RestDocsTestSupport {
 
   @MockBean
-  CategoryCreateUseCase categoryCreateUseCase;
+  private TierlistCreateUseCase tierlistCreateUseCase;
 
   @Test
-  void create_category_201() throws Exception {
+  void create_tierlist_201() throws Exception {
 
-    CreateCategoryRequest request = CreateCategoryRequest.builder()
-        .name("test")
+    TierlistCreateRequest request = TierlistCreateRequest.builder()
+        .topicId(1L)
+        .title("test")
         .build();
 
-    given(categoryCreateUseCase.create(any())).willReturn(1L);
+    given(tierlistCreateUseCase.create(any(), any())).willReturn(1L);
 
-    mvc.perform(post("/category")
+    mvc.perform(post("/tierlist")
             .contentType(APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request))
             .header("Access-Token", "sample.access.token")
         )
         .andExpect(status().isCreated())
-        .andExpect(header().string(LOCATION, "/category/1"))
+        .andExpect(header().string(LOCATION, "/tierlist/1"))
         .andDo(restDocs.document(
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
             ),
             requestFields(
-                fieldWithPath("name")
+                fieldWithPath("topicId")
+                    .type(NUMBER)
+                    .description("티어리스트가 생성될 토픽 식별번호"),
+                fieldWithPath("title")
                     .type(STRING)
-                    .description("생성할 카테고리 이름")
-                    .attributes(constraints("카테고리 이름은 2자 이상 20자 이하,"
+                    .description("생성할 티어리스트 제목")
+                    .attributes(constraints("티어리스트 제목은 2자 이상 25자 이하,"
                         + " 영어, 숫자 한글 또는 스페이스로 구성되어야 하고,"
                         + "특수문자, 자음, 모음을 포함할 수 없습니다."))
             ),
             responseHeaders( //응답 헤더 문서화
                 headerWithName(LOCATION)
-                    .description("생성된 category url")
+                    .description("생성된 tierlist url")
             )
         ));
   }
 
   @Test
-  void create_category_409() throws Exception {
+  void create_tierlist_404() throws Exception {
 
-    CreateCategoryRequest request = CreateCategoryRequest.builder()
-        .name("test")
+    TierlistCreateRequest request = TierlistCreateRequest.builder()
+        .topicId(1L)
+        .title("test")
         .build();
 
-    given(categoryCreateUseCase.create(any())).willThrow(new CategoryNameDuplicationException());
+    given(tierlistCreateUseCase.create(any(), any())).willThrow(new TopicNotFoundException());
 
-    mvc.perform(post("/category")
+    mvc.perform(post("/tierlist")
             .contentType(APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request))
             .header("Access-Token", "sample.access.token")
         )
-        .andExpect(status().isConflict())
+        .andExpect(status().isNotFound())
         .andDo(restDocs.document(
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
             ),
             requestFields(
-                fieldWithPath("name")
+                fieldWithPath("topicId")
+                    .type(NUMBER)
+                    .description("티어리스트가 생성될 토픽 식별번호"),
+                fieldWithPath("title")
                     .type(STRING)
-                    .description("생성할 카테고리 이름")
-                    .attributes(constraints("카테고리 이름은 2자 이상 20자 이하,"
+                    .description("생성할 티어리스트 제목")
+                    .attributes(constraints("티어리스트 제목은 2자 이상 25자 이하,"
                         + " 영어, 숫자 한글 또는 스페이스로 구성되어야 하고,"
                         + "특수문자, 자음, 모음을 포함할 수 없습니다."))
             ),
@@ -107,13 +116,16 @@ class CategoryCreateDocsTest extends RestDocsTestSupport {
   }
 
   @Test
-  void create_category_400() throws Exception {
+  void create_tierlist_400() throws Exception {
 
-    CreateCategoryRequest request = CreateCategoryRequest.builder()
-        .name("t")
+    TierlistCreateRequest request = TierlistCreateRequest.builder()
+        .topicId(1L)
+        .title("t")
         .build();
 
-    mvc.perform(post("/category")
+    given(tierlistCreateUseCase.create(any(), any())).willReturn(1L);
+
+    mvc.perform(post("/tierlist")
             .contentType(APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request))
             .header("Access-Token", "sample.access.token")
@@ -125,10 +137,13 @@ class CategoryCreateDocsTest extends RestDocsTestSupport {
                     .description("JWT Access Token")
             ),
             requestFields(
-                fieldWithPath("name")
+                fieldWithPath("topicId")
+                    .type(NUMBER)
+                    .description("티어리스트가 생성될 토픽 식별번호"),
+                fieldWithPath("title")
                     .type(STRING)
-                    .description("생성할 카테고리 이름")
-                    .attributes(constraints("카테고리 이름은 2자 이상 20자 이하,"
+                    .description("생성할 티어리스트 제목")
+                    .attributes(constraints("티어리스트 제목은 2자 이상 25자 이하,"
                         + " 영어, 숫자 한글 또는 스페이스로 구성되어야 하고,"
                         + "특수문자, 자음, 모음을 포함할 수 없습니다."))
             ),
@@ -145,4 +160,5 @@ class CategoryCreateDocsTest extends RestDocsTestSupport {
             )
         ));
   }
+
 }

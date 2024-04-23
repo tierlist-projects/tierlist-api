@@ -14,6 +14,7 @@ public enum ErrorCode {
   NICKNAME_DUPLICATION_ERROR("D-003", "사용자 닉네임이 중복되었습니다."),
   CATEGORY_NAME_DUPLICATION_ERROR("D-004", "카테고리 이름이 중복되었습니다."),
   TOPIC_NAME_DUPLICATION_ERROR("D-005", "카테고리 내에서 토픽 이름이 중복되었습니다."),
+  ITEM_NAME_DUPLICATION_ERROR("D-006", "카테고리 내에서 아이템 이름이 중복되었습니다."),
 
   INFRASTRUCTURE_ERROR("I-001", "외부 서버에 이상이 있습니다."),
   MAIL_DELIVERY_ERROR("I-002", "메일 전송 서버에 이상이 있습니다."),
@@ -33,9 +34,14 @@ public enum ErrorCode {
   UNEXPECTED_REFRESH_TOKEN("A-005", "에상치 못한 토큰입니다. 비정상적인 접속이 예상됩니다."),
   INVALID_PASSWORD("A-006", "비밀번호가 일치하지 않습니다."),
 
+  AUTHORIZATION_ERROR("AU-001", "권한이 존재하지 않습니다."),
+  TIERLIST_AUTHORIZATION_ERROR("AU-002", "해당 티어리스트에 대한 권한이 없습니다."),
+
   NOT_FOUND_ERROR("NF-001", "요청한 리소스를 찾을 수 없습니다."),
   CATEGORY_NOT_FOUND_ERROR("NF-002", "해당 카테고리를 찾을 수 없습니다."),
-  TOPIC_NOT_FOUND_ERROR("NF-002", "해당 토픽을 찾을 수 없습니다.");
+  TOPIC_NOT_FOUND_ERROR("NF-002", "해당 토픽을 찾을 수 없습니다."),
+  TIERLIST_NOT_FOUND_ERROR("NF-003", "해당 티어리스트를 찾을 수 없습니다."),
+  TIERLIST_COMMENT_NOT_FOUND_ERROR("NF-004", "해당 티어리스트 댓글을 찾을 수 없습니다.");
 
   private final String code;
   private final String message;

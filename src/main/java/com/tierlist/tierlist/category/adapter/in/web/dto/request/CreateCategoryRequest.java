@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.category.adaptor.in.web.dto.request;
+package com.tierlist.tierlist.category.adapter.in.web.dto.request;
 
 import com.tierlist.tierlist.category.application.domain.model.command.CreateCategoryCommand;
 import com.tierlist.tierlist.category.application.domain.validation.CategoryName;

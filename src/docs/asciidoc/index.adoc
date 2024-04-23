@@ -246,6 +246,170 @@ operation::topic-read-docs-test/read_topic_200[snippets='http-request,request-he
 
 operation::topic-read-docs-test/read_topic_of_category_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
 
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::topic-read-docs-test/read_topic_of_category_404[snippets='http-response,response-fields']
+
 === 토픽 즐겨찾기 목록 조회
 
 operation::topic-read-docs-test/read_favorite_topic_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+== Tierlist 관련 API
+
+=== 티어리스트 생성
+
+operation::tierlist-create-docs-test/create_tierlist_201[snippets='http-request,request-headers,request-fields,http-response']
+
+==== 에러 응답
+
+===== 토픽이 존재하지 않을 시
+
+operation::tierlist-create-docs-test/create_tierlist_404[snippets='http-response,response-fields']
+
+===== 티어리스트 제목 요구조건 불일치 시
+
+operation::tierlist-create-docs-test/create_tierlist_400[snippets='http-response,response-fields']
+
+=== 티어리스트 수정
+
+operation::tierlist-edit-docs-test/edit_tierlist_200[snippets='http-request,request-headers,path-parameters,request-fields,http-response']
+
+==== 에러 응답
+
+===== 해당 티어리스트가 존재하지 않을 시
+
+operation::tierlist-edit-docs-test/edit_tierlist_404[snippets='http-response,response-fields']
+
+===== 요청 요구조건 불만족 시
+
+operation::tierlist-edit-docs-test/edit_tierlist_400[snippets='http-response,response-fields']
+
+=== 티어리스트 좋아요 토글
+
+operation::tierlist-like-docs-test/toggle_tierlist_like_200[snippets='http-request,request-headers,path-parameters,http-response']
+
+==== 에러 응답
+
+===== 티어리스트가 존재하지 않을 시
+
+operation::tierlist-like-docs-test/toggle_tierlist_like_404[snippets='http-response,response-fields']
+
+=== 티어리스트 디테일 조회
+
+operation::tierlist-read-docs-test/read_tierlist_detail_200[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 해당 티어리스트가 존재하지 않을 시
+
+operation::tierlist-read-docs-test/read_tierlist_detail_404[snippets='http-response,response-fields']
+
+===== 내가 작성하지 않은 티어리스트가 UNPUBLISH 상태일 시
+
+operation::tierlist-read-docs-test/read_tierlist_detail_403[snippets='http-response,response-fields']
+
+=== 티어리스트 발행 상태 토글
+
+operation::tierlist-publish-docs-test/toggle_tierlist_publish_200[snippets='http-request,request-headers,path-parameters,http-response']
+
+==== 에러 응답
+
+===== 티어리스트가 존재하지 않을 시
+
+operation::tierlist-publish-docs-test/toggle_tierlist_like_404[snippets='http-response,response-fields']
+
+===== 자신이 작성한 티어리스트가 아닐 시
+
+operation::tierlist-publish-docs-test/toggle_tierlist_like_403[snippets='http-response,response-fields']
+
+=== 티어리스트 댓글 생성
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_201[snippets='http-request,request-headers,request-fields,http-response']
+
+==== 에러 응답
+
+===== 티어리스트가 존재하지 않을 시
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_404_tierlist[snippets='http-response,response-fields']
+
+===== 상위 댓글이 존재하지 않을 시
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_404_comment[snippets='http-response,response-fields']
+
+===== 티어리스트가 PUBLISH 상태가 아닐 때
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_403_not_published[snippets='http-response,response-fields']
+
+===== 댓글 내용이 공백일 시
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_400_content_not_blank[snippets='http-response,response-fields']
+
+=== 티어리스트 댓글 목록 조회
+
+operation::tierlist-comment-docs-test/get_tierlist_comments_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 해당 티어리스트가 존재하지 않을 시
+
+operation::tierlist-comment-docs-test/get_tierlist_comments_404[snippets='http-response,response-fields']
+
+=== 카테고리 내 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_of_category_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::tierlist-read-docs-test/read_tierlists_of_category_404[snippets='http-response,response-fields']
+
+=== 토픽 내 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_of_topic_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 토픽이 존재하지 않을 시
+
+operation::tierlist-read-docs-test/read_tierlists_of_topic_404[snippets='http-response,response-fields']
+
+=== 전체 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+=== 내가 작성한 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_my_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+== 아이템 관련 API
+
+=== 아이템 생성
+
+operation::item-create-docs-test/create_item_201[snippets='http-request,request-headers,request-fields,http-response']
+
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::item-create-docs-test/create_item_404_category_not_exist[snippets='http-response,response-fields']
+
+===== 카테고리 내 아이템 이름 중복 시
+
+operation::item-create-docs-test/create_item_409_item_name_duplication[snippets='http-response,response-fields']
+
+===== 아이템 이름 요구조건 불일치 시
+
+operation::item-create-docs-test/create_item_400_invalid_input[snippets='http-response,response-fields']
+
+=== 카테고리 내 아이템 목록 조회
+
+operation::item-read-docs-test/read_item_of_category_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::item-read-docs-test/read_item_of_category_404[snippets='http-response,response-fields']

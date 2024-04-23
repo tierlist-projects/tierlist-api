@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.global.docs.category;
+package com.tierlist.tierlist.global.docs.tierlist;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -13,26 +13,26 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.category.adapter.in.web.CategoryFavoriteController;
-import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
-import com.tierlist.tierlist.category.application.port.in.service.CategoryFavoriteUseCase;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
+import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistLikeController;
+import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistNotFoundException;
+import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistLikeUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@WebMvcTest(CategoryFavoriteController.class)
-class CategoryFavoriteDocsTest extends RestDocsTestSupport {
+@WebMvcTest(TierlistLikeController.class)
+class TierlistLikeDocsTest extends RestDocsTestSupport {
 
   @MockBean
-  private CategoryFavoriteUseCase categoryFavoriteUseCase;
+  private TierlistLikeUseCase tierlistLikeUseCase;
 
   @Test
-  void toggle_category_favorite_200() throws Exception {
+  void toggle_tierlist_like_200() throws Exception {
 
-    Long categoryId = 1L;
+    Long tierlistId = 1L;
 
-    mvc.perform(patch("/category/{categoryId}/favorite/toggle", categoryId)
+    mvc.perform(patch("/tierlist/{tierlistId}/like/toggle", tierlistId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
         )
@@ -43,20 +43,20 @@ class CategoryFavoriteDocsTest extends RestDocsTestSupport {
                     .description("JWT Access Token")
             ),
             pathParameters(
-                parameterWithName("categoryId").description("Category ID")
+                parameterWithName("tierlistId").description("Tierlist ID")
             )
         ));
   }
 
   @Test
-  void toggle_category_favorite_404() throws Exception {
+  void toggle_tierlist_like_404() throws Exception {
 
-    Long categoryId = 1L;
+    Long tierlistId = 1L;
 
-    doThrow(new CategoryNotFoundException())
-        .when(categoryFavoriteUseCase).toggleFavorite(any(), any());
+    doThrow(new TierlistNotFoundException())
+        .when(tierlistLikeUseCase).toggleLike(any(), any());
 
-    mvc.perform(patch("/category/{categoryId}/favorite/toggle", categoryId)
+    mvc.perform(patch("/tierlist/{tierlistId}/like/toggle", tierlistId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
         )
@@ -67,8 +67,7 @@ class CategoryFavoriteDocsTest extends RestDocsTestSupport {
                     .description("JWT Access Token")
             ),
             pathParameters(
-                parameterWithName("categoryId")
-                    .description("Category ID")
+                parameterWithName("tierlistId").description("Tierlist ID")
             ),
             responseFields(
                 fieldWithPath("errorCode")

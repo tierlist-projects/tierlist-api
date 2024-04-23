@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.global.docs.category;
+package com.tierlist.tierlist.global.docs.item;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -6,64 +6,63 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.category.adapter.in.web.CategoryReadController;
-import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
-import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUseCase;
-import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
+import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
+import com.tierlist.tierlist.item.adapter.in.web.ItemReadController;
+import com.tierlist.tierlist.item.application.port.in.service.ItemReadUseCase;
+import com.tierlist.tierlist.item.application.port.in.service.dto.response.ItemResponse;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@WebMvcTest(CategoryReadController.class)
-class CategoryReadDocsTest extends RestDocsTestSupport {
+@WebMvcTest(ItemReadController.class)
+class ItemReadDocsTest extends RestDocsTestSupport {
 
   @MockBean
-  private CategoryReadUseCase categoryReadUseCase;
+  private ItemReadUseCase itemReadUseCase;
 
   @Test
-  void read_category_200() throws Exception {
+  void read_item_of_category_200() throws Exception {
+
+    long categoryId = 1L;
 
     int pageCount = 1;
     int pageSize = 10;
-    String query = "카테";
-    CategoryFilter filter = CategoryFilter.HOT;
+    String query = "qqq";
 
-    given(categoryReadUseCase.getCategories(anyInt(), anyInt(), any(), any())).willReturn(
+    given(itemReadUseCase.getItems(any(), any(), anyInt(), anyInt())).willReturn(
         List.of(
-            CategoryResponse.builder()
+            ItemResponse.builder()
                 .id(1L)
-                .name("카테고리1")
-                .isFavorite(false)
+                .name("아이템1")
                 .build(),
-            CategoryResponse.builder()
+            ItemResponse.builder()
                 .id(2L)
-                .name("카테고리2")
-                .isFavorite(true)
+                .name("아이템2")
                 .build(),
-            CategoryResponse.builder()
+            ItemResponse.builder()
                 .id(3L)
-                .name("카테고리3")
-                .isFavorite(false)
+                .name("아이템3")
                 .build()
         )
     );
 
-    mvc.perform(get("/category")
+    mvc.perform(get("/category/{categoryId}/item", categoryId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
             .queryParam("pageCount", String.valueOf(pageCount))
             .queryParam("pageSize", String.valueOf(pageSize))
             .queryParam("query", query)
-            .queryParam("filter", filter.name())
         )
         .andExpect(status().isOk())
         .andDo(restDocs.document(
@@ -71,6 +70,10 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
                     .optional()
+            ),
+            pathParameters(
+                parameterWithName("categoryId")
+                    .description("Category ID")
             ),
             queryParameters(
                 parameterWithName("pageCount")
@@ -82,56 +85,48 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
-                    .attributes(constraints("2글자 이상")),
-                parameterWithName("filter")
-                    .description("정렬 필터 HOT: 즐겨찾기 많은 순서 NONE: 이름 오름차순")
-                    .attributes(constraints("HOT, NONE 중 하나여야 함."))
+                    .attributes(constraints("2글자 이상"))
             ),
             responseFields(
                 fieldWithPath("[]")
-                    .description("카테고리 목록"),
+                    .description("아이템 목록"),
                 fieldWithPath("[].id")
-                    .description("카테고리 식별번호"),
+                    .description("아이템 식별번호"),
                 fieldWithPath("[].name")
-                    .description("카테고리 이름"),
-                fieldWithPath("[].isFavorite")
-                    .description("즐겨찾기 여부. 로그인 안했을 시 모두 false")
+                    .description("아이템 이름")
             )
         ));
   }
 
   @Test
-  void read_favorite_category_200() throws Exception {
+  void read_item_of_category_404() throws Exception {
+
+    long categoryId = 1L;
 
     int pageCount = 1;
     int pageSize = 10;
+    String query = "qqq";
 
-    given(categoryReadUseCase.getFavoriteCategories(any(), anyInt(), anyInt())).willReturn(
-        List.of(
-            CategoryResponse.builder()
-                .id(1L)
-                .name("카테고리1")
-                .isFavorite(true)
-                .build(),
-            CategoryResponse.builder()
-                .id(2L)
-                .name("카테고리2")
-                .isFavorite(true)
-                .build()
-        )
-    );
+    given(itemReadUseCase.getItems(any(), any(), anyInt(), anyInt()))
+        .willThrow(new CategoryNotFoundException());
 
-    mvc.perform(get("/category/favorite")
+    mvc.perform(get("/category/{categoryId}/item", categoryId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
             .queryParam("pageCount", String.valueOf(pageCount))
             .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("query", query)
         )
-        .andExpect(status().isOk())
+        .andExpect(status().isNotFound())
         .andDo(restDocs.document(
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
+                    .optional()
+            ),
+            pathParameters(
+                parameterWithName("categoryId")
+                    .description("Category ID")
             ),
             queryParameters(
                 parameterWithName("pageCount")
@@ -139,17 +134,19 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                     .attributes(constraints("1부터 시작")),
                 parameterWithName("pageSize")
                     .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작"))
+                    .attributes(constraints("1부터 시작")),
+                parameterWithName("query")
+                    .description("검색어")
+                    .optional()
+                    .attributes(constraints("2글자 이상"))
             ),
             responseFields(
-                fieldWithPath("[]")
-                    .description("카테고리 목록"),
-                fieldWithPath("[].id")
-                    .description("카테고리 식별번호"),
-                fieldWithPath("[].name")
-                    .description("카테고리 이름"),
-                fieldWithPath("[].isFavorite")
-                    .description("즐겨찾기 여부. 로그인 안했을 시 모두 false")
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
             )
         ));
   }

@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -15,6 +16,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
@@ -201,6 +203,64 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .description("토픽 이름"),
                 fieldWithPath("[].isFavorite")
                     .description("토픽 즐겨찾기 여부. 로그인 안했을 시 모두 false")
+            )
+        ));
+  }
+
+  @Test
+  void read_topic_of_category_404() throws Exception {
+
+    long categoryId = 1L;
+
+    int pageCount = 1;
+    int pageSize = 10;
+    String query = "qqq";
+    CategoryFilter filter = CategoryFilter.HOT;
+
+    given(topicReadUseCase.getTopics(any(), anyInt(), anyInt(), any(), any()))
+        .willThrow(new CategoryNotFoundException());
+
+    mvc.perform(RestDocumentationRequestBuilders.get("/category/{categoryId}/topic", categoryId)
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+            .queryParam("pageCount", String.valueOf(pageCount))
+            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("query", query)
+            .queryParam("filter", filter.name())
+        )
+        .andExpect(status().isNotFound())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+                    .optional()
+            ),
+            pathParameters(
+                parameterWithName("categoryId")
+                    .description("Category ID")
+            ),
+            queryParameters(
+                parameterWithName("pageCount")
+                    .description("페이지 넘버")
+                    .attributes(constraints("1부터 시작")),
+                parameterWithName("pageSize")
+                    .description("페이지 당 컨텐츠 갯수")
+                    .attributes(constraints("1부터 시작")),
+                parameterWithName("query")
+                    .description("검색어")
+                    .optional()
+                    .attributes(constraints("2글자 이상")),
+                parameterWithName("filter")
+                    .description("정렬 필터 HOT: 즐겨찾기 많은 순서 NONE: 이름 오름차순")
+                    .attributes(constraints("HOT, NONE 중 하나여야 함."))
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
             )
         ));
   }

@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.global.docs.category;
+package com.tierlist.tierlist.global.docs.tierlist;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -13,26 +13,27 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tierlist.tierlist.category.adapter.in.web.CategoryFavoriteController;
-import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
-import com.tierlist.tierlist.category.application.port.in.service.CategoryFavoriteUseCase;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
+import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistPublishController;
+import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistAuthorizationException;
+import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistNotFoundException;
+import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistPublishUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@WebMvcTest(CategoryFavoriteController.class)
-class CategoryFavoriteDocsTest extends RestDocsTestSupport {
+@WebMvcTest(TierlistPublishController.class)
+class TierlistPublishDocsTest extends RestDocsTestSupport {
 
   @MockBean
-  private CategoryFavoriteUseCase categoryFavoriteUseCase;
+  private TierlistPublishUseCase tierlistPublishUseCase;
 
   @Test
-  void toggle_category_favorite_200() throws Exception {
+  void toggle_tierlist_publish_200() throws Exception {
 
-    Long categoryId = 1L;
+    Long tierlistId = 1L;
 
-    mvc.perform(patch("/category/{categoryId}/favorite/toggle", categoryId)
+    mvc.perform(patch("/tierlist/{tierlistId}/publish/toggle", tierlistId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
         )
@@ -43,20 +44,20 @@ class CategoryFavoriteDocsTest extends RestDocsTestSupport {
                     .description("JWT Access Token")
             ),
             pathParameters(
-                parameterWithName("categoryId").description("Category ID")
+                parameterWithName("tierlistId").description("Tierlist ID")
             )
         ));
   }
 
   @Test
-  void toggle_category_favorite_404() throws Exception {
+  void toggle_tierlist_publish_404() throws Exception {
 
-    Long categoryId = 1L;
+    Long tierlistId = 1L;
 
-    doThrow(new CategoryNotFoundException())
-        .when(categoryFavoriteUseCase).toggleFavorite(any(), any());
+    doThrow(new TierlistNotFoundException())
+        .when(tierlistPublishUseCase).togglePublish(any(), any());
 
-    mvc.perform(patch("/category/{categoryId}/favorite/toggle", categoryId)
+    mvc.perform(patch("/tierlist/{tierlistId}/publish/toggle", tierlistId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
         )
@@ -67,8 +68,39 @@ class CategoryFavoriteDocsTest extends RestDocsTestSupport {
                     .description("JWT Access Token")
             ),
             pathParameters(
-                parameterWithName("categoryId")
-                    .description("Category ID")
+                parameterWithName("tierlistId").description("Tierlist ID")
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
+            )
+        ));
+  }
+
+  @Test
+  void toggle_tierlist_publish_403() throws Exception {
+
+    Long tierlistId = 1L;
+
+    doThrow(new TierlistAuthorizationException())
+        .when(tierlistPublishUseCase).togglePublish(any(), any());
+
+    mvc.perform(patch("/tierlist/{tierlistId}/publish/toggle", tierlistId)
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+        )
+        .andExpect(status().isForbidden())
+        .andDo(restDocs.document(
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+            ),
+            pathParameters(
+                parameterWithName("tierlistId").description("Tierlist ID")
             ),
             responseFields(
                 fieldWithPath("errorCode")
