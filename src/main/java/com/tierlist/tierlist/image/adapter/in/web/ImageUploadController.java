@@ -1,7 +1,7 @@
 package com.tierlist.tierlist.image.adapter.in.web;
 
 import com.tierlist.tierlist.image.adapter.in.web.dto.response.ImagesResponse;
-import com.tierlist.tierlist.image.application.port.out.ImageUploadUseCase;
+import com.tierlist.tierlist.image.application.port.in.ImageUploadUseCase;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

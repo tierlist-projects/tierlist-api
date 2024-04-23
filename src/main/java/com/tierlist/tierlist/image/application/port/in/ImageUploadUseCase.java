@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.image.application.port.out;
+package com.tierlist.tierlist.image.application.port.in;
 
 import com.tierlist.tierlist.image.adapter.in.web.dto.response.ImagesResponse;
 import java.util.List;

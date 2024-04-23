@@ -5,6 +5,7 @@ import com.tierlist.tierlist.global.error.exception.AuthorizationException;
 import com.tierlist.tierlist.global.error.exception.BusinessException;
 import com.tierlist.tierlist.global.error.exception.DuplicationException;
 import com.tierlist.tierlist.global.error.exception.InfraStructureErrorException;
+import com.tierlist.tierlist.global.error.exception.InternalServerException;
 import com.tierlist.tierlist.global.error.exception.InvalidRequestException;
 import com.tierlist.tierlist.global.error.exception.NotFoundException;
 import com.tierlist.tierlist.global.error.response.ErrorResponse;
@@ -72,4 +73,11 @@ public class BusinessExceptionHandler {
         .body(ErrorResponse.from(errorCode));
   }
 
+  @ExceptionHandler(InternalServerException.class)
+  public ResponseEntity<ErrorResponse> handleInternalServerException(
+      InternalServerException internalServerException) {
+    ErrorCode errorCode = internalServerException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(ErrorResponse.from(errorCode));
+  }
 }

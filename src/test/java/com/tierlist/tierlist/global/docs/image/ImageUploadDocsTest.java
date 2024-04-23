@@ -18,7 +18,7 @@ import com.tierlist.tierlist.global.support.security.WithMockMember;
 import com.tierlist.tierlist.image.adapter.in.web.ImageUploadController;
 import com.tierlist.tierlist.image.adapter.in.web.dto.response.ImagesResponse;
 import com.tierlist.tierlist.image.application.exception.ImageUploadException;
-import com.tierlist.tierlist.image.application.port.out.ImageUploadUseCase;
+import com.tierlist.tierlist.image.application.port.in.ImageUploadUseCase;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
