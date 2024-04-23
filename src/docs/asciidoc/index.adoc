@@ -356,6 +356,34 @@ operation::tierlist-comment-docs-test/get_tierlist_comments_200[snippets='http-r
 
 operation::tierlist-comment-docs-test/get_tierlist_comments_404[snippets='http-response,response-fields']
 
+=== 카테고리 내 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_of_category_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 카테고리가 존재하지 않을 시
+
+operation::tierlist-read-docs-test/read_tierlists_of_category_404[snippets='http-response,response-fields']
+
+=== 토픽 내 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_of_topic_200[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
+
+==== 에러 응답
+
+===== 토픽이 존재하지 않을 시
+
+operation::tierlist-read-docs-test/read_tierlists_of_topic_404[snippets='http-response,response-fields']
+
+=== 전체 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
+=== 내가 작성한 티어리스트 목록 조회
+
+operation::tierlist-read-docs-test/read_tierlists_my_200[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+
 == 아이템 관련 API
 
 === 아이템 생성
