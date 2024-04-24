@@ -1,5 +1,6 @@
-package com.tierlist.tierlist.global.error;
+package com.tierlist.tierlist.global.error.handler;
 
+import com.tierlist.tierlist.global.error.ErrorCode;
 import com.tierlist.tierlist.global.error.exception.AuthenticationException;
 import com.tierlist.tierlist.global.error.exception.AuthorizationException;
 import com.tierlist.tierlist.global.error.exception.BusinessException;
@@ -19,50 +20,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class BusinessExceptionHandler {
 
-  @ExceptionHandler(BusinessException.class)
-  public ResponseEntity<ErrorResponse> handleBusinessException(
-      BusinessException businessException) {
-
-    ErrorCode errorCode = businessException.getErrorCode();
-    return ResponseEntity.badRequest().body(ErrorResponse.from(errorCode));
-  }
-
-  @ExceptionHandler(DuplicationException.class)
-  public ResponseEntity<ErrorResponse> handleDuplicationException(
-      DuplicationException duplicationException) {
-    ErrorCode errorCode = duplicationException.getErrorCode();
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse.from(errorCode));
-  }
-
-  @ExceptionHandler(InvalidRequestException.class)
-  public ResponseEntity<ErrorResponse> handleDuplicationException(
-      InvalidRequestException invalidRequestException) {
-    ErrorCode errorCode = invalidRequestException.getErrorCode();
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
-  }
-
-  @ExceptionHandler(InfraStructureErrorException.class)
-  public ResponseEntity<ErrorResponse> handleInfraStructureException(
-      InfraStructureErrorException infraStructureErrorException) {
-    log.error("InfraStructure Error Occurred", infraStructureErrorException);
-    ErrorCode errorCode = infraStructureErrorException.getErrorCode();
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-        .body(ErrorResponse.from(errorCode));
-  }
-
   @ExceptionHandler(AuthenticationException.class)
   public ResponseEntity<ErrorResponse> handleAuthenticationException(
       AuthenticationException authenticationException) {
     ErrorCode errorCode = authenticationException.getErrorCode();
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-        .body(ErrorResponse.from(errorCode));
-  }
-
-  @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleNotFoundException(
-      NotFoundException notFoundException) {
-    ErrorCode errorCode = notFoundException.getErrorCode();
-    return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(ErrorResponse.from(errorCode));
   }
 
@@ -74,11 +36,52 @@ public class BusinessExceptionHandler {
         .body(ErrorResponse.from(errorCode));
   }
 
+  @ExceptionHandler(DuplicationException.class)
+  public ResponseEntity<ErrorResponse> handleDuplicationException(
+      DuplicationException duplicationException) {
+    ErrorCode errorCode = duplicationException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(InfraStructureErrorException.class)
+  public ResponseEntity<ErrorResponse> handleInfraStructureException(
+      InfraStructureErrorException infraStructureErrorException) {
+    log.error("InfraStructure Error Occurred", infraStructureErrorException);
+    ErrorCode errorCode = infraStructureErrorException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(InvalidRequestException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidRequestException(
+      InvalidRequestException invalidRequestException) {
+    ErrorCode errorCode = invalidRequestException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFoundException(
+      NotFoundException notFoundException) {
+    ErrorCode errorCode = notFoundException.getErrorCode();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(ErrorResponse.from(errorCode));
+  }
+
   @ExceptionHandler(InternalServerException.class)
   public ResponseEntity<ErrorResponse> handleInternalServerException(
       InternalServerException internalServerException) {
     ErrorCode errorCode = internalServerException.getErrorCode();
+    log.error("Internal Server Exception Occurred", internalServerException);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ErrorResponse.from(errorCode));
   }
+
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<ErrorResponse> handleBusinessException(
+      BusinessException businessException) {
+
+    ErrorCode errorCode = businessException.getErrorCode();
+    return ResponseEntity.badRequest().body(ErrorResponse.from(errorCode));
+  }
+
 }

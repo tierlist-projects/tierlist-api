@@ -1,5 +1,6 @@
-package com.tierlist.tierlist.global.error;
+package com.tierlist.tierlist.global.error.handler;
 
+import com.tierlist.tierlist.global.error.ErrorCode;
 import com.tierlist.tierlist.global.error.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
@@ -80,14 +81,10 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleException(
-      Exception e) {
-
+  @ExceptionHandler(Throwable.class)
+  public ResponseEntity<ErrorResponse> handleThrowable(Throwable e) {
     log.error(e.getMessage(), e);
-
     final ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
-
     return ResponseEntity.internalServerError().body(ErrorResponse.from(errorCode));
   }
 
