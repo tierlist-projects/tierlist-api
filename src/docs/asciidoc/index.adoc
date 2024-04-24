@@ -46,6 +46,12 @@ HTTP/1.1 400 Bad Request
 
 |===
 
+=== 이미지 조회
+
+https://image.tierlist.site/tierlist/${이미지_파일명}
+
+위의 URL로 GET 요청
+
 == 인증 관련 API
 
 === 로그인
