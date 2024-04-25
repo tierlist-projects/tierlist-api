@@ -58,7 +58,6 @@ class CategoryFavoriteServiceTest {
 
     // when
     categoryFavoriteService.toggleFavorite(member.getEmail(), category.getId());
-
     // then
     Optional<CategoryFavorite> categoryFavoriteOptional = categoryFavoriteRepository.findByMemberIdAndCategoryId(
         member.getId(), category.getId());
@@ -107,8 +106,9 @@ class CategoryFavoriteServiceTest {
 
     // when
     // then
+    String memberEmail = member.getEmail();
     assertThatThrownBy(() -> {
-      categoryFavoriteService.toggleFavorite(member.getEmail(), 1L);
+      categoryFavoriteService.toggleFavorite(memberEmail, 1L);
     }).isInstanceOf(CategoryNotFoundException.class);
   }
 
