@@ -41,7 +41,8 @@ public enum ErrorCode {
   CATEGORY_NOT_FOUND_ERROR("NF-002", "해당 카테고리를 찾을 수 없습니다."),
   TOPIC_NOT_FOUND_ERROR("NF-002", "해당 토픽을 찾을 수 없습니다."),
   TIERLIST_NOT_FOUND_ERROR("NF-003", "해당 티어리스트를 찾을 수 없습니다."),
-  TIERLIST_COMMENT_NOT_FOUND_ERROR("NF-004", "해당 티어리스트 댓글을 찾을 수 없습니다.");
+  TIERLIST_COMMENT_NOT_FOUND_ERROR("NF-004", "해당 티어리스트 댓글을 찾을 수 없습니다."),
+  MEMBER_NOT_FOUND_ERROR("NF-005", "해당 사용자를 찾을 수 없습니다.");
 
   private final String code;
   private final String message;

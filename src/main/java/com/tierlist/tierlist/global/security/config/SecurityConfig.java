@@ -51,6 +51,7 @@ public class SecurityConfig {
         .requestMatchers("/member/me/**").authenticated()
         .requestMatchers(HttpMethod.POST, "/image").authenticated()
         .requestMatchers(HttpMethod.POST, "/category").authenticated()
+        .requestMatchers(HttpMethod.PATCH, "/category/*/favorite/toggle").authenticated()
         .anyRequest().permitAll());
 
     http.addFilterAt(jsonLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
