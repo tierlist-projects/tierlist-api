@@ -109,7 +109,7 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
 
     given(categoryReadUseCase.getFavoriteCategories(any(), any())).willReturn(
         PageResponse.<CategoryResponse>builder()
-            .size(2)
+            .numberOfElements(2)
             .pageNumber(0)
             .pageSize(2)
             .totalElements(3)
@@ -151,7 +151,7 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                     .optional()
             ),
             responseFields(
-                fieldWithPath("size")
+                fieldWithPath("numberOfElements")
                     .description("컨텐츠의 갯수"),
                 fieldWithPath("pageNumber")
                     .description("현재 페이지 번호(0부터 시작)"),

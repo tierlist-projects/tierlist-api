@@ -18,7 +18,7 @@ public class PageResponse<T> {
   private int totalPages;
   private int pageNumber;
   private long totalElements;
-  private int size;
+  private int numberOfElements;
   private List<T> content;
 
   public static <T> PageResponse<T> fromPage(Page<T> page) {
@@ -27,7 +27,7 @@ public class PageResponse<T> {
         page.getTotalPages(),
         page.getPageable().getPageNumber(),
         page.getTotalElements(),
-        page.getSize(),
+        page.getNumberOfElements(),
         page.getContent());
   }
 
