@@ -2,6 +2,7 @@ package com.tierlist.tierlist.category.application.port.in.service.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.tierlist.tierlist.category.application.domain.model.Category;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +19,12 @@ public class CategoryResponse {
   private Long id;
   private String name;
   private Boolean isFavorite;
+
+  public static CategoryResponse from(Category category) {
+    return CategoryResponse.builder()
+        .id(category.getId())
+        .name(category.getName())
+        .build();
+  }
 
 }

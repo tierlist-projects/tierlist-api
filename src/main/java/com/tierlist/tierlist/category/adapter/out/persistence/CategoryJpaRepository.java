@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.category.adapter.out.infrastructure;
+package com.tierlist.tierlist.category.adapter.out.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
