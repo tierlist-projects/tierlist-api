@@ -10,9 +10,11 @@ tierlist:
       access-token-expiration-seconds: 900 # 900 15?
       refresh-token-expiration-seconds: 1209600 # 1209600 14?
       token-type: Bearer
-
 spring:
   servlet:
     multipart:
       max-file-size: 1MB
       max-request-size: 10MB
+  sql:
+    init:
+      mode: never
