@@ -3,8 +3,10 @@ package com.tierlist.tierlist.category.adapter.in.web;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUseCase;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +31,10 @@ public class CategoryReadController {
   }
 
   @GetMapping("/favorite")
-  public ResponseEntity<List<CategoryResponse>> getFavoriteCategories(
+  public ResponseEntity<PageResponse<CategoryResponse>> getFavoriteCategories(
       @AuthenticationPrincipal String email,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize) {
-    return ResponseEntity.ok(categoryReadUseCase.getFavoriteCategories(email, pageCount, pageSize));
+      Pageable pageable) {
+    return ResponseEntity.ok(categoryReadUseCase.getFavoriteCategories(email, pageable));
   }
 
 }
