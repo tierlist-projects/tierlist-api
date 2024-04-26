@@ -52,7 +52,11 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.POST, "/image").authenticated()
         .requestMatchers(HttpMethod.POST, "/category").authenticated()
         .requestMatchers(HttpMethod.PATCH, "/category/*/favorite/toggle").authenticated()
+        .requestMatchers(HttpMethod.GET, "/category/favorite").authenticated()
         .anyRequest().permitAll());
+
+    http.exceptionHandling(exceptionHandling ->
+        exceptionHandling.authenticationEntryPoint(authenticationEntryPoint()));
 
     http.addFilterAt(jsonLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
     http.addFilterBefore(tokenReissueFilter(), JsonLoginProcessingFilter.class);
