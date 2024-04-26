@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.category.adapter.out.infrastructure;
+package com.tierlist.tierlist.category.adapter.out.persistence;
 
 import com.tierlist.tierlist.category.application.domain.model.Category;
 import jakarta.persistence.Entity;
