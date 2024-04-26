@@ -17,6 +17,7 @@ import com.tierlist.tierlist.category.adapter.in.web.CategoryReadController;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUseCase;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -103,29 +104,36 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
   @Test
   void read_favorite_category_200() throws Exception {
 
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 2;
 
-    given(categoryReadUseCase.getFavoriteCategories(any(), anyInt(), anyInt())).willReturn(
-        List.of(
-            CategoryResponse.builder()
-                .id(1L)
-                .name("카테고리1")
-                .isFavorite(true)
-                .build(),
-            CategoryResponse.builder()
-                .id(2L)
-                .name("카테고리2")
-                .isFavorite(true)
-                .build()
-        )
+    given(categoryReadUseCase.getFavoriteCategories(any(), any())).willReturn(
+        PageResponse.<CategoryResponse>builder()
+            .size(2)
+            .pageNumber(0)
+            .pageSize(2)
+            .totalElements(3)
+            .totalPages(2)
+            .content(
+                List.of(
+                    CategoryResponse.builder()
+                        .id(1L)
+                        .name("카테고리1")
+                        .build(),
+                    CategoryResponse.builder()
+                        .id(2L)
+                        .name("카테고리2")
+                        .build()
+                )
+            )
+            .build()
     );
 
     mvc.perform(get("/category/favorite")
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
         )
         .andExpect(status().isOk())
         .andDo(restDocs.document(
@@ -134,22 +142,31 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                     .description("JWT Access Token")
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작"))
+                parameterWithName("page")
+                    .description("페이지 넘버(default : 0)")
+                    .attributes(constraints("0부터 시작"))
+                    .optional(),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수(default : 20)")
+                    .optional()
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("size")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("카테고리 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("카테고리 식별번호"),
-                fieldWithPath("[].name")
-                    .description("카테고리 이름"),
-                fieldWithPath("[].isFavorite")
-                    .description("즐겨찾기 여부. 로그인 안했을 시 모두 false")
+                fieldWithPath("content.[].name")
+                    .description("카테고리 이름")
             )
         ));
   }
