@@ -327,6 +327,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("토픽이 해당되는 카테고리 식별번호"),
                 fieldWithPath("[].topic.category.name")
                     .description("토픽이 해당되는 카테고리 이름"),
+                fieldWithPath("[].topic.category.favoriteCount")
+                    .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
                 fieldWithPath("[].likesCount")
                     .description("티어리스트 좋아요 갯수"),
                 fieldWithPath("[].commentsCount")
@@ -444,6 +446,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("토픽이 해당되는 카테고리"),
                 fieldWithPath("[].topic.category.id")
                     .description("토픽이 해당되는 카테고리 식별번호"),
+                fieldWithPath("[].topic.category.favoriteCount")
+                    .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
                 fieldWithPath("[].topic.category.name")
                     .description("토픽이 해당되는 카테고리 이름"),
                 fieldWithPath("[].likesCount")

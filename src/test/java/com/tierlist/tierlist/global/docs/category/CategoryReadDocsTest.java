@@ -96,7 +96,9 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                 fieldWithPath("[].name")
                     .description("카테고리 이름"),
                 fieldWithPath("[].isFavorite")
-                    .description("즐겨찾기 여부. 로그인 안했을 시 모두 false")
+                    .description("즐겨찾기 여부. 로그인 안했을 시 모두 false"),
+                fieldWithPath("[].favoriteCount")
+                    .description("카테고리 즐겨찾기 갯수")
             )
         ));
   }
@@ -166,7 +168,9 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                 fieldWithPath("content.[].id")
                     .description("카테고리 식별번호"),
                 fieldWithPath("content.[].name")
-                    .description("카테고리 이름")
+                    .description("카테고리 이름"),
+                fieldWithPath("content.[].favoriteCount")
+                    .description("카테고리 즐겨찾기 갯수")
             )
         ));
   }
