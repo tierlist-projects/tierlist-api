@@ -19,11 +19,13 @@ public class CategoryResponse {
   private Long id;
   private String name;
   private Boolean isFavorite;
+  private int favoriteCount;
 
   public static CategoryResponse from(Category category) {
     return CategoryResponse.builder()
         .id(category.getId())
         .name(category.getName())
+        .favoriteCount(category.getFavoriteCount())
         .build();
   }
 

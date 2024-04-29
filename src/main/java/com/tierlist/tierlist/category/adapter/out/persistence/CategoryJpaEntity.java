@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Builder
 @AllArgsConstructor
@@ -26,10 +27,14 @@ public class CategoryJpaEntity {
 
   private String name;
 
+  @ColumnDefault("0")
+  private int favoriteCount;
+
   public static CategoryJpaEntity from(Category category) {
     return CategoryJpaEntity.builder()
         .id(category.getId())
         .name(category.getName())
+        .favoriteCount(category.getFavoriteCount())
         .build();
   }
 
