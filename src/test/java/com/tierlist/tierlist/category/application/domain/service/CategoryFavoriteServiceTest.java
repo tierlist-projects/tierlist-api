@@ -100,7 +100,7 @@ class CategoryFavoriteServiceTest {
 
     assertThat(categoryFavoriteOptional).isEmpty();
     assertThat(categoryOptional).isPresent();
-    assertThat(categoryOptional.get().getFavoriteCount()).isEqualTo(0);
+    assertThat(categoryOptional.get().getFavoriteCount()).isZero();
   }
 
   @Test
