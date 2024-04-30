@@ -2,7 +2,6 @@ package com.tierlist.tierlist.global.docs.topic;
 
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -19,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.topic.adapter.in.web.TopicReadController;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicReadUseCase;
@@ -43,42 +43,40 @@ class TopicReadDocsTest extends RestDocsTestSupport {
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getTopics(any(), anyInt(), anyInt(), any(), any())).willReturn(
-        List.of(
-            TopicResponse.builder().
-                id(1L)
-                .name("토픽1")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(2L)
-                .name("토픽2")
-                .isFavorite(false)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(3L)
-                .name("토픽3")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(3L)
-                        .name("카테고리3")
+    given(topicReadUseCase.getTopics(any(), any(), any(), any(), any())).willReturn(
+        PageResponse.<TopicResponse>builder()
+            .numberOfElements(2)
+            .pageNumber(0)
+            .pageSize(2)
+            .totalElements(3)
+            .totalPages(2)
+            .content(
+                List.of(
+                    TopicResponse.builder().
+                        id(1L)
+                        .name("토픽1")
                         .isFavorite(true)
-                        .build())
-                .build()
-        )
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build(),
+                    TopicResponse.builder().
+                        id(2L)
+                        .name("토픽2")
+                        .isFavorite(false)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build()
+                )
+            )
+            .build()
     );
 
     mvc.perform(get("/topic")
@@ -142,24 +140,39 @@ class TopicReadDocsTest extends RestDocsTestSupport {
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getTopics(any(), anyInt(), anyInt(), any(), any())).willReturn(
-        List.of(
-            TopicResponse.builder().
-                id(1L)
-                .name("토픽1")
-                .isFavorite(true)
-                .build(),
-            TopicResponse.builder().
-                id(2L)
-                .name("토픽2")
-                .isFavorite(false)
-                .build(),
-            TopicResponse.builder().
-                id(3L)
-                .name("토픽3")
-                .isFavorite(true)
-                .build()
-        )
+    given(topicReadUseCase.getTopics(any(), any(), any(), any(), any())).willReturn(
+        PageResponse.<TopicResponse>builder()
+            .numberOfElements(2)
+            .pageNumber(0)
+            .pageSize(2)
+            .totalElements(3)
+            .totalPages(2)
+            .content(
+                List.of(
+                    TopicResponse.builder().
+                        id(1L)
+                        .name("토픽1")
+                        .isFavorite(true)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build(),
+                    TopicResponse.builder().
+                        id(2L)
+                        .name("토픽2")
+                        .isFavorite(false)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build()
+                )
+            ).build()
     );
 
     mvc.perform(RestDocumentationRequestBuilders.get("/category/{categoryId}/topic", categoryId)
@@ -219,7 +232,7 @@ class TopicReadDocsTest extends RestDocsTestSupport {
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getTopics(any(), anyInt(), anyInt(), any(), any()))
+    given(topicReadUseCase.getTopics(any(), any(), any(), any(), any()))
         .willThrow(new CategoryNotFoundException());
 
     mvc.perform(RestDocumentationRequestBuilders.get("/category/{categoryId}/topic", categoryId)
@@ -275,42 +288,39 @@ class TopicReadDocsTest extends RestDocsTestSupport {
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getFavoriteTopics(any(), anyInt(), anyInt())).willReturn(
-        List.of(
-            TopicResponse.builder().
-                id(1L)
-                .name("토픽1")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(2L)
-                .name("토픽2")
-                .isFavorite(false)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(3L)
-                .name("토픽3")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(3L)
-                        .name("카테고리3")
+    given(topicReadUseCase.getFavoriteTopics(any(), any())).willReturn(
+        PageResponse.<TopicResponse>builder()
+            .numberOfElements(2)
+            .pageNumber(0)
+            .pageSize(2)
+            .totalElements(3)
+            .totalPages(2)
+            .content(
+                List.of(
+                    TopicResponse.builder().
+                        id(1L)
+                        .name("토픽1")
                         .isFavorite(true)
-                        .build())
-                .build()
-        )
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build(),
+                    TopicResponse.builder().
+                        id(2L)
+                        .name("토픽2")
+                        .isFavorite(false)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build()
+                )
+            ).build()
     );
 
     mvc.perform(get("/topic/favorite")

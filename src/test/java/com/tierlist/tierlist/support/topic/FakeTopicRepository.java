@@ -31,13 +31,14 @@ public class FakeTopicRepository implements TopicRepository {
   }
 
   @Override
-  public boolean existsByName(String name) {
-    return data.stream().anyMatch(topic -> topic.getName().equals(name));
+  public Optional<Topic> findById(Long topicId) {
+    return data.stream().filter(topic -> topic.getId().equals(topicId)).findFirst();
   }
 
   @Override
-  public Optional<Topic> findById(Long topicId) {
-    return data.stream().filter(topic -> topic.getId().equals(topicId)).findFirst();
+  public boolean existsByNameInCategory(Long categoryId, String name) {
+    return data.stream().anyMatch(
+        topic -> topic.getName().equals(name) && topic.getCategoryId().equals(categoryId));
   }
 
 
