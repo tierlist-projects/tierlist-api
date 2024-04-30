@@ -21,9 +21,11 @@ public class MemberInformationService implements MemberInformationUseCase {
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
 
+  @Transactional(readOnly = true)
   @Override
   public MemberResponse getMemberInformation(String email) {
-    return null;
+    Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
+    return MemberResponse.fromMember(member);
   }
 
   @Transactional
