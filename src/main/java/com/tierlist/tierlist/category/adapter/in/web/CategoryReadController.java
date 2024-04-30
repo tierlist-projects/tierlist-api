@@ -4,7 +4,6 @@ import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUseCase;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
 import com.tierlist.tierlist.global.common.response.PageResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +21,12 @@ public class CategoryReadController {
   private final CategoryReadUseCase categoryReadUseCase;
 
   @GetMapping
-  public ResponseEntity<List<CategoryResponse>> getCategories(
-      @RequestParam int pageCount,
-      @RequestParam int pageSize,
-      @RequestParam String query,
-      @RequestParam CategoryFilter filter) {
-    return ResponseEntity.ok(categoryReadUseCase.getCategories(pageCount, pageSize, query, filter));
+  public ResponseEntity<PageResponse<CategoryResponse>> getCategories(
+      @AuthenticationPrincipal String email,
+      Pageable pageable,
+      @RequestParam(required = false) String query,
+      @RequestParam(defaultValue = "NONE") CategoryFilter filter) {
+    return ResponseEntity.ok(categoryReadUseCase.getCategories(email, pageable, query, filter));
   }
 
   @GetMapping("/favorite")

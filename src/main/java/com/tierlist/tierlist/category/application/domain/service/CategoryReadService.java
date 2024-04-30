@@ -6,7 +6,6 @@ import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUs
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
 import com.tierlist.tierlist.category.application.port.out.persistence.CategoryLoadRepository;
 import com.tierlist.tierlist.global.common.response.PageResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +18,10 @@ public class CategoryReadService implements CategoryReadUseCase {
   private final CategoryLoadRepository categoryLoadRepository;
 
   @Override
-  public List<CategoryResponse> getCategories(int pageCount, int pageSize, String query,
+  public PageResponse<CategoryResponse> getCategories(String email, Pageable pageable, String query,
       CategoryFilter filter) {
-    return List.of();
+    return PageResponse.fromPage(
+        categoryLoadRepository.loadCategories(email, pageable, query, filter));
   }
 
   @Override

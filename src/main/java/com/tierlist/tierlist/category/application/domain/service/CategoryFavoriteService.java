@@ -40,10 +40,13 @@ public class CategoryFavoriteService implements CategoryFavoriteUseCase {
           .memberId(member.getId())
           .categoryId(category.getId())
           .build());
+      category.addFavorite();
+      categoryRepository.save(category);
       return;
     }
 
     categoryFavoriteRepository.delete(categoryFavorite.get());
-
+    category.removeFavorite();
+    categoryRepository.save(category);
   }
 }

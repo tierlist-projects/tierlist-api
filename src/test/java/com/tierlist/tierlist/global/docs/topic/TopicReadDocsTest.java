@@ -122,6 +122,8 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .description("토픽 즐겨찾기 여부. 로그인 안했을 시 모두 false"),
                 fieldWithPath("[].category.id")
                     .description("토픽이 해당된 카테고리 식별 번호"),
+                fieldWithPath("[].category.favoriteCount")
+                    .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
                 fieldWithPath("[].category.name")
                     .description("토픽이 해당된 카테고리 이름"),
                 fieldWithPath("[].category.isFavorite")
@@ -344,6 +346,8 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .description("토픽이 해당된 카테고리 식별 번호"),
                 fieldWithPath("[].category.name")
                     .description("토픽이 해당된 카테고리 이름"),
+                fieldWithPath("[].category.favoriteCount")
+                    .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
                 fieldWithPath("[].category.isFavorite")
                     .description("토픽이 해당된 카테고리 즐겨찾기 여부")
             )

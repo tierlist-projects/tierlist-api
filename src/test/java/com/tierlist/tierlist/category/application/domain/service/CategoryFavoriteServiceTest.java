@@ -58,13 +58,17 @@ class CategoryFavoriteServiceTest {
 
     // when
     categoryFavoriteService.toggleFavorite(member.getEmail(), category.getId());
+
     // then
     Optional<CategoryFavorite> categoryFavoriteOptional = categoryFavoriteRepository.findByMemberIdAndCategoryId(
         member.getId(), category.getId());
+    Optional<Category> categoryOptional = categoryRepository.findById(category.getId());
 
     assertThat(categoryFavoriteOptional).isPresent();
     assertThat(categoryFavoriteOptional.get().getMemberId()).isEqualTo(member.getId());
     assertThat(categoryFavoriteOptional.get().getCategoryId()).isEqualTo(category.getId());
+    assertThat(categoryOptional).isPresent();
+    assertThat(categoryOptional.get().getFavoriteCount()).isEqualTo(1);
   }
 
   @Test
@@ -77,6 +81,7 @@ class CategoryFavoriteServiceTest {
         .build());
 
     Category category = categoryRepository.save(Category.builder()
+        .favoriteCount(1)
         .name("카테고리")
         .build());
 
@@ -91,8 +96,11 @@ class CategoryFavoriteServiceTest {
     // then
     Optional<CategoryFavorite> categoryFavoriteOptional = categoryFavoriteRepository.findByMemberIdAndCategoryId(
         member.getId(), category.getId());
+    Optional<Category> categoryOptional = categoryRepository.findById(category.getId());
 
     assertThat(categoryFavoriteOptional).isEmpty();
+    assertThat(categoryOptional).isPresent();
+    assertThat(categoryOptional.get().getFavoriteCount()).isZero();
   }
 
   @Test
