@@ -8,7 +8,7 @@ public interface TopicRepository {
 
   Topic save(Topic topic);
 
-  boolean existsByName(String name);
-
   Optional<Topic> findById(Long topicId);
+
+  boolean existsByNameInCategory(Long categoryId, String name);
 }

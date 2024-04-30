@@ -23,7 +23,7 @@ public class TopicCreateService implements TopicCreateUseCase {
       throw new CategoryNotFoundException();
     }
 
-    if (topicRepository.existsByName(command.getName())) {
+    if (topicRepository.existsByNameInCategory(command.getCategoryId(), command.getName())) {
       throw new TopicDuplicationException();
     }
 

@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TopicJpaRepository extends JpaRepository<TopicJpaEntity, Long> {
 
-  boolean existsByName(String name);
+  boolean existsByNameAndCategoryId(String name, Long categoryId);
 }

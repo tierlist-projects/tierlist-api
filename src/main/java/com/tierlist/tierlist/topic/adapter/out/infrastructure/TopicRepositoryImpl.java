@@ -19,8 +19,8 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   @Override
-  public boolean existsByName(String name) {
-    return topicJpaRepository.existsByName(name);
+  public boolean existsByNameInCategory(Long categoryId, String name) {
+    return topicJpaRepository.existsByNameAndCategoryId(name, categoryId);
   }
 
   @Override
