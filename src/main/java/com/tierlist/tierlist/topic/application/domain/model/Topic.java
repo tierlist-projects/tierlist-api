@@ -16,4 +16,12 @@ public class Topic {
   private String name;
 
   private int favoriteCount;
+
+  public void addFavorite() {
+    favoriteCount++;
+  }
+
+  public void removeFavorite() {
+    favoriteCount--;
+  }
 }
