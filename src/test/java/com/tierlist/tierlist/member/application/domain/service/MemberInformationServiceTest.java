@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.domain.model.Password;
+import com.tierlist.tierlist.member.application.domain.model.command.ChangeMemberPasswordCommand;
 import com.tierlist.tierlist.member.application.domain.model.command.ChangeMemberProfileImageCommand;
 import com.tierlist.tierlist.member.application.port.out.persistence.MemberRepository;
 import com.tierlist.tierlist.support.member.FakeMemberRepository;
@@ -21,9 +22,9 @@ class MemberInformationServiceTest {
 
   @BeforeEach
   void init() {
-    memberRepository = new FakeMemberRepository();
-    memberInformationService = new MemberInformationService(memberRepository);
     passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    memberRepository = new FakeMemberRepository();
+    memberInformationService = new MemberInformationService(memberRepository, passwordEncoder);
   }
 
   @Test
@@ -47,5 +48,28 @@ class MemberInformationServiceTest {
     assertThat(memberOptional).isPresent();
     assertThat(memberOptional.get().getEmail()).isEqualTo("test@test.com");
     assertThat(memberOptional.get().getProfileImage()).isEqualTo("new-profile-image");
+  }
+
+  @Test
+  void 비밀번호를_변경할_수_있다() {
+    // given
+    memberRepository.save(Member.builder()
+        .email("test@test.com")
+        .password(Password.fromRawPassword("originalPassword", passwordEncoder))
+        .nickname("test")
+        .build());
+
+    // when
+    memberInformationService.changeMemberPassword("test@test.com",
+        ChangeMemberPasswordCommand.builder()
+            .password("originalPassword")
+            .newPassword("newPassword")
+            .build());
+
+    // then
+    Optional<Member> memberOptional = memberRepository.findByEmail("test@test.com");
+
+    assertThat(memberOptional).isPresent();
+    assertThat(memberOptional.get().getPassword().matches("newPassword", passwordEncoder)).isTrue();
   }
 }
