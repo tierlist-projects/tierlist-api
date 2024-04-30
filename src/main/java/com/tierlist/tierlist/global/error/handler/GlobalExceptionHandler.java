@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -86,6 +87,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MissingServletRequestPartException.class)
   public ResponseEntity<ErrorResponse> handleMissingServletRequestPartException(
       MissingServletRequestPartException e) {
+    final ErrorCode errorCode = ErrorCode.INVALID_REQUEST_VALUE;
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
+  }
+
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
+      MissingServletRequestParameterException e) {
     final ErrorCode errorCode = ErrorCode.INVALID_REQUEST_VALUE;
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.from(errorCode));
   }
