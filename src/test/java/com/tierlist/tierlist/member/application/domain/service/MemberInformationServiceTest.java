@@ -3,6 +3,7 @@ package com.tierlist.tierlist.member.application.domain.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.member.application.domain.exception.NicknameDuplicationException;
 import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.domain.model.Password;
@@ -121,5 +122,26 @@ class MemberInformationServiceTest {
               .nickname("test1")
               .build());
     }).isInstanceOf(NicknameDuplicationException.class);
+  }
+
+  @Test
+  void 내_정보를_조회할_수_있다() {
+    // given
+    memberRepository.save(Member.builder()
+        .email("test@test.com")
+        .password(Password.fromRawPassword("originalPassword", passwordEncoder))
+        .profileImage("new-profile-image")
+        .nickname("test")
+        .build());
+
+    // when
+    MemberResponse member = memberInformationService.getMemberInformation(
+        "test@test.com");
+
+    // then
+    assertThat(member.getId()).isEqualTo(1L);
+    assertThat(member.getNickname()).isEqualTo("test");
+    assertThat(member.getEmail()).isEqualTo("test@test.com");
+    assertThat(member.getProfileImage()).isEqualTo("new-profile-image");
   }
 }
