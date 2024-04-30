@@ -17,4 +17,9 @@ public class Member {
 
   private String email;
 
+  private String profileImage;
+
+  public void changeProfileImage(String profileImageName) {
+    profileImage = profileImageName;
+  }
 }

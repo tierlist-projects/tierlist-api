@@ -1,16 +1,22 @@
 package com.tierlist.tierlist.member.application.domain.service;
 
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
+import com.tierlist.tierlist.member.application.domain.exception.MemberNotFoundException;
+import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.domain.model.command.ChangeMemberNicknameCommand;
 import com.tierlist.tierlist.member.application.domain.model.command.ChangeMemberPasswordCommand;
 import com.tierlist.tierlist.member.application.domain.model.command.ChangeMemberProfileImageCommand;
 import com.tierlist.tierlist.member.application.port.in.service.MemberInformationUseCase;
+import com.tierlist.tierlist.member.application.port.out.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class MemberInformationService implements MemberInformationUseCase {
+
+  private final MemberRepository memberRepository;
 
   @Override
   public MemberResponse getMemberInformation(String email) {
@@ -22,9 +28,12 @@ public class MemberInformationService implements MemberInformationUseCase {
 
   }
 
+  @Transactional
   @Override
   public void changeMemberProfileImage(String email, ChangeMemberProfileImageCommand command) {
-
+    Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
+    member.changeProfileImage(command.getProfileImageName());
+    memberRepository.save(member);
   }
 
   @Override
