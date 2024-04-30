@@ -1,10 +1,11 @@
 package com.tierlist.tierlist.topic.adapter.in.web;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.topic.application.domain.model.TopicFilter;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicReadUseCase;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,31 +20,30 @@ public class TopicReadController {
   private final TopicReadUseCase topicReadUseCase;
 
   @GetMapping("/topic")
-  public ResponseEntity<List<TopicResponse>> getTopics(
-      @RequestParam int pageCount,
-      @RequestParam int pageSize,
+  public ResponseEntity<PageResponse<TopicResponse>> getTopics(
+      @AuthenticationPrincipal String email,
+      Pageable pageable,
       @RequestParam String query,
       @RequestParam TopicFilter filter) {
-    return ResponseEntity.ok(topicReadUseCase.getTopics(null, pageCount, pageSize, query, filter));
+    return ResponseEntity.ok(topicReadUseCase.getTopics(email, null, pageable, query, filter));
   }
 
   @GetMapping("/category/{categoryId}/topic")
-  public ResponseEntity<List<TopicResponse>> getTopicsOfCategories(
+  public ResponseEntity<PageResponse<TopicResponse>> getTopicsOfCategories(
       @PathVariable Long categoryId,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize,
+      @AuthenticationPrincipal String email,
+      Pageable pageable,
       @RequestParam String query,
       @RequestParam TopicFilter filter) {
     return ResponseEntity.ok(
-        topicReadUseCase.getTopics(categoryId, pageCount, pageSize, query, filter));
+        topicReadUseCase.getTopics(email, categoryId, pageable, query, filter));
   }
 
   @GetMapping("topic/favorite")
-  public ResponseEntity<List<TopicResponse>> getFavoriteCategories(
+  public ResponseEntity<PageResponse<TopicResponse>> getFavoriteCategories(
       @AuthenticationPrincipal String email,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize) {
-    return ResponseEntity.ok(topicReadUseCase.getFavoriteTopics(email, pageCount, pageSize));
+      Pageable pageable) {
+    return ResponseEntity.ok(topicReadUseCase.getFavoriteTopics(email, pageable));
   }
 
 }
