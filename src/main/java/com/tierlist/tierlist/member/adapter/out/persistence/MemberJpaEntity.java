@@ -35,6 +35,8 @@ public class MemberJpaEntity {
   @Column(name = "password", nullable = false)
   private String encodedPassword;
 
+  private String profileImage;
+
 
   public static MemberJpaEntity from(Member member) {
     Password password = member.getPassword();
@@ -43,6 +45,7 @@ public class MemberJpaEntity {
         .nickname(member.getNickname())
         .encodedPassword(password.getEncodedPassword())
         .email(member.getEmail())
+        .profileImage(member.getProfileImage())
         .build();
   }
 
@@ -52,6 +55,7 @@ public class MemberJpaEntity {
         .nickname(this.getNickname())
         .password(Password.fromEncodedPassword(this.getEncodedPassword()))
         .email(this.getEmail())
+        .profileImage(this.getProfileImage())
         .build();
   }
 }
