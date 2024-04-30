@@ -184,7 +184,7 @@ operation::member-information-docs-test/change_member_password_400[snippets='htt
 
 === 카테고리 생성
 
-operation::category-create-docs-test/create_category_201[snippets='http-request,request-headers,request-fields,http-response']
+operation::category-create-docs-test/create_category_201[snippets='http-request,request-headers,request-fields,http-response,response-headers']
 
 ==== 에러 응답
 
