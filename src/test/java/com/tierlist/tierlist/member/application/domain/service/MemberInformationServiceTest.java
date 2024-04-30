@@ -114,13 +114,14 @@ class MemberInformationServiceTest {
         .nickname("test2")
         .build());
 
+    ChangeMemberNicknameCommand command = ChangeMemberNicknameCommand.builder()
+        .nickname("test1")
+        .build();
+
     // when
     // then
     assertThatThrownBy(() -> {
-      memberInformationService.changeMemberNickname("test2@test.com",
-          ChangeMemberNicknameCommand.builder()
-              .nickname("test1")
-              .build());
+      memberInformationService.changeMemberNickname("test2@test.com", command);
     }).isInstanceOf(NicknameDuplicationException.class);
   }
 
