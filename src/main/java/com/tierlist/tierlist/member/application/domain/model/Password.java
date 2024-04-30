@@ -19,4 +19,8 @@ public class Password {
   public static Password fromEncodedPassword(String encodedPassword) {
     return new Password(encodedPassword);
   }
+
+  public boolean matches(String password, PasswordEncoder passwordEncoder) {
+    return passwordEncoder.matches(password, encodedPassword);
+  }
 }

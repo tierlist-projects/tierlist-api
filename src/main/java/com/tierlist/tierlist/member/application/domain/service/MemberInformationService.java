@@ -9,6 +9,7 @@ import com.tierlist.tierlist.member.application.domain.model.command.ChangeMembe
 import com.tierlist.tierlist.member.application.port.in.service.MemberInformationUseCase;
 import com.tierlist.tierlist.member.application.port.out.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberInformationService implements MemberInformationUseCase {
 
   private final MemberRepository memberRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public MemberResponse getMemberInformation(String email) {
@@ -38,6 +40,7 @@ public class MemberInformationService implements MemberInformationUseCase {
 
   @Override
   public void changeMemberPassword(String email, ChangeMemberPasswordCommand command) {
-
+    Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
+    member.changePassword(command.getPassword(), command.getNewPassword(), passwordEncoder);
   }
 }
