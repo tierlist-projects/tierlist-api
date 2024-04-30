@@ -2,6 +2,7 @@ package com.tierlist.tierlist.member.application.domain.service;
 
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.member.application.domain.exception.MemberNotFoundException;
+import com.tierlist.tierlist.member.application.domain.exception.NicknameDuplicationException;
 import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.domain.model.command.ChangeMemberNicknameCommand;
 import com.tierlist.tierlist.member.application.domain.model.command.ChangeMemberPasswordCommand;
@@ -25,8 +26,17 @@ public class MemberInformationService implements MemberInformationUseCase {
     return null;
   }
 
+  @Transactional
   @Override
   public void changeMemberNickname(String email, ChangeMemberNicknameCommand command) {
+    if (memberRepository.existsByNickname(command.getNickname())) {
+      throw new NicknameDuplicationException();
+    }
+
+    Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
+
+    member.changeNickname(command.getNickname());
+    memberRepository.save(member);
 
   }
 
@@ -38,6 +48,7 @@ public class MemberInformationService implements MemberInformationUseCase {
     memberRepository.save(member);
   }
 
+  @Transactional
   @Override
   public void changeMemberPassword(String email, ChangeMemberPasswordCommand command) {
     Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);

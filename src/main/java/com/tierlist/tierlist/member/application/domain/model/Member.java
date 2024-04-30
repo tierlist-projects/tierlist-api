@@ -32,4 +32,7 @@ public class Member {
     this.password = Password.fromRawPassword(newPassword, passwordEncoder);
   }
 
+  public void changeNickname(String newNickname) {
+    this.nickname = newNickname;
+  }
 }
