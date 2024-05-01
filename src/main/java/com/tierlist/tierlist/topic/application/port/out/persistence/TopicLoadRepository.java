@@ -10,6 +10,6 @@ public interface TopicLoadRepository {
 
   Page<TopicResponse> loadFavoriteTopics(String email, Pageable pageable);
 
-  Page<TopicResponse> loadTopics(String email, Pageable pageable, String query,
+  Page<TopicResponse> loadTopics(String email, Long categoryId, Pageable pageable, String query,
       TopicFilter filter);
 }

@@ -21,7 +21,7 @@ public class TopicReadService implements TopicReadUseCase {
       String query,
       TopicFilter filter) {
     return PageResponse.fromPage(
-        topicLoadRepository.loadTopics(email, pageable, query, filter));
+        topicLoadRepository.loadTopics(email, categoryId, pageable, query, filter));
   }
 
   @Override

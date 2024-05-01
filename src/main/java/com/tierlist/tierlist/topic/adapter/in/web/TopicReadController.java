@@ -23,8 +23,8 @@ public class TopicReadController {
   public ResponseEntity<PageResponse<TopicResponse>> getTopics(
       @AuthenticationPrincipal String email,
       Pageable pageable,
-      @RequestParam String query,
-      @RequestParam TopicFilter filter) {
+      @RequestParam(required = false) String query,
+      @RequestParam(defaultValue = "NONE") TopicFilter filter) {
     return ResponseEntity.ok(topicReadUseCase.getTopics(email, null, pageable, query, filter));
   }
 
@@ -33,8 +33,8 @@ public class TopicReadController {
       @PathVariable Long categoryId,
       @AuthenticationPrincipal String email,
       Pageable pageable,
-      @RequestParam String query,
-      @RequestParam TopicFilter filter) {
+      @RequestParam(required = false) String query,
+      @RequestParam(defaultValue = "NONE") TopicFilter filter) {
     return ResponseEntity.ok(
         topicReadUseCase.getTopics(email, categoryId, pageable, query, filter));
   }
