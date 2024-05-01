@@ -321,6 +321,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트가 해당되는 토픽 식별번호"),
                 fieldWithPath("[].topic.name")
                     .description("티어리스트가 해당되는 토픽 이름"),
+                fieldWithPath("[].topic.favoriteCount")
+                    .description("티어리스트가 해당되는 토픽 즐겨찾기 갯수"),
                 fieldWithPath("[].topic.category")
                     .description("토픽이 해당되는 카테고리"),
                 fieldWithPath("[].topic.category.id")
@@ -444,6 +446,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트가 해당되는 토픽 이름"),
                 fieldWithPath("[].topic.category")
                     .description("토픽이 해당되는 카테고리"),
+                fieldWithPath("[].topic.favoriteCount")
+                    .description("티어리스트가 해당되는 토픽 즐겨찾기 갯수"),
                 fieldWithPath("[].topic.category.id")
                     .description("토픽이 해당되는 카테고리 식별번호"),
                 fieldWithPath("[].topic.category.favoriteCount")
@@ -556,6 +560,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트 생성 시간"),
                 fieldWithPath("[].topic")
                     .description("티어리스트가 해당되는 토픽"),
+                fieldWithPath("[].topic.favoriteCount")
+                    .description("티어리스트가 해당되는 토픽 즐겨찾기 갯수"),
                 fieldWithPath("[].topic.id")
                     .description("티어리스트가 해당되는 토픽 식별번호"),
                 fieldWithPath("[].topic.name")
