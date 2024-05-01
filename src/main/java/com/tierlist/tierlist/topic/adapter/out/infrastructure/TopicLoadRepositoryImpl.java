@@ -111,6 +111,8 @@ public class TopicLoadRepositoryImpl implements TopicLoadRepository {
             topicJpaEntity.count()
         )
         .from(topicJpaEntity)
+        .join(categoryJpaEntity)
+        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
         .where(hasCategoryId(categoryId), applyQuery(query))
         .fetchOne();
 
