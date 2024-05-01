@@ -1,14 +1,16 @@
 package com.tierlist.tierlist.topic.application.port.in.service;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.topic.application.domain.model.TopicFilter;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface TopicReadUseCase {
 
-  List<TopicResponse> getTopics(Long categoryId, int pageCount, int pageSize, String query,
+  PageResponse<TopicResponse> getTopics(String email, Long categoryId, Pageable pageable,
+      String query,
       TopicFilter filter);
 
-  List<TopicResponse> getFavoriteTopics(String email, int pageCount, int pageSize);
+  PageResponse<TopicResponse> getFavoriteTopics(String email, Pageable pageable);
 
 }

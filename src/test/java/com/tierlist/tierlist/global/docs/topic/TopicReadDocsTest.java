@@ -2,7 +2,6 @@ package com.tierlist.tierlist.global.docs.topic;
 
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -19,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.topic.adapter.in.web.TopicReadController;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicReadUseCase;
@@ -38,54 +38,52 @@ class TopicReadDocsTest extends RestDocsTestSupport {
   @Test
   void read_topic_200() throws Exception {
 
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 10;
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getTopics(any(), anyInt(), anyInt(), any(), any())).willReturn(
-        List.of(
-            TopicResponse.builder().
-                id(1L)
-                .name("토픽1")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(2L)
-                .name("토픽2")
-                .isFavorite(false)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(3L)
-                .name("토픽3")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(3L)
-                        .name("카테고리3")
+    given(topicReadUseCase.getTopics(any(), any(), any(), any(), any())).willReturn(
+        PageResponse.<TopicResponse>builder()
+            .numberOfElements(2)
+            .pageNumber(0)
+            .pageSize(2)
+            .totalElements(3)
+            .totalPages(2)
+            .content(
+                List.of(
+                    TopicResponse.builder().
+                        id(1L)
+                        .name("토픽1")
                         .isFavorite(true)
-                        .build())
-                .build()
-        )
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build(),
+                    TopicResponse.builder().
+                        id(2L)
+                        .name("토픽2")
+                        .isFavorite(false)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build()
+                )
+            )
+            .build()
     );
 
     mvc.perform(get("/topic")
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
             .queryParam("query", query)
             .queryParam("filter", filter.name())
         )
@@ -97,12 +95,11 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .optional()
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작")),
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20"),
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
@@ -112,21 +109,33 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .attributes(constraints("HOT, NONE 중 하나여야 함."))
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("토픽 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("토픽 식별번호"),
-                fieldWithPath("[].name")
+                fieldWithPath("content.[].name")
                     .description("토픽 이름"),
-                fieldWithPath("[].isFavorite")
+                fieldWithPath("content.[].isFavorite")
                     .description("토픽 즐겨찾기 여부. 로그인 안했을 시 모두 false"),
-                fieldWithPath("[].category.id")
+                fieldWithPath("content.[].favoriteCount")
+                    .description("토픽 즐겨찾기 갯수"),
+                fieldWithPath("content.[].category.id")
                     .description("토픽이 해당된 카테고리 식별 번호"),
-                fieldWithPath("[].category.favoriteCount")
+                fieldWithPath("content.[].category.favoriteCount")
                     .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
-                fieldWithPath("[].category.name")
+                fieldWithPath("content.[].category.name")
                     .description("토픽이 해당된 카테고리 이름"),
-                fieldWithPath("[].category.isFavorite")
+                fieldWithPath("content.[].category.isFavorite")
                     .description("토픽이 해당된 카테고리 즐겨찾기 여부")
             )
         ));
@@ -137,36 +146,51 @@ class TopicReadDocsTest extends RestDocsTestSupport {
 
     long categoryId = 1L;
 
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 10;
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getTopics(any(), anyInt(), anyInt(), any(), any())).willReturn(
-        List.of(
-            TopicResponse.builder().
-                id(1L)
-                .name("토픽1")
-                .isFavorite(true)
-                .build(),
-            TopicResponse.builder().
-                id(2L)
-                .name("토픽2")
-                .isFavorite(false)
-                .build(),
-            TopicResponse.builder().
-                id(3L)
-                .name("토픽3")
-                .isFavorite(true)
-                .build()
-        )
+    given(topicReadUseCase.getTopics(any(), any(), any(), any(), any())).willReturn(
+        PageResponse.<TopicResponse>builder()
+            .numberOfElements(2)
+            .pageNumber(0)
+            .pageSize(2)
+            .totalElements(3)
+            .totalPages(2)
+            .content(
+                List.of(
+                    TopicResponse.builder().
+                        id(1L)
+                        .name("토픽1")
+                        .isFavorite(true)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build(),
+                    TopicResponse.builder().
+                        id(2L)
+                        .name("토픽2")
+                        .isFavorite(false)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build()
+                )
+            ).build()
     );
 
     mvc.perform(RestDocumentationRequestBuilders.get("/category/{categoryId}/topic", categoryId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
             .queryParam("query", query)
             .queryParam("filter", filter.name())
         )
@@ -182,12 +206,11 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .description("Category ID")
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작")),
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20"),
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
@@ -197,14 +220,34 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .attributes(constraints("HOT, NONE 중 하나여야 함."))
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("토픽 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("토픽 식별번호"),
-                fieldWithPath("[].name")
+                fieldWithPath("content.[].name")
                     .description("토픽 이름"),
-                fieldWithPath("[].isFavorite")
-                    .description("토픽 즐겨찾기 여부. 로그인 안했을 시 모두 false")
+                fieldWithPath("content.[].isFavorite")
+                    .description("토픽 즐겨찾기 여부. 로그인 안했을 시 모두 false"),
+                fieldWithPath("content.[].favoriteCount")
+                    .description("토픽 즐겨찾기 갯수"),
+                fieldWithPath("content.[].category.id")
+                    .description("토픽이 해당된 카테고리 식별 번호"),
+                fieldWithPath("content.[].category.favoriteCount")
+                    .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
+                fieldWithPath("content.[].category.name")
+                    .description("토픽이 해당된 카테고리 이름"),
+                fieldWithPath("content.[].category.isFavorite")
+                    .description("토픽이 해당된 카테고리 즐겨찾기 여부")
             )
         ));
   }
@@ -219,7 +262,7 @@ class TopicReadDocsTest extends RestDocsTestSupport {
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getTopics(any(), anyInt(), anyInt(), any(), any()))
+    given(topicReadUseCase.getTopics(any(), any(), any(), any(), any()))
         .willThrow(new CategoryNotFoundException());
 
     mvc.perform(RestDocumentationRequestBuilders.get("/category/{categoryId}/topic", categoryId)
@@ -270,54 +313,51 @@ class TopicReadDocsTest extends RestDocsTestSupport {
   @Test
   void read_favorite_topic_200() throws Exception {
 
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 10;
     String query = "qqq";
     CategoryFilter filter = CategoryFilter.HOT;
 
-    given(topicReadUseCase.getFavoriteTopics(any(), anyInt(), anyInt())).willReturn(
-        List.of(
-            TopicResponse.builder().
-                id(1L)
-                .name("토픽1")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(2L)
-                .name("토픽2")
-                .isFavorite(false)
-                .category(
-                    CategoryResponse.builder()
-                        .id(1L)
-                        .name("카테고리1")
-                        .isFavorite(false)
-                        .build())
-                .build(),
-            TopicResponse.builder().
-                id(3L)
-                .name("토픽3")
-                .isFavorite(true)
-                .category(
-                    CategoryResponse.builder()
-                        .id(3L)
-                        .name("카테고리3")
+    given(topicReadUseCase.getFavoriteTopics(any(), any())).willReturn(
+        PageResponse.<TopicResponse>builder()
+            .numberOfElements(2)
+            .pageNumber(0)
+            .pageSize(2)
+            .totalElements(3)
+            .totalPages(2)
+            .content(
+                List.of(
+                    TopicResponse.builder().
+                        id(1L)
+                        .name("토픽1")
                         .isFavorite(true)
-                        .build())
-                .build()
-        )
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build(),
+                    TopicResponse.builder().
+                        id(2L)
+                        .name("토픽2")
+                        .isFavorite(false)
+                        .category(
+                            CategoryResponse.builder()
+                                .id(1L)
+                                .name("카테고리1")
+                                .isFavorite(false)
+                                .build())
+                        .build()
+                )
+            ).build()
     );
 
     mvc.perform(get("/topic/favorite")
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
         )
         .andExpect(status().isOk())
         .andDo(restDocs.document(
@@ -326,29 +366,40 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     .description("JWT Access Token")
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작"))
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20")
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("토픽 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("토픽 식별번호"),
-                fieldWithPath("[].name")
+                fieldWithPath("content.[].name")
                     .description("토픽 이름"),
-                fieldWithPath("[].isFavorite")
+                fieldWithPath("content.[].isFavorite")
                     .description("토픽 즐겨찾기 여부. 로그인 안했을 시 모두 false"),
-                fieldWithPath("[].category.id")
+                fieldWithPath("content.[].favoriteCount")
+                    .description("토픽 즐겨찾기 갯수"),
+                fieldWithPath("content.[].category.id")
                     .description("토픽이 해당된 카테고리 식별 번호"),
-                fieldWithPath("[].category.name")
-                    .description("토픽이 해당된 카테고리 이름"),
-                fieldWithPath("[].category.favoriteCount")
+                fieldWithPath("content.[].category.favoriteCount")
                     .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
-                fieldWithPath("[].category.isFavorite")
+                fieldWithPath("content.[].category.name")
+                    .description("토픽이 해당된 카테고리 이름"),
+                fieldWithPath("content.[].category.isFavorite")
                     .description("토픽이 해당된 카테고리 즐겨찾기 여부")
             )
         ));

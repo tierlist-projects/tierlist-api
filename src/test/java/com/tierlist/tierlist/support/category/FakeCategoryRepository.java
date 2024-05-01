@@ -38,4 +38,9 @@ public class FakeCategoryRepository implements CategoryRepository {
   public Optional<Category> findById(Long id) {
     return data.stream().filter(category -> category.getId().equals(id)).findFirst();
   }
+
+  @Override
+  public boolean existsById(Long categoryId) {
+    return data.stream().anyMatch(category -> category.getId().equals(categoryId));
+  }
 }

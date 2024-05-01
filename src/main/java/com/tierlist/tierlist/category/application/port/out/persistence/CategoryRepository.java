@@ -11,4 +11,5 @@ public interface CategoryRepository {
 
   Optional<Category> findById(Long id);
 
+  boolean existsById(Long categoryId);
 }
