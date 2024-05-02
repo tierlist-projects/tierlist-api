@@ -36,12 +36,17 @@ class ItemReadDocsTest extends RestDocsTestSupport {
 
     long categoryId = 1L;
 
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 3;
     String query = "qqq";
 
     given(itemReadUseCase.getItems(any(), any(), any())).willReturn(
         PageResponse.<ItemResponse>builder()
+            .numberOfElements(3)
+            .pageNumber(0)
+            .pageSize(3)
+            .totalElements(4)
+            .totalPages(2)
             .content(
                 List.of(
                     ItemResponse.builder()
@@ -64,8 +69,8 @@ class ItemReadDocsTest extends RestDocsTestSupport {
     mvc.perform(get("/category/{categoryId}/item", categoryId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
             .queryParam("query", query)
         )
         .andExpect(status().isOk())
@@ -73,30 +78,37 @@ class ItemReadDocsTest extends RestDocsTestSupport {
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
-                    .optional()
             ),
             pathParameters(
                 parameterWithName("categoryId")
                     .description("Category ID")
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작")),
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20"),
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
-                    .attributes(constraints("2글자 이상"))
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("아이템 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("아이템 식별번호"),
-                fieldWithPath("[].name")
+                fieldWithPath("content.[].name")
                     .description("아이템 이름")
             )
         ));
