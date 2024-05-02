@@ -1,10 +1,11 @@
 package com.tierlist.tierlist.item.application.port.in.service;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.item.application.port.in.service.dto.response.ItemResponse;
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface ItemReadUseCase {
 
-  List<ItemResponse> getItems(Long categoryId, String query, int pageCount, int pageSize);
+  PageResponse<ItemResponse> getItems(Long categoryId, Pageable pageable, String query);
 
 }

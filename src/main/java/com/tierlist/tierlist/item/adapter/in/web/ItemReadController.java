@@ -1,9 +1,10 @@
 package com.tierlist.tierlist.item.adapter.in.web;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.item.application.port.in.service.ItemReadUseCase;
 import com.tierlist.tierlist.item.application.port.in.service.dto.response.ItemResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +18,11 @@ public class ItemReadController {
   private final ItemReadUseCase itemReadUseCase;
 
   @GetMapping("/category/{categoryId}/item")
-  public ResponseEntity<List<ItemResponse>> getItems(
+  public ResponseEntity<PageResponse<ItemResponse>> getItems(
       @PathVariable Long categoryId,
-      @RequestParam String query,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize) {
-    List<ItemResponse> response = itemReadUseCase.getItems(categoryId, query, pageCount, pageSize);
+      Pageable pageable,
+      @RequestParam(required = false) String query) {
+    PageResponse<ItemResponse> response = itemReadUseCase.getItems(categoryId, pageable, query);
     return ResponseEntity.ok(response);
   }
 }
