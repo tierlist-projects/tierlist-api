@@ -59,7 +59,7 @@ class ItemLoadRepositoryImplTest {
         null);
 
     // then
-    assertThat(items.getContent().size()).isEqualTo(2);
+    assertThat(items.getContent()).hasSize(2);
     assertThat(items.getContent().get(0).getId()).isEqualTo(item11.getId());
     assertThat(items.getContent().get(1).getId()).isEqualTo(item12.getId());
   }
@@ -105,7 +105,7 @@ class ItemLoadRepositoryImplTest {
         "3");
 
     // then
-    assertThat(items.getContent().size()).isEqualTo(2);
+    assertThat(items.getContent()).hasSize(2);
     assertThat(items.getContent().get(0).getId()).isEqualTo(item31.getId());
     assertThat(items.getContent().get(1).getId()).isEqualTo(item32.getId());
   }
