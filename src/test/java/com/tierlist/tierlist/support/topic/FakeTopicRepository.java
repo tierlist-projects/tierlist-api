@@ -41,5 +41,10 @@ public class FakeTopicRepository implements TopicRepository {
         topic -> topic.getName().equals(name) && topic.getCategoryId().equals(categoryId));
   }
 
+  @Override
+  public boolean existsById(Long topicId) {
+    return data.stream().anyMatch(topic -> topic.getId().equals(topicId));
+  }
+
 
 }

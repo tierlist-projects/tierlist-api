@@ -39,7 +39,7 @@ public class TopicLoadRepositoryImpl implements TopicLoadRepository {
   }
 
   private static BooleanExpression applyQuery(String query) {
-    return Strings.isBlank(query) ? null : categoryJpaEntity.name.contains(query);
+    return Strings.isBlank(query) ? null : topicJpaEntity.name.contains(query);
   }
 
   @Override
