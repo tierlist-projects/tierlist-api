@@ -33,12 +33,15 @@ public class TierlistJpaEntity {
 
   private Long topicId;
 
+  private boolean isPublished;
+
   public static TierlistJpaEntity from(Tierlist tierlist) {
     return TierlistJpaEntity.builder()
         .id(tierlist.getId())
         .title(tierlist.getTitle())
         .memberId(tierlist.getMemberId())
         .topicId(tierlist.getTopicId())
+        .isPublished(tierlist.isPublished())
         .build();
   }
 
@@ -48,6 +51,7 @@ public class TierlistJpaEntity {
         .title(title)
         .memberId(memberId)
         .topicId(topicId)
+        .isPublished(isPublished)
         .build();
   }
 }

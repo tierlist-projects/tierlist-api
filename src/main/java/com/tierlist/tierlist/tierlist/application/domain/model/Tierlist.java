@@ -17,4 +17,9 @@ public class Tierlist {
 
   private Long memberId;
 
+  private boolean isPublished = false;
+
+  public void togglePublish() {
+    isPublished = !isPublished;
+  }
 }
