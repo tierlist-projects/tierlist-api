@@ -1,6 +1,7 @@
 package com.tierlist.tierlist.tierlist.adapter.out.persistence;
 
 
+import com.tierlist.tierlist.global.common.model.TimeBaseEntity;
 import com.tierlist.tierlist.tierlist.application.domain.model.Tierlist;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,18 +10,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tierlist")
 @Entity
-public class TierlistJpaEntity {
+public class TierlistJpaEntity extends TimeBaseEntity {
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
@@ -45,6 +44,8 @@ public class TierlistJpaEntity {
         .topicId(tierlist.getTopicId())
         .isPublished(tierlist.isPublished())
         .likeCount(tierlist.getLikeCount())
+        .createdAt(tierlist.getCreatedAt())
+        .modifiedAt(tierlist.getModifiedAt())
         .build();
   }
 
@@ -56,6 +57,8 @@ public class TierlistJpaEntity {
         .topicId(topicId)
         .isPublished(isPublished)
         .likeCount(likeCount)
+        .createdAt(getCreatedAt())
+        .modifiedAt(getModifiedAt())
         .build();
   }
 }
