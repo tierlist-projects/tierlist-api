@@ -17,9 +17,20 @@ public class Tierlist {
 
   private Long memberId;
 
-  private boolean isPublished = false;
+  private boolean isPublished;
+
+  private int likeCount;
 
   public void togglePublish() {
     isPublished = !isPublished;
   }
+
+  public void addLike() {
+    likeCount++;
+  }
+
+  public void removeLike() {
+    likeCount--;
+  }
+
 }

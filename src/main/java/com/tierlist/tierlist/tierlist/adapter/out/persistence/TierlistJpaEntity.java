@@ -35,6 +35,8 @@ public class TierlistJpaEntity {
 
   private boolean isPublished;
 
+  private int likeCount;
+
   public static TierlistJpaEntity from(Tierlist tierlist) {
     return TierlistJpaEntity.builder()
         .id(tierlist.getId())
@@ -42,6 +44,7 @@ public class TierlistJpaEntity {
         .memberId(tierlist.getMemberId())
         .topicId(tierlist.getTopicId())
         .isPublished(tierlist.isPublished())
+        .likeCount(tierlist.getLikeCount())
         .build();
   }
 
@@ -52,6 +55,7 @@ public class TierlistJpaEntity {
         .memberId(memberId)
         .topicId(topicId)
         .isPublished(isPublished)
+        .likeCount(likeCount)
         .build();
   }
 }
