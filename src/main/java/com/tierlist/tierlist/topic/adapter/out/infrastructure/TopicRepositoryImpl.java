@@ -24,6 +24,11 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   @Override
+  public boolean existsById(Long topicId) {
+    return topicJpaRepository.existsById(topicId);
+  }
+
+  @Override
   public Optional<Topic> findById(Long topicId) {
     return topicJpaRepository.findById(topicId).map(TopicJpaEntity::toTopic);
   }

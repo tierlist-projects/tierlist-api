@@ -11,4 +11,6 @@ public interface TopicRepository {
   Optional<Topic> findById(Long topicId);
 
   boolean existsByNameInCategory(Long categoryId, String name);
+
+  boolean existsById(Long topicId);
 }
