@@ -20,6 +20,7 @@ public class FakeTierlistRepository implements TierlistRepository {
           .title(tierlist.getTitle())
           .topicId(tierlist.getTopicId())
           .memberId(tierlist.getMemberId())
+          .isPublished(tierlist.isPublished())
           .build();
       data.add(newTierlist);
       return newTierlist;
