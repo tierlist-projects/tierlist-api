@@ -1,5 +1,6 @@
 package com.tierlist.tierlist.tierlist.application.domain.model;
 
+import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.tierlist.application.domain.model.command.TierlistEditCommand;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -44,5 +45,9 @@ public class Tierlist {
   public void edit(TierlistEditCommand command) {
     this.title = command.getTitle();
     this.content = command.getContent();
+  }
+
+  public boolean canView(Member member) {
+    return member.getId().equals(memberId) || isPublished;
   }
 }

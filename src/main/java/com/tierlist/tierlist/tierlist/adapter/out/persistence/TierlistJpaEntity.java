@@ -28,6 +28,8 @@ public class TierlistJpaEntity extends TimeBaseEntity {
   @Column(nullable = false)
   private String title;
 
+  private String content;
+
   private Long memberId;
 
   private Long topicId;
@@ -35,11 +37,13 @@ public class TierlistJpaEntity extends TimeBaseEntity {
   private boolean isPublished;
 
   private int likeCount;
+  private int commentCount;
 
   public static TierlistJpaEntity from(Tierlist tierlist) {
     return TierlistJpaEntity.builder()
         .id(tierlist.getId())
         .title(tierlist.getTitle())
+        .content(tierlist.getContent())
         .memberId(tierlist.getMemberId())
         .topicId(tierlist.getTopicId())
         .isPublished(tierlist.isPublished())
@@ -53,6 +57,7 @@ public class TierlistJpaEntity extends TimeBaseEntity {
     return Tierlist.builder()
         .id(id)
         .title(title)
+        .content(content)
         .memberId(memberId)
         .topicId(topicId)
         .isPublished(isPublished)

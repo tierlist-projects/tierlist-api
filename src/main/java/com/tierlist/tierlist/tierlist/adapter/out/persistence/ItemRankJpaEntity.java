@@ -35,7 +35,7 @@ public class ItemRankJpaEntity {
 
   private String image;
 
-  private int order;
+  private int orderIdx;
 
   public static List<ItemRankJpaEntity> from(List<ItemRank> itemRanks) {
     return itemRanks.stream().map(ItemRankJpaEntity::from).toList();
@@ -48,7 +48,7 @@ public class ItemRankJpaEntity {
         .tierlistId(itemRank.getTierlistId())
         .itemId(itemRank.getItemId())
         .image(itemRank.getImage())
-        .order(itemRank.getOrder())
+        .orderIdx(itemRank.getOrderIdx())
         .build();
   }
 
@@ -59,7 +59,7 @@ public class ItemRankJpaEntity {
         .tierlistId(tierlistId)
         .itemId(itemId)
         .image(image)
-        .order(order)
+        .orderIdx(orderIdx)
         .build();
   }
 }
