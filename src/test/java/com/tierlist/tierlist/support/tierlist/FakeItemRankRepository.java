@@ -34,7 +34,7 @@ public class FakeItemRankRepository implements ItemRankRepository {
           .itemId(itemRank.getItemId())
           .tierlistId(itemRank.getTierlistId())
           .image(itemRank.getImage())
-          .order(itemRank.getOrder())
+          .orderIdx(itemRank.getOrderIdx())
           .build();
       data.add(newItemRank);
       return newItemRank;
