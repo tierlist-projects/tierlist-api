@@ -344,6 +344,10 @@ operation::tierlist-comment-docs-test/create_tierlist_comment_404_tierlist[snipp
 
 operation::tierlist-comment-docs-test/create_tierlist_comment_404_comment[snippets='http-response,response-fields']
 
+===== 대댓글에 댓글을 추가하고자 할 시
+
+operation::tierlist-comment-docs-test/create_tierlist_comment_400_add_comment_on_child[snippets='http-response,response-fields']
+
 ===== 티어리스트가 PUBLISH 상태가 아닐 때
 
 operation::tierlist-comment-docs-test/create_tierlist_comment_403_not_published[snippets='http-response,response-fields']

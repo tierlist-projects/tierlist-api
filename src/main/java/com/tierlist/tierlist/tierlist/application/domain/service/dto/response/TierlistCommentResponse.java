@@ -15,15 +15,29 @@ import lombok.NoArgsConstructor;
 public class TierlistCommentResponse {
 
   private Long id;
+  private String content;
   private MemberResponse writer;
   private LocalDateTime createdAt;
-  private String content;
-
-  private boolean liked;
-  private int likesCount;
 
   private boolean isMyComment;
   private boolean isParentComment;
   private boolean isTierlistWriter;
 
+  public TierlistCommentResponse(Long id, String content,
+      Long writerId, String writerNickname, String writerProfileImage,
+      LocalDateTime createdAt, boolean isMyComment, boolean isParentComment,
+      boolean isTierlistWriter) {
+    this.id = id;
+    this.content = content;
+    this.writer = MemberResponse.builder()
+        .id(writerId)
+        .nickname(writerNickname)
+        .profileImage(writerProfileImage)
+        .build();
+
+    this.createdAt = createdAt;
+    this.isMyComment = isMyComment;
+    this.isParentComment = isParentComment;
+    this.isTierlistWriter = isTierlistWriter;
+  }
 }

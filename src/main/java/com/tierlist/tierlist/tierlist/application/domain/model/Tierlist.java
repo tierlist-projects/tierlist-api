@@ -50,4 +50,8 @@ public class Tierlist {
   public boolean canView(Member member) {
     return member.getId().equals(memberId) || isPublished;
   }
+
+  public boolean canAddComment() {
+    return isPublished;
+  }
 }

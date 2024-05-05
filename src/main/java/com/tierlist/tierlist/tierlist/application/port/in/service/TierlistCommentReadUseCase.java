@@ -1,11 +1,12 @@
 package com.tierlist.tierlist.tierlist.application.port.in.service;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistCommentResponse;
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface TierlistCommentReadUseCase {
 
-  List<TierlistCommentResponse> getTierlistComments(String email, Long tierlistId,
-      int pageCount, int pageSize);
+  PageResponse<TierlistCommentResponse> getTierlistComments(String email, Long tierlistId,
+      Pageable pageable);
 
 }

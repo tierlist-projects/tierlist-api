@@ -26,6 +26,7 @@ public enum ErrorCode {
   INVALID_EMAIL_VERIFICATION_CODE_EXCEPTION("IR-002", "이메일 검증 코드를 확인할 수 없습니다."),
   INVALID_TYPE_VALUE("IR-003", "요청 내용의 타입이 일치하지 않습니다."),
   INVALID_REQUEST_VALUE("IR-004", "요청 내용이 유효하지 않습니다."),
+  CANNOT_ADD_COMMENT_AT_CHILD_COMMENT("IR-004", "대댓글에 댓글을 달 수 없습니다."),
 
   AUTHENTICATION_ERROR("A-001", "인증에 실패하였습니다."),
   INVALID_USERNAME_OR_PASSWORD("A-002", "아이디 또는 비밀번호가 일치하지 않습니다."),
