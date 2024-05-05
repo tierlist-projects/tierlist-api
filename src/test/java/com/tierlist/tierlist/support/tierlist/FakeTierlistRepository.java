@@ -36,4 +36,9 @@ public class FakeTierlistRepository implements TierlistRepository {
   public Optional<Tierlist> findById(Long id) {
     return data.stream().filter(tierlist -> tierlist.getId().equals(id)).findFirst();
   }
+
+  @Override
+  public boolean existsById(Long id) {
+    return data.stream().anyMatch(tierlist -> tierlist.getId().equals(id));
+  }
 }

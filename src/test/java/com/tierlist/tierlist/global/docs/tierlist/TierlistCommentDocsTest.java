@@ -1,7 +1,6 @@
 package com.tierlist.tierlist.global.docs.tierlist;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -22,6 +21,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistCommentController;
@@ -290,55 +290,53 @@ class TierlistCommentDocsTest extends RestDocsTestSupport {
     int pageCount = 1;
     int pageSize = 10;
 
-    given(tierlistCommentReadUseCase.getTierlistComments(any(), any(), anyInt(), anyInt()))
+    given(tierlistCommentReadUseCase.getTierlistComments(any(), any(), any()))
         .willReturn(
-            List.of(
-                TierlistCommentResponse.builder()
-                    .id(1L)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("nickname1")
-                        .profileImage("profile-image-name-1")
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 12, 27, 40))
-                    .content("댓글 내용 1")
-                    .liked(true)
-                    .likesCount(9)
-                    .isMyComment(true)
-                    .isParentComment(false)
-                    .isTierlistWriter(true)
-                    .build(),
-                TierlistCommentResponse.builder()
-                    .id(3L)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("nickname1")
-                        .profileImage("profile-image_name-1")
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 12, 29, 40))
-                    .content("대댓글 내용 1")
-                    .liked(true)
-                    .likesCount(1)
-                    .isMyComment(true)
-                    .isParentComment(true)
-                    .isTierlistWriter(false)
-                    .build(),
-                TierlistCommentResponse.builder()
-                    .id(2L)
-                    .writer(MemberResponse.builder()
-                        .id(2L)
-                        .nickname("nickname2")
-                        .profileImage("profile-image_name")
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 12, 28, 40))
-                    .content("댓글 내용 2")
-                    .liked(false)
-                    .likesCount(0)
-                    .isMyComment(true)
-                    .isParentComment(true)
-                    .isTierlistWriter(false)
-                    .build()
-            )
+            PageResponse.<TierlistCommentResponse>builder()
+                .content(
+                    List.of(
+                        TierlistCommentResponse.builder()
+                            .id(1L)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("nickname1")
+                                .profileImage("profile-image-name-1")
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 12, 27, 40))
+                            .content("댓글 내용 1")
+                            .isMyComment(true)
+                            .isParentComment(false)
+                            .isTierlistWriter(true)
+                            .build(),
+                        TierlistCommentResponse.builder()
+                            .id(3L)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("nickname1")
+                                .profileImage("profile-image_name-1")
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 12, 29, 40))
+                            .content("대댓글 내용 1")
+                            .isMyComment(true)
+                            .isParentComment(true)
+                            .isTierlistWriter(false)
+                            .build(),
+                        TierlistCommentResponse.builder()
+                            .id(2L)
+                            .writer(MemberResponse.builder()
+                                .id(2L)
+                                .nickname("nickname2")
+                                .profileImage("profile-image_name")
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 12, 28, 40))
+                            .content("댓글 내용 2")
+                            .isMyComment(true)
+                            .isParentComment(true)
+                            .isTierlistWriter(false)
+                            .build()
+                    )
+                )
+                .build()
         );
 
     mvc.perform(get("/tierlist/{tierlistId}/comment", tierlistId)
@@ -400,7 +398,7 @@ class TierlistCommentDocsTest extends RestDocsTestSupport {
     int pageCount = 1;
     int pageSize = 10;
 
-    given(tierlistCommentReadUseCase.getTierlistComments(any(), any(), anyInt(), anyInt()))
+    given(tierlistCommentReadUseCase.getTierlistComments(any(), any(), any()))
         .willThrow(new TierlistNotFoundException());
 
     mvc.perform(get("/tierlist/{tierlistId}/comment", tierlistId)
