@@ -8,4 +8,6 @@ public interface TierlistRepository {
   Tierlist save(Tierlist tierlist);
 
   Optional<Tierlist> findById(Long id);
+
+  boolean existsById(Long id);
 }

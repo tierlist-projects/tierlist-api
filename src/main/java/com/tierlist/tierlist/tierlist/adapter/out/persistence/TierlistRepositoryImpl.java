@@ -21,4 +21,9 @@ public class TierlistRepositoryImpl implements TierlistRepository {
   public Optional<Tierlist> findById(Long id) {
     return tierlistJpaRepository.findById(id).map(TierlistJpaEntity::toTierlist);
   }
+
+  @Override
+  public boolean existsById(Long id) {
+    return tierlistJpaRepository.existsById(id);
+  }
 }
