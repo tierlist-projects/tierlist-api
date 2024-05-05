@@ -141,19 +141,19 @@ class TierlistEditServiceTest {
         itemRankRepository.findByItemIdAndTierlistId(item1.getId(), tierlist.getId());
     assertThat(itemRankOptional1).isPresent();
     assertThat(itemRankOptional1.get().getRank()).isEqualTo(Rank.S);
-    assertThat(itemRankOptional1.get().getOrder()).isZero();
+    assertThat(itemRankOptional1.get().getOrderIdx()).isZero();
 
     Optional<ItemRank> itemRankOptional2 =
         itemRankRepository.findByItemIdAndTierlistId(item2.getId(), tierlist.getId());
     assertThat(itemRankOptional2).isPresent();
     assertThat(itemRankOptional2.get().getRank()).isEqualTo(Rank.S);
-    assertThat(itemRankOptional2.get().getOrder()).isOne();
+    assertThat(itemRankOptional2.get().getOrderIdx()).isOne();
 
     Optional<ItemRank> itemRankOptional3 =
         itemRankRepository.findByItemIdAndTierlistId(item3.getId(), tierlist.getId());
     assertThat(itemRankOptional3).isPresent();
     assertThat(itemRankOptional3.get().getRank()).isEqualTo(Rank.A);
-    assertThat(itemRankOptional3.get().getOrder()).isZero();
+    assertThat(itemRankOptional3.get().getOrderIdx()).isZero();
   }
 
   @Test
@@ -255,7 +255,7 @@ class TierlistEditServiceTest {
 
     itemRankRepository.saveAll(List.of(ItemRank.builder()
         .rank(Rank.S)
-        .order(0)
+        .orderIdx(0)
         .image("item1-image")
         .tierlistId(tierlist.getId())
         .itemId(item1.getId())

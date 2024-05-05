@@ -19,6 +19,6 @@ public class ItemRank {
 
   private String image;
 
-  private int order;
+  private int orderIdx;
 
 }

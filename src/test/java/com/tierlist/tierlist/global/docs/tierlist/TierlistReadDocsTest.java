@@ -22,8 +22,10 @@ import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistReadController;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistAuthorizationException;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistNotFoundException;
+import com.tierlist.tierlist.tierlist.application.domain.model.Rank;
 import com.tierlist.tierlist.tierlist.application.domain.model.TierlistFilter;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.ItemRankResponse;
+import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.ItemRanksResponse;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistDetailResponse;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistResponse;
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistReadUseCase;
@@ -51,50 +53,69 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
             .id(1L)
             .title("티어리스트 제목")
             .content("티어리스트 콘텐츠")
-            .createdAt(LocalDateTime.of(2024, 4, 23, 19, 7, 16))
-            .sRanks(
-                List.of(
-                    ItemRankResponse.builder()
-                        .id(1L)
-                        .name("아이템1")
-                        .itemRankImage("item-rank-image-1")
-                        .build(),
-                    ItemRankResponse.builder()
-                        .id(2L)
-                        .name("아이템2")
-                        .itemRankImage("item-rank-image-2")
-                        .build()
-                )
-            )
-            .aRanks(List.of())
-            .bRanks(List.of())
-            .cRanks(
-                List.of(
-                    ItemRankResponse.builder()
-                        .id(3L)
-                        .name("아이템3")
-                        .itemRankImage("item-rank-image-3")
-                        .build(),
-                    ItemRankResponse.builder()
-                        .id(4L)
-                        .name("아이템4")
-                        .itemRankImage("item-rank-image-4")
-                        .build()
-                )
-            )
-            .dRanks(List.of())
-            .fRanks(List.of())
-            .noneRanks(
-                List.of(
-                    ItemRankResponse.builder()
-                        .id(5L)
-                        .name("아이템5")
-                        .itemRankImage("item-rank-image-5")
-                        .build()
-                ))
+            .writer(MemberResponse.builder()
+                .id(1L)
+                .nickname("작성자닉네임")
+                .profileImage("member-profile-image")
+                .build())
             .liked(true)
             .likesCount(13)
+            .commentsCount(19)
+            .createdAt(LocalDateTime.of(2024, 4, 23, 19, 7, 16))
             .isMyTierlist(true)
+            .isPublished(true)
+            .ranks(ItemRanksResponse.builder()
+                .sRanks(
+                    List.of(
+                        ItemRankResponse.builder()
+                            .id(1L)
+                            .name("아이템1")
+                            .itemRankImage("item-rank-image-1")
+                            .rank(Rank.S)
+                            .orderIdx(0)
+                            .build(),
+                        ItemRankResponse.builder()
+                            .id(2L)
+                            .name("아이템2")
+                            .itemRankImage("item-rank-image-2")
+                            .orderIdx(1)
+                            .rank(Rank.S)
+                            .build()
+                    )
+                )
+                .aRanks(List.of())
+                .bRanks(List.of())
+                .cRanks(
+                    List.of(
+                        ItemRankResponse.builder()
+                            .id(3L)
+                            .name("아이템3")
+                            .itemRankImage("item-rank-image-3")
+                            .orderIdx(0)
+                            .rank(Rank.C)
+                            .build(),
+                        ItemRankResponse.builder()
+                            .id(4L)
+                            .name("아이템4")
+                            .itemRankImage("item-rank-image-4")
+                            .orderIdx(1)
+                            .rank(Rank.C)
+                            .build()
+                    )
+                )
+                .dRanks(List.of())
+                .fRanks(List.of())
+                .noneRanks(
+                    List.of(
+                        ItemRankResponse.builder()
+                            .id(5L)
+                            .name("아이템5")
+                            .itemRankImage("item-rank-image-5")
+                            .orderIdx(0)
+                            .rank(Rank.NONE)
+                            .build()
+                    ))
+                .build())
             .build()
     );
 
@@ -122,32 +143,50 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트 내용"),
                 fieldWithPath("createdAt")
                     .description("티어리스트 생성 시간"),
-                fieldWithPath("sranks")
-                    .description("S랭크에 해당된 아이템 목록"),
-                fieldWithPath("aranks")
-                    .description("A랭크에 해당된 아이템 목록"),
-                fieldWithPath("branks")
-                    .description("B랭크에 해당된 아이템 목록"),
-                fieldWithPath("cranks")
-                    .description("C랭크에 해당된 아이템 목록"),
-                fieldWithPath("dranks")
-                    .description("D랭크에 해당된 아이템 목록"),
-                fieldWithPath("franks")
-                    .description("F랭크에 해당된 아이템 목록"),
-                fieldWithPath("noneRanks")
-                    .description("랭크에 해당되지 않은 아이템 목록"),
-                fieldWithPath("*[].id")
-                    .description("아이템 식별번호"),
-                fieldWithPath("*[].name")
-                    .description("아이템 이름"),
-                fieldWithPath("*[].itemRankImage")
-                    .description("아이템 이미지 파일 이름"),
+                fieldWithPath("writer")
+                    .description("작성자"),
+                fieldWithPath("writer.id")
+                    .description("작성자 식별번호"),
+                fieldWithPath("writer.nickname")
+                    .description("작성자 닉네임"),
+                fieldWithPath("writer.profileImage")
+                    .description("작성자 프로필 이미지"),
                 fieldWithPath("liked")
-                    .description("사용자가 좋아요를 눌렀는지 여부"),
+                    .description("조회하는 사용자가 좋아요를 눌렀는지 여부"),
                 fieldWithPath("likesCount")
                     .description("티어리스트 좋아요 갯수"),
+                fieldWithPath("commentsCount")
+                    .description("티어리스트 댓글 갯수"),
+                fieldWithPath("createdAt")
+                    .description("티어리스트 생성 시간"),
                 fieldWithPath("myTierlist")
-                    .description("사용자가 작성한 티어리스트인지 여부")
+                    .description("조회하는 사용자가 티어리스트의 작성자인지 여부"),
+                fieldWithPath("published")
+                    .description("티어리스트 발행 상태"),
+                fieldWithPath("ranks.sranks")
+                    .description("S랭크에 해당된 아이템 목록"),
+                fieldWithPath("ranks.aranks")
+                    .description("A랭크에 해당된 아이템 목록"),
+                fieldWithPath("ranks.branks")
+                    .description("B랭크에 해당된 아이템 목록"),
+                fieldWithPath("ranks.cranks")
+                    .description("C랭크에 해당된 아이템 목록"),
+                fieldWithPath("ranks.dranks")
+                    .description("D랭크에 해당된 아이템 목록"),
+                fieldWithPath("ranks.franks")
+                    .description("F랭크에 해당된 아이템 목록"),
+                fieldWithPath("ranks.noneRanks")
+                    .description("랭크에 해당되지 않은 아이템 목록"),
+                fieldWithPath("ranks.*[].id")
+                    .description("아이템 식별번호"),
+                fieldWithPath("ranks.*[].name")
+                    .description("아이템 이름"),
+                fieldWithPath("ranks.*[].itemRankImage")
+                    .description("아이템 이미지 파일 이름"),
+                fieldWithPath("ranks.*[].orderIdx")
+                    .description("랭크 내의 아이템 순서"),
+                fieldWithPath("ranks.*[].rank")
+                    .description("아이템 랭크")
             )
         ));
   }

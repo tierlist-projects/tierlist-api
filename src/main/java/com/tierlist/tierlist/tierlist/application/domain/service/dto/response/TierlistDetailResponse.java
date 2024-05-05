@@ -1,10 +1,11 @@
 package com.tierlist.tierlist.tierlist.application.domain.service.dto.response;
 
+import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
@@ -16,19 +17,38 @@ public class TierlistDetailResponse {
   private String title;
   private String content;
 
+  private MemberResponse writer;
+
+  private boolean isPublished;
+  private boolean isMyTierlist;
+  private boolean liked;
+
+  private int likesCount;
+  private int commentsCount;
+
   private LocalDateTime createdAt;
 
-  private List<ItemRankResponse> sRanks;
-  private List<ItemRankResponse> aRanks;
-  private List<ItemRankResponse> bRanks;
-  private List<ItemRankResponse> cRanks;
-  private List<ItemRankResponse> dRanks;
-  private List<ItemRankResponse> fRanks;
-  private List<ItemRankResponse> noneRanks;
+  @Setter
+  private ItemRanksResponse ranks;
 
-  private boolean liked;
-  private int likesCount;
-
-  private boolean isMyTierlist;
+  public TierlistDetailResponse(Long id, String title, String content, Long writerId,
+      String writerEmail, String writerProfileImage
+      , boolean isPublished, boolean isMyTierlist, boolean liked, int likesCount, int commentsCount,
+      LocalDateTime createdAt) {
+    this.id = id;
+    this.title = title;
+    this.content = content;
+    this.writer = MemberResponse.builder()
+        .id(writerId)
+        .email(writerEmail)
+        .profileImage(writerProfileImage)
+        .build();
+    this.isPublished = isPublished;
+    this.isMyTierlist = isMyTierlist;
+    this.liked = liked;
+    this.likesCount = likesCount;
+    this.commentsCount = commentsCount;
+    this.createdAt = createdAt;
+  }
 
 }

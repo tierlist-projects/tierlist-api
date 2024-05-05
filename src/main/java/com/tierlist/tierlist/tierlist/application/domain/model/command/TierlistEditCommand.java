@@ -46,7 +46,7 @@ public class TierlistEditCommand {
           .tierlistId(tierlistId)
           .itemId(itemRankCommand.getItemId())
           .image(itemRankCommand.getItemRankImage())
-          .order(idx)
+          .orderIdx(idx)
           .build());
     }
 
