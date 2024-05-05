@@ -1,6 +1,7 @@
 package com.tierlist.tierlist.tierlist.application.domain.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -26,16 +27,19 @@ public class TierlistComment {
     this.modifiedAt = modifiedAt;
     this.tierlistId = tierlistId;
     this.writerId = writerId;
-
-    bindRootId(parentCommentId);
+    this.parentCommentId = parentCommentId;
+    this.rootId = parentCommentId;
   }
 
-  private void bindRootId(Long parentCommentId) {
-    if (parentCommentId == null) {
-      this.rootId = this.id;
-    } else {
-      this.rootId = parentCommentId;
-      this.parentCommentId = parentCommentId;
+  public void bindRootId() {
+    if (Objects.isNull(id)) {
+      throw new IllegalStateException("Cannot bind root id to a tierlist comment");
     }
+
+    if (!Objects.isNull(rootId)) {
+      return;
+    }
+
+    this.rootId = this.id;
   }
 }

@@ -16,6 +16,7 @@ import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistR
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +32,7 @@ public class TierlistCommentCreateService implements TierlistCommentCreateUseCas
     }
   }
 
+  @Transactional
   @Override
   public Long createComment(String email, Long tierlistId, TierlistCommandCreateCommand command) {
     Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
@@ -49,6 +51,9 @@ public class TierlistCommentCreateService implements TierlistCommentCreateUseCas
 
     TierlistComment tierlistComment = tierlistCommentRepository.save(
         command.toTierlistComment(tierlistId, member.getId()));
+
+    tierlistComment.bindRootId();
+    tierlistCommentRepository.save(tierlistComment);
 
     return tierlistComment.getId();
   }
