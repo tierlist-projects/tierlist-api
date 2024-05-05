@@ -11,6 +11,7 @@ import com.tierlist.tierlist.support.tierlist.FakeTierlistCommentRepository;
 import com.tierlist.tierlist.support.tierlist.FakeTierlistRepository;
 import com.tierlist.tierlist.tierlist.application.domain.exception.AddCommentOnChildException;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistAuthorizationException;
+import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistNotFoundException;
 import com.tierlist.tierlist.tierlist.application.domain.model.Tierlist;
 import com.tierlist.tierlist.tierlist.application.domain.model.TierlistComment;
 import com.tierlist.tierlist.tierlist.application.domain.model.command.TierlistCommandCreateCommand;
@@ -134,8 +135,10 @@ class TierlistCommentCreateServiceTest {
         .parentCommentId(null)
         .build();
 
+    String memberEmail = member.getEmail();
+    Long tierlistId = tierlist.getId();
     assertThatThrownBy(() -> {
-      sut.createComment(member.getEmail(), tierlist.getId(), command);
+      sut.createComment(memberEmail, tierlistId, command);
     }).isInstanceOf(TierlistAuthorizationException.class);
   }
 
@@ -173,8 +176,10 @@ class TierlistCommentCreateServiceTest {
         .parentCommentId(childComment.getId())
         .build();
 
+    String memberEmail = member.getEmail();
+    Long tierlistId = tierlist.getId();
     assertThatThrownBy(() -> {
-      sut.createComment(member.getEmail(), tierlist.getId(), command);
+      sut.createComment(memberEmail, tierlistId, command);
     }).isInstanceOf(AddCommentOnChildException.class);
   }
 
@@ -187,31 +192,17 @@ class TierlistCommentCreateServiceTest {
         .nickname("test")
         .build());
 
-    Tierlist tierlist = tierlistRepository.save(Tierlist.builder()
-        .isPublished(true)
-        .build());
-
-    TierlistComment parentComment = tierlistCommentRepository.save(TierlistComment.builder()
-        .content("부모댓글")
-        .tierlistId(tierlist.getId())
-        .writerId(member.getId())
-        .parentCommentId(null)
-        .build());
+    Long tierlistId = 1L;
 
     // when
     TierlistCommandCreateCommand command = TierlistCommandCreateCommand.builder()
         .content("댓글 내용")
-        .parentCommentId(parentComment.getId())
         .build();
 
-    Long commentId = sut.createComment(member.getEmail(), tierlist.getId(), command);
-
-    // then
-    Optional<TierlistComment> commentOptional = tierlistCommentRepository.findById(commentId);
-    assertThat(commentOptional).isPresent();
-    assertThat(commentOptional.get().getParentCommentId()).isEqualTo(parentComment.getId());
-    assertThat(commentOptional.get().getRootId()).isEqualTo(parentComment.getId());
-    assertThat(commentOptional.get().getContent()).isEqualTo("댓글 내용");
+    String memberEmail = member.getEmail();
+    assertThatThrownBy(() -> {
+      sut.createComment(memberEmail, tierlistId, command);
+    }).isInstanceOf(TierlistNotFoundException.class);
   }
 
 }
