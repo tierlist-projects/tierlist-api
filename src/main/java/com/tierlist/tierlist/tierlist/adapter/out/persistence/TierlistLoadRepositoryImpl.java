@@ -71,6 +71,10 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
                 memberJpaEntity.id,
                 memberJpaEntity.email,
                 memberJpaEntity.profileImage,
+                topicJpaEntity.id,
+                topicJpaEntity.name,
+                categoryJpaEntity.id,
+                categoryJpaEntity.name,
                 memberJpaEntity.email.eq(viewerEmail),
                 tierlistJpaEntity.isPublished,
                 tierlistLikeJpaEntity.isNotNull(),
@@ -81,6 +85,10 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
         .leftJoin(tierlistLikeJpaEntity)
         .on(tierlistJpaEntity.id.eq(tierlistLikeJpaEntity.tierlistId),
             tierlistJpaEntity.memberId.eq(member.getId()))
+        .join(topicJpaEntity)
+        .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
+        .join(categoryJpaEntity)
+        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
         .where(tierlistJpaEntity.id.eq(tierlistId))
         .leftJoin(memberJpaEntity)
         .on(memberJpaEntity.id.eq(tierlistJpaEntity.memberId))
