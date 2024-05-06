@@ -1,6 +1,8 @@
 package com.tierlist.tierlist.tierlist.application.domain.service.dto.response;
 
+import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
+import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +20,7 @@ public class TierlistDetailResponse {
   private String content;
 
   private MemberResponse writer;
+  private TopicResponse topic;
 
   private boolean isPublished;
   private boolean isMyTierlist;
@@ -31,9 +34,11 @@ public class TierlistDetailResponse {
   @Setter
   private ItemRanksResponse ranks;
 
-  public TierlistDetailResponse(Long id, String title, String content, Long writerId,
-      String writerEmail, String writerProfileImage
-      , boolean isPublished, boolean isMyTierlist, boolean liked, int likesCount, int commentsCount,
+  public TierlistDetailResponse(Long id, String title, String content,
+      Long writerId, String writerEmail, String writerProfileImage,
+      Long topicId, String topicName,
+      Long categoryId, String categoryName,
+      boolean isPublished, boolean isMyTierlist, boolean liked, int likesCount, int commentsCount,
       LocalDateTime createdAt) {
     this.id = id;
     this.title = title;
@@ -42,6 +47,14 @@ public class TierlistDetailResponse {
         .id(writerId)
         .email(writerEmail)
         .profileImage(writerProfileImage)
+        .build();
+    this.topic = TopicResponse.builder()
+        .id(topicId)
+        .name(topicName)
+        .category(CategoryResponse.builder()
+            .id(categoryId)
+            .name(categoryName)
+            .build())
         .build();
     this.isPublished = isPublished;
     this.isMyTierlist = isMyTierlist;
