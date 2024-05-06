@@ -58,6 +58,14 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                 .nickname("작성자닉네임")
                 .profileImage("member-profile-image")
                 .build())
+            .topic(TopicResponse.builder()
+                .id(1L)
+                .name("토픽")
+                .category(CategoryResponse.builder()
+                    .id(1L)
+                    .name("카테고리")
+                    .build())
+                .build())
             .liked(true)
             .likesCount(13)
             .commentsCount(19)
@@ -151,6 +159,14 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("작성자 닉네임"),
                 fieldWithPath("writer.profileImage")
                     .description("작성자 프로필 이미지"),
+                fieldWithPath("topic.id")
+                    .description("티어리스트가 해당된 토픽 식별번호"),
+                fieldWithPath("topic.name")
+                    .description("티어리스트가 해당된 토픽 이름"),
+                fieldWithPath("topic.category.id")
+                    .description("티어리스트가 해당된 카테고리 식별번호"),
+                fieldWithPath("topic.category.name")
+                    .description("티어리스트가 해당된 카테고리 이름"),
                 fieldWithPath("liked")
                     .description("조회하는 사용자가 좋아요를 눌렀는지 여부"),
                 fieldWithPath("likesCount")
