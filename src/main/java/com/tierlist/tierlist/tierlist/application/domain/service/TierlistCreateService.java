@@ -35,6 +35,7 @@ public class TierlistCreateService implements TierlistCreateUseCase {
     Tierlist tierlist = tierlistRepository.save(Tierlist.builder()
         .title(command.getTitle())
         .topicId(command.getTopicId())
+        .commentCount(0)
         .memberId(member.getId())
         .build());
 
