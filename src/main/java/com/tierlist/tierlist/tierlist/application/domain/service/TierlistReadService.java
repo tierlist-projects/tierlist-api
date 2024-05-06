@@ -1,5 +1,6 @@
 package com.tierlist.tierlist.tierlist.application.domain.service;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.member.application.domain.exception.MemberNotFoundException;
 import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.port.out.persistence.MemberRepository;
@@ -12,8 +13,9 @@ import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.Ti
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistReadUseCase;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistLoadRepository;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -37,26 +39,29 @@ public class TierlistReadService implements TierlistReadUseCase {
   }
 
   @Override
-  public List<TierlistResponse> getTierlists(String email, int pageCount, int pageSize,
+  public PageResponse<TierlistResponse> getTierlists(String email, Pageable pageable, String query,
+      TierlistFilter filter) {
+    Page<TierlistResponse> tierlistResponses = tierlistLoadRepository.loadTierlists(email, pageable,
+        query, filter);
+    return PageResponse.fromPage(tierlistResponses);
+  }
+
+  @Override
+  public PageResponse<TierlistResponse> getMyTierlists(String email, Pageable pageable,
       String query, TierlistFilter filter) {
-    return List.of();
+    return null;
   }
 
   @Override
-  public List<TierlistResponse> getMyTierlists(String email, int pageCount, int pageSize,
-      String query, TierlistFilter filter) {
-    return List.of();
+  public PageResponse<TierlistResponse> getTierlistsOfCategory(String email, Long categoryId,
+      Pageable pageable, String query, TierlistFilter filter) {
+    return null;
   }
 
   @Override
-  public List<TierlistResponse> getTierlistsOfCategory(String email, Long categoryId, int pageCount,
-      int pageSize, String query, TierlistFilter filter) {
-    return List.of();
+  public PageResponse<TierlistResponse> getTierlistsOfTopic(String email, Long topicId,
+      Pageable pageable, String query, TierlistFilter filter) {
+    return null;
   }
 
-  @Override
-  public List<TierlistResponse> getTierlistsOfTopic(String email, Long topicId, int pageCount,
-      int pageSize, String query, TierlistFilter filter) {
-    return List.of();
-  }
 }

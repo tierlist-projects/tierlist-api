@@ -19,9 +19,9 @@ public class CategoryResponse {
   private Long id;
   private String name;
   private Boolean isFavorite;
-  private int favoriteCount;
+  private Integer favoriteCount;
 
-  public CategoryResponse(Long id, String name, int favoriteCount) {
+  public CategoryResponse(Long id, String name, Integer favoriteCount) {
     this.id = id;
     this.name = name;
     this.favoriteCount = favoriteCount;
