@@ -55,6 +55,9 @@ public class TierlistCommentCreateService implements TierlistCommentCreateUseCas
     tierlistComment.bindRootId();
     tierlistCommentRepository.save(tierlistComment);
 
+    tierlist.addComment();
+    tierlistRepository.save(tierlist);
+
     return tierlistComment.getId();
   }
 
