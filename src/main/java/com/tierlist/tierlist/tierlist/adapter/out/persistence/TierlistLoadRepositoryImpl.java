@@ -154,21 +154,155 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
   }
 
   @Override
-  public Page<TierlistResponse> getMyTierlists(String viewerEmail, Pageable pageable, String query,
+  public Page<TierlistResponse> loadMyTierlists(String email, Pageable pageable, String query,
       TierlistFilter filter) {
-    return null;
+    QMemberJpaEntity viewer = new QMemberJpaEntity("viewer");
+    QMemberJpaEntity writer = new QMemberJpaEntity("writer");
+
+    List<TierlistResponse> tierlistResponses = jpaQueryFactory.select(
+            Projections.constructor(TierlistResponse.class,
+                tierlistJpaEntity.id,
+                tierlistJpaEntity.title,
+                tierlistJpaEntity.createdAt,
+                tierlistJpaEntity.likeCount,
+                tierlistJpaEntity.commentCount,
+                viewer.email.isNotNull().as("liked"),
+                tierlistJpaEntity.isPublished,
+                writer.id,
+                writer.nickname,
+                writer.profileImage,
+                topicJpaEntity.id,
+                topicJpaEntity.name,
+                categoryJpaEntity.id,
+                categoryJpaEntity.name
+            ))
+        .from(tierlistJpaEntity)
+        .join(topicJpaEntity)
+        .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
+        .join(categoryJpaEntity)
+        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
+        .join(writer)
+        .on(tierlistJpaEntity.memberId.eq(writer.id))
+        .leftJoin(tierlistLikeJpaEntity)
+        .on(tierlistLikeJpaEntity.tierlistId.eq(tierlistJpaEntity.id))
+        .leftJoin(viewer)
+        .on(viewer.email.eq(email), viewer.id.eq(tierlistLikeJpaEntity.tierlistId))
+        .where(writer.email.eq(email), hasQuery(query))
+        .orderBy(orderByFilter(filter))
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize())
+        .fetch();
+
+    Long count = jpaQueryFactory.select(tierlistJpaEntity.count())
+        .from(tierlistJpaEntity)
+        .join(writer)
+        .on(tierlistJpaEntity.memberId.eq(writer.id))
+        .where(writer.email.eq(email), hasQuery(query))
+        .fetchOne();
+
+    return new PageImpl<>(tierlistResponses, pageable, Objects.isNull(count) ? 0 : count);
   }
 
   @Override
-  public Page<TierlistResponse> getTierlistsOfCategory(String viewerEmail, Long categoryId,
+  public Page<TierlistResponse> loadTierlistsOfCategory(String viewerEmail, Long categoryId,
       Pageable pageable, String query, TierlistFilter filter) {
-    return null;
+    QMemberJpaEntity viewer = new QMemberJpaEntity("viewer");
+    QMemberJpaEntity writer = new QMemberJpaEntity("writer");
+
+    List<TierlistResponse> tierlistResponses = jpaQueryFactory.select(
+            Projections.constructor(TierlistResponse.class,
+                tierlistJpaEntity.id,
+                tierlistJpaEntity.title,
+                tierlistJpaEntity.createdAt,
+                tierlistJpaEntity.likeCount,
+                tierlistJpaEntity.commentCount,
+                viewer.email.isNotNull().as("liked"),
+                tierlistJpaEntity.isPublished,
+                writer.id,
+                writer.nickname,
+                writer.profileImage,
+                topicJpaEntity.id,
+                topicJpaEntity.name,
+                categoryJpaEntity.id,
+                categoryJpaEntity.name
+            ))
+        .from(tierlistJpaEntity)
+        .join(topicJpaEntity)
+        .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
+        .join(categoryJpaEntity)
+        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
+        .join(writer)
+        .on(tierlistJpaEntity.memberId.eq(writer.id))
+        .leftJoin(tierlistLikeJpaEntity)
+        .on(tierlistLikeJpaEntity.tierlistId.eq(tierlistJpaEntity.id))
+        .leftJoin(viewer)
+        .on(viewer.email.eq(viewerEmail), viewer.id.eq(tierlistLikeJpaEntity.tierlistId))
+        .where(categoryJpaEntity.id.eq(categoryId), hasQuery(query), tierlistJpaEntity.isPublished)
+        .orderBy(orderByFilter(filter))
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize())
+        .fetch();
+
+    Long count = jpaQueryFactory.select(tierlistJpaEntity.count())
+        .from(tierlistJpaEntity)
+        .join(topicJpaEntity)
+        .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
+        .join(categoryJpaEntity)
+        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
+        .where(categoryJpaEntity.id.eq(categoryId), hasQuery(query), tierlistJpaEntity.isPublished)
+        .fetchOne();
+
+    return new PageImpl<>(tierlistResponses, pageable, Objects.isNull(count) ? 0 : count);
   }
 
   @Override
-  public Page<TierlistResponse> getTierlistsOfTopic(String viewerEmail, Long topicId,
+  public Page<TierlistResponse> loadTierlistsOfTopic(String viewerEmail, Long topicId,
       Pageable pageable, String query, TierlistFilter filter) {
-    return null;
+    QMemberJpaEntity viewer = new QMemberJpaEntity("viewer");
+    QMemberJpaEntity writer = new QMemberJpaEntity("writer");
+
+    List<TierlistResponse> tierlistResponses = jpaQueryFactory.select(
+            Projections.constructor(TierlistResponse.class,
+                tierlistJpaEntity.id,
+                tierlistJpaEntity.title,
+                tierlistJpaEntity.createdAt,
+                tierlistJpaEntity.likeCount,
+                tierlistJpaEntity.commentCount,
+                viewer.email.isNotNull().as("liked"),
+                tierlistJpaEntity.isPublished,
+                writer.id,
+                writer.nickname,
+                writer.profileImage,
+                topicJpaEntity.id,
+                topicJpaEntity.name,
+                categoryJpaEntity.id,
+                categoryJpaEntity.name
+            ))
+        .from(tierlistJpaEntity)
+        .join(topicJpaEntity)
+        .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
+        .join(categoryJpaEntity)
+        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
+        .join(writer)
+        .on(tierlistJpaEntity.memberId.eq(writer.id))
+        .leftJoin(tierlistLikeJpaEntity)
+        .on(tierlistLikeJpaEntity.tierlistId.eq(tierlistJpaEntity.id))
+        .leftJoin(viewer)
+        .on(viewer.email.eq(viewerEmail), viewer.id.eq(tierlistLikeJpaEntity.tierlistId))
+        .where(topicJpaEntity.id.eq(topicId), hasQuery(query), tierlistJpaEntity.isPublished)
+        .orderBy(orderByFilter(filter))
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize())
+        .fetch();
+
+    Long count = jpaQueryFactory.select(tierlistJpaEntity.count())
+        .from(tierlistJpaEntity)
+        .join(topicJpaEntity)
+        .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
+        .where(topicJpaEntity.id.eq(topicId), hasQuery(query), tierlistJpaEntity.isPublished)
+        .fetchOne();
+
+    return new PageImpl<>(tierlistResponses, pageable, Objects.isNull(count) ? 0 : count);
   }
 
 }

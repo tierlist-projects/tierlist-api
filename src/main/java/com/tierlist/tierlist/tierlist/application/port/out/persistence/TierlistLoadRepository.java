@@ -13,12 +13,12 @@ public interface TierlistLoadRepository {
   Page<TierlistResponse> loadTierlists(String viewEmail, Pageable pageable, String query,
       TierlistFilter filter);
 
-  Page<TierlistResponse> getMyTierlists(String viewerEmail, Pageable pageable,
+  Page<TierlistResponse> loadMyTierlists(String email, Pageable pageable,
       String query, TierlistFilter filter);
 
-  Page<TierlistResponse> getTierlistsOfCategory(String viewerEmail, Long categoryId,
+  Page<TierlistResponse> loadTierlistsOfCategory(String viewerEmail, Long categoryId,
       Pageable pageable, String query, TierlistFilter filter);
 
-  Page<TierlistResponse> getTierlistsOfTopic(String viewerEmail, Long topicId,
+  Page<TierlistResponse> loadTierlistsOfTopic(String viewerEmail, Long topicId,
       Pageable pageable, String query, TierlistFilter filter);
 }
