@@ -49,16 +49,19 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                     CategoryResponse.builder()
                         .id(1L)
                         .name("카테고리1")
+                        .favoriteCount(0)
                         .isFavorite(false)
                         .build(),
                     CategoryResponse.builder()
                         .id(2L)
                         .name("카테고리2")
+                        .favoriteCount(1)
                         .isFavorite(true)
                         .build(),
                     CategoryResponse.builder()
                         .id(3L)
                         .name("카테고리3")
+                        .favoriteCount(10)
                         .isFavorite(false)
                         .build()
                 )
@@ -138,10 +141,12 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
                 List.of(
                     CategoryResponse.builder()
                         .id(1L)
+                        .favoriteCount(0)
                         .name("카테고리1")
                         .build(),
                     CategoryResponse.builder()
                         .id(2L)
+                        .favoriteCount(10)
                         .name("카테고리2")
                         .build()
                 )

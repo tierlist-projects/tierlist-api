@@ -3,16 +3,20 @@ package com.tierlist.tierlist.tierlist.application.domain.service;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.tierlist.tierlist.category.application.port.out.persistence.CategoryRepository;
 import com.tierlist.tierlist.member.application.domain.model.Member;
 import com.tierlist.tierlist.member.application.domain.model.Password;
 import com.tierlist.tierlist.member.application.port.out.persistence.MemberRepository;
+import com.tierlist.tierlist.support.category.FakeCategoryRepository;
 import com.tierlist.tierlist.support.member.FakeMemberRepository;
 import com.tierlist.tierlist.support.tierlist.FakeTierlistRepository;
+import com.tierlist.tierlist.support.topic.FakeTopicRepository;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistAuthorizationException;
 import com.tierlist.tierlist.tierlist.application.domain.exception.TierlistNotFoundException;
 import com.tierlist.tierlist.tierlist.application.domain.model.Tierlist;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistLoadRepository;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistRepository;
+import com.tierlist.tierlist.topic.application.port.out.persistence.TopicRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -32,6 +36,9 @@ class TierlistReadServiceTest {
 
   private MemberRepository memberRepository;
   private TierlistRepository tierlistRepository;
+  private TopicRepository topicRepository;
+  private CategoryRepository categoryRepository;
+  ;
 
   private PasswordEncoder passwordEncoder;
 
@@ -41,11 +48,13 @@ class TierlistReadServiceTest {
   void init() {
     memberRepository = new FakeMemberRepository();
     tierlistRepository = new FakeTierlistRepository();
+    topicRepository = new FakeTopicRepository();
+    categoryRepository = new FakeCategoryRepository();
 
     passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     tierlistReadService = new TierlistReadService(memberRepository, tierlistRepository,
-        tierlistLoadRepository);
+        tierlistLoadRepository, topicRepository, categoryRepository);
   }
 
   @Test

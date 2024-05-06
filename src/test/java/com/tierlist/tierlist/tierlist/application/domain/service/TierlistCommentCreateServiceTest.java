@@ -76,6 +76,10 @@ class TierlistCommentCreateServiceTest {
     assertThat(commentOptional.get().getParentCommentId()).isNull();
     assertThat(commentOptional.get().getRootId()).isEqualTo(commentId);
     assertThat(commentOptional.get().getContent()).isEqualTo("댓글 내용");
+
+    Optional<Tierlist> tierlistOptional = tierlistRepository.findById(tierlist.getId());
+    assertThat(tierlistOptional).isPresent();
+    assertThat(tierlistOptional.get().getCommentCount()).isOne();
   }
 
   @Test
@@ -112,6 +116,10 @@ class TierlistCommentCreateServiceTest {
     assertThat(commentOptional.get().getParentCommentId()).isEqualTo(parentComment.getId());
     assertThat(commentOptional.get().getRootId()).isEqualTo(parentComment.getId());
     assertThat(commentOptional.get().getContent()).isEqualTo("댓글 내용");
+
+    Optional<Tierlist> tierlistOptional = tierlistRepository.findById(tierlist.getId());
+    assertThat(tierlistOptional).isPresent();
+    assertThat(tierlistOptional.get().getCommentCount()).isOne();
   }
 
 

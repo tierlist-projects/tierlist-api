@@ -55,10 +55,12 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     TopicResponse.builder().
                         id(1L)
                         .name("토픽1")
+                        .favoriteCount(10)
                         .isFavorite(true)
                         .category(
                             CategoryResponse.builder()
                                 .id(1L)
+                                .favoriteCount(10)
                                 .name("카테고리1")
                                 .isFavorite(false)
                                 .build())
@@ -66,10 +68,12 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     TopicResponse.builder().
                         id(2L)
                         .name("토픽2")
+                        .favoriteCount(10)
                         .isFavorite(false)
                         .category(
                             CategoryResponse.builder()
                                 .id(1L)
+                                .favoriteCount(10)
                                 .name("카테고리1")
                                 .isFavorite(false)
                                 .build())
@@ -163,22 +167,26 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     TopicResponse.builder().
                         id(1L)
                         .name("토픽1")
+                        .favoriteCount(10)
                         .isFavorite(true)
                         .category(
                             CategoryResponse.builder()
                                 .id(1L)
                                 .name("카테고리1")
+                                .favoriteCount(10)
                                 .isFavorite(false)
                                 .build())
                         .build(),
                     TopicResponse.builder().
                         id(2L)
                         .name("토픽2")
+                        .favoriteCount(10)
                         .isFavorite(false)
                         .category(
                             CategoryResponse.builder()
                                 .id(1L)
                                 .name("카테고리1")
+                                .favoriteCount(10)
                                 .isFavorite(false)
                                 .build())
                         .build()
@@ -330,22 +338,26 @@ class TopicReadDocsTest extends RestDocsTestSupport {
                     TopicResponse.builder().
                         id(1L)
                         .name("토픽1")
+                        .favoriteCount(10)
                         .isFavorite(true)
                         .category(
                             CategoryResponse.builder()
                                 .id(1L)
                                 .name("카테고리1")
+                                .favoriteCount(10)
                                 .isFavorite(false)
                                 .build())
                         .build(),
                     TopicResponse.builder().
                         id(2L)
                         .name("토픽2")
+                        .favoriteCount(10)
                         .isFavorite(false)
                         .category(
                             CategoryResponse.builder()
                                 .id(1L)
                                 .name("카테고리1")
+                                .favoriteCount(10)
                                 .isFavorite(false)
                                 .build())
                         .build()

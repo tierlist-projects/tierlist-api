@@ -1,7 +1,6 @@
 package com.tierlist.tierlist.global.docs.tierlist;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -17,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistReadController;
@@ -262,64 +262,70 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
   @Test
   void read_tierlists_200() throws Exception {
 
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 2;
     String query = "qqq";
     TierlistFilter filter = TierlistFilter.HOT;
 
-    given(tierlistReadUseCase.getTierlists(any(), anyInt(), anyInt(), any(), any()))
+    given(tierlistReadUseCase.getTierlists(any(), any(), any(), any()))
         .willReturn(
-            List.of(
-                TierlistResponse.builder()
-                    .id(1L)
-                    .title("티어리스트 제목1")
-                    .topic(TopicResponse.builder()
-                        .id(1L)
-                        .name("토픽1")
-                        .category(CategoryResponse.builder()
+            PageResponse.<TierlistResponse>builder()
+                .numberOfElements(2)
+                .pageNumber(0)
+                .pageSize(2)
+                .totalElements(3)
+                .totalPages(2)
+                .content(
+                    List.of(
+                        TierlistResponse.builder()
                             .id(1L)
-                            .name("카테고리1")
-                            .build())
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("닉네임1")
-                        .profileImage("profile-image-1")
-                        .build())
-                    .build(),
-                TierlistResponse.builder()
-                    .id(2L)
-                    .title("티어리스트 제목2")
-                    .topic(TopicResponse.builder()
-                        .id(2L)
-                        .name("토픽2")
-                        .category(CategoryResponse.builder()
+                            .title("티어리스트 제목1")
+                            .topic(TopicResponse.builder()
+                                .id(1L)
+                                .name("토픽1")
+                                .category(CategoryResponse.builder()
+                                    .id(1L)
+                                    .name("카테고리1")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임1")
+                                .profileImage("profile-image-1")
+                                .build())
+                            .build(),
+                        TierlistResponse.builder()
                             .id(2L)
-                            .name("카테고리2")
-                            .build())
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("닉네임2")
-                        .profileImage("profile-image-2")
-                        .build())
-                    .build()
-            )
+                            .title("티어리스트 제목2")
+                            .topic(TopicResponse.builder()
+                                .id(2L)
+                                .name("토픽2")
+                                .category(CategoryResponse.builder()
+                                    .id(2L)
+                                    .name("카테고리2")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임1")
+                                .profileImage("profile-image-1")
+                                .build())
+                            .build()
+                    )
+                ).build()
         );
 
     mvc.perform(get("/tierlist")
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
             .queryParam("query", query)
             .queryParam("filter", filter.name())
         )
@@ -331,12 +337,11 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .optional()
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작")),
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20"),
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
@@ -346,43 +351,47 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .attributes(constraints("RECENT, HOT만 가능"))
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("티어리스트 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("티어리스트 식별번호"),
-                fieldWithPath("[].title")
+                fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
-                fieldWithPath("[].createdAt")
+                fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
-                fieldWithPath("[].topic")
+                fieldWithPath("content.[].topic")
                     .description("티어리스트가 해당되는 토픽"),
-                fieldWithPath("[].topic.id")
+                fieldWithPath("content.[].topic.id")
                     .description("티어리스트가 해당되는 토픽 식별번호"),
-                fieldWithPath("[].topic.name")
+                fieldWithPath("content.[].topic.name")
                     .description("티어리스트가 해당되는 토픽 이름"),
-                fieldWithPath("[].topic.favoriteCount")
-                    .description("티어리스트가 해당되는 토픽 즐겨찾기 갯수"),
-                fieldWithPath("[].topic.category")
+                fieldWithPath("content.[].topic.category")
                     .description("토픽이 해당되는 카테고리"),
-                fieldWithPath("[].topic.category.id")
+                fieldWithPath("content.[].topic.category.id")
                     .description("토픽이 해당되는 카테고리 식별번호"),
-                fieldWithPath("[].topic.category.name")
-                    .description("토픽이 해당되는 카테고리 이름"),
-                fieldWithPath("[].topic.category.favoriteCount")
+                fieldWithPath("content.[].topic.category.name")
                     .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
-                fieldWithPath("[].likesCount")
+                fieldWithPath("content.[].likesCount")
                     .description("티어리스트 좋아요 갯수"),
-                fieldWithPath("[].commentsCount")
+                fieldWithPath("content.[].commentsCount")
                     .description("티어리스트 댓글 갯수"),
-                fieldWithPath("[].viewCount")
-                    .description("티어리스트 조회수"),
-                fieldWithPath("[].writer")
+                fieldWithPath("content.[].writer")
                     .description("티어리스트 작성자"),
-                fieldWithPath("[].writer.id")
+                fieldWithPath("content.[].writer.id")
                     .description("티어리스트 작성자 식별번호"),
-                fieldWithPath("[].writer.nickname")
+                fieldWithPath("content.[].writer.nickname")
                     .description("티어리스트 작성자 닉네임"),
-                fieldWithPath("[].writer.profileImage")
+                fieldWithPath("content.[].writer.profileImage")
                     .description("티어리스트 작성자 프로필 이미지 파일명")
             )
         ));
@@ -391,56 +400,70 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
   @Test
   void read_tierlists_my_200() throws Exception {
 
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 2;
     String query = "qqq";
     TierlistFilter filter = TierlistFilter.HOT;
 
-    given(tierlistReadUseCase.getMyTierlists(any(), anyInt(), anyInt(), any(), any()))
+    given(tierlistReadUseCase.getMyTierlists(any(), any(), any(), any()))
         .willReturn(
-            List.of(
-                TierlistResponse.builder()
-                    .id(1L)
-                    .title("티어리스트 제목1")
-                    .isPublished(false)
-                    .topic(TopicResponse.builder()
-                        .id(1L)
-                        .name("토픽1")
-                        .category(CategoryResponse.builder()
+            PageResponse.<TierlistResponse>builder()
+                .numberOfElements(2)
+                .pageNumber(0)
+                .pageSize(2)
+                .totalElements(3)
+                .totalPages(2)
+                .content(
+                    List.of(
+                        TierlistResponse.builder()
                             .id(1L)
-                            .name("카테고리1")
-                            .build())
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .build(),
-                TierlistResponse.builder()
-                    .id(2L)
-                    .title("티어리스트 제목2")
-                    .isPublished(true)
-                    .topic(TopicResponse.builder()
-                        .id(2L)
-                        .name("토픽2")
-                        .category(CategoryResponse.builder()
+                            .title("티어리스트 제목1")
+                            .topic(TopicResponse.builder()
+                                .id(1L)
+                                .name("토픽1")
+                                .category(CategoryResponse.builder()
+                                    .id(1L)
+                                    .name("카테고리1")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임1")
+                                .profileImage("profile-image-1")
+                                .build())
+                            .build(),
+                        TierlistResponse.builder()
                             .id(2L)
-                            .name("카테고리2")
-                            .build())
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .build()
-            )
+                            .title("티어리스트 제목2")
+                            .topic(TopicResponse.builder()
+                                .id(2L)
+                                .name("토픽2")
+                                .category(CategoryResponse.builder()
+                                    .id(2L)
+                                    .name("카테고리2")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임2")
+                                .profileImage("profile-image-2")
+                                .build())
+                            .build()
+                    )
+                ).build()
         );
 
     mvc.perform(get("/me/tierlist")
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
             .queryParam("query", query)
             .queryParam("filter", filter.name())
         )
@@ -452,12 +475,11 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .optional()
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작")),
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20"),
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
@@ -467,38 +489,48 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .attributes(constraints("RECENT, HOT만 가능"))
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("티어리스트 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("티어리스트 식별번호"),
-                fieldWithPath("[].title")
+                fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
-                fieldWithPath("[].createdAt")
+                fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
-                fieldWithPath("[].isPublished")
-                    .description("티어리스트 PUBLISH 여부"),
-                fieldWithPath("[].topic")
+                fieldWithPath("content.[].topic")
                     .description("티어리스트가 해당되는 토픽"),
-                fieldWithPath("[].topic.id")
+                fieldWithPath("content.[].topic.id")
                     .description("티어리스트가 해당되는 토픽 식별번호"),
-                fieldWithPath("[].topic.name")
+                fieldWithPath("content.[].topic.name")
                     .description("티어리스트가 해당되는 토픽 이름"),
-                fieldWithPath("[].topic.category")
+                fieldWithPath("content.[].topic.category")
                     .description("토픽이 해당되는 카테고리"),
-                fieldWithPath("[].topic.favoriteCount")
-                    .description("티어리스트가 해당되는 토픽 즐겨찾기 갯수"),
-                fieldWithPath("[].topic.category.id")
+                fieldWithPath("content.[].topic.category.id")
                     .description("토픽이 해당되는 카테고리 식별번호"),
-                fieldWithPath("[].topic.category.favoriteCount")
+                fieldWithPath("content.[].topic.category.name")
                     .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
-                fieldWithPath("[].topic.category.name")
-                    .description("토픽이 해당되는 카테고리 이름"),
-                fieldWithPath("[].likesCount")
+                fieldWithPath("content.[].likesCount")
                     .description("티어리스트 좋아요 갯수"),
-                fieldWithPath("[].commentsCount")
+                fieldWithPath("content.[].commentsCount")
                     .description("티어리스트 댓글 갯수"),
-                fieldWithPath("[].viewCount")
-                    .description("티어리스트 조회수")
+                fieldWithPath("content.[].writer")
+                    .description("티어리스트 작성자"),
+                fieldWithPath("content.[].writer.id")
+                    .description("티어리스트 작성자 식별번호"),
+                fieldWithPath("content.[].writer.nickname")
+                    .description("티어리스트 작성자 닉네임"),
+                fieldWithPath("content.[].writer.profileImage")
+                    .description("티어리스트 작성자 프로필 이미지 파일명")
             )
         ));
   }
@@ -507,58 +539,70 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
   void read_tierlists_of_category_200() throws Exception {
 
     Long categoryId = 1L;
-
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 2;
     String query = "qqq";
     TierlistFilter filter = TierlistFilter.HOT;
 
-    given(
-        tierlistReadUseCase.getTierlistsOfCategory(any(), any(), anyInt(), anyInt(), any(), any()))
+    given(tierlistReadUseCase.getTierlistsOfCategory(any(), any(), any(), any(), any()))
         .willReturn(
-            List.of(
-                TierlistResponse.builder()
-                    .id(1L)
-                    .title("티어리스트 제목1")
-                    .topic(TopicResponse.builder()
-                        .id(1L)
-                        .name("토픽1")
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("닉네임1")
-                        .profileImage("profile-image-1")
-                        .build())
-                    .build(),
-                TierlistResponse.builder()
-                    .id(2L)
-                    .title("티어리스트 제목2")
-                    .topic(TopicResponse.builder()
-                        .id(2L)
-                        .name("토픽2")
-                        .build())
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("닉네임2")
-                        .profileImage("profile-image-2")
-                        .build())
-                    .build()
-            )
+            PageResponse.<TierlistResponse>builder()
+                .numberOfElements(2)
+                .pageNumber(0)
+                .pageSize(2)
+                .totalElements(3)
+                .totalPages(2)
+                .content(
+                    List.of(
+                        TierlistResponse.builder()
+                            .id(1L)
+                            .title("티어리스트 제목1")
+                            .topic(TopicResponse.builder()
+                                .id(1L)
+                                .name("토픽1")
+                                .category(CategoryResponse.builder()
+                                    .id(1L)
+                                    .name("카테고리1")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임1")
+                                .profileImage("profile-image-1")
+                                .build())
+                            .build(),
+                        TierlistResponse.builder()
+                            .id(2L)
+                            .title("티어리스트 제목2")
+                            .topic(TopicResponse.builder()
+                                .id(2L)
+                                .name("토픽2")
+                                .category(CategoryResponse.builder()
+                                    .id(2L)
+                                    .name("카테고리2")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임2")
+                                .profileImage("profile-image-2")
+                                .build())
+                            .build()
+                    )
+                ).build()
         );
 
     mvc.perform(get("/category/{categoryId}/tierlist", categoryId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
             .queryParam("query", query)
             .queryParam("filter", filter.name())
         )
@@ -574,12 +618,11 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("Category ID")
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작")),
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20"),
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
@@ -589,35 +632,47 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .attributes(constraints("RECENT, HOT만 가능"))
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("티어리스트 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("티어리스트 식별번호"),
-                fieldWithPath("[].title")
+                fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
-                fieldWithPath("[].createdAt")
+                fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
-                fieldWithPath("[].topic")
+                fieldWithPath("content.[].topic")
                     .description("티어리스트가 해당되는 토픽"),
-                fieldWithPath("[].topic.favoriteCount")
-                    .description("티어리스트가 해당되는 토픽 즐겨찾기 갯수"),
-                fieldWithPath("[].topic.id")
+                fieldWithPath("content.[].topic.id")
                     .description("티어리스트가 해당되는 토픽 식별번호"),
-                fieldWithPath("[].topic.name")
+                fieldWithPath("content.[].topic.name")
                     .description("티어리스트가 해당되는 토픽 이름"),
-                fieldWithPath("[].likesCount")
+                fieldWithPath("content.[].topic.category")
+                    .description("토픽이 해당되는 카테고리"),
+                fieldWithPath("content.[].topic.category.id")
+                    .description("토픽이 해당되는 카테고리 식별번호"),
+                fieldWithPath("content.[].topic.category.name")
+                    .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
+                fieldWithPath("content.[].likesCount")
                     .description("티어리스트 좋아요 갯수"),
-                fieldWithPath("[].commentsCount")
+                fieldWithPath("content.[].commentsCount")
                     .description("티어리스트 댓글 갯수"),
-                fieldWithPath("[].viewCount")
-                    .description("티어리스트 조회수"),
-                fieldWithPath("[].writer")
+                fieldWithPath("content.[].writer")
                     .description("티어리스트 작성자"),
-                fieldWithPath("[].writer.id")
+                fieldWithPath("content.[].writer.id")
                     .description("티어리스트 작성자 식별번호"),
-                fieldWithPath("[].writer.nickname")
+                fieldWithPath("content.[].writer.nickname")
                     .description("티어리스트 작성자 닉네임"),
-                fieldWithPath("[].writer.profileImage")
+                fieldWithPath("content.[].writer.profileImage")
                     .description("티어리스트 작성자 프로필 이미지 파일명")
             )
         ));
@@ -634,7 +689,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
     TierlistFilter filter = TierlistFilter.HOT;
 
     given(
-        tierlistReadUseCase.getTierlistsOfCategory(any(), any(), anyInt(), anyInt(), any(), any()))
+        tierlistReadUseCase.getTierlistsOfCategory(any(), any(), any(), any(), any()))
         .willThrow(new CategoryNotFoundException());
 
     mvc.perform(get("/category/{categoryId}/tierlist", categoryId)
@@ -686,50 +741,70 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
   void read_tierlists_of_topic_200() throws Exception {
 
     Long topicId = 1L;
-
-    int pageCount = 1;
-    int pageSize = 10;
+    int page = 0;
+    int size = 2;
     String query = "qqq";
     TierlistFilter filter = TierlistFilter.HOT;
 
-    given(
-        tierlistReadUseCase.getTierlistsOfTopic(any(), any(), anyInt(), anyInt(), any(), any()))
+    given(tierlistReadUseCase.getTierlistsOfTopic(any(), any(), any(), any(), any()))
         .willReturn(
-            List.of(
-                TierlistResponse.builder()
-                    .id(1L)
-                    .title("티어리스트 제목1")
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("닉네임1")
-                        .profileImage("profile-image-1")
-                        .build())
-                    .build(),
-                TierlistResponse.builder()
-                    .id(2L)
-                    .title("티어리스트 제목2")
-                    .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
-                    .likesCount(19)
-                    .commentsCount(10)
-                    .viewCount(200)
-                    .writer(MemberResponse.builder()
-                        .id(1L)
-                        .nickname("닉네임2")
-                        .profileImage("profile-image-2")
-                        .build())
-                    .build()
-            )
+            PageResponse.<TierlistResponse>builder()
+                .numberOfElements(2)
+                .pageNumber(0)
+                .pageSize(2)
+                .totalElements(3)
+                .totalPages(2)
+                .content(
+                    List.of(
+                        TierlistResponse.builder()
+                            .id(1L)
+                            .title("티어리스트 제목1")
+                            .topic(TopicResponse.builder()
+                                .id(1L)
+                                .name("토픽1")
+                                .category(CategoryResponse.builder()
+                                    .id(1L)
+                                    .name("카테고리1")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임1")
+                                .profileImage("profile-image-1")
+                                .build())
+                            .build(),
+                        TierlistResponse.builder()
+                            .id(2L)
+                            .title("티어리스트 제목2")
+                            .topic(TopicResponse.builder()
+                                .id(2L)
+                                .name("토픽2")
+                                .category(CategoryResponse.builder()
+                                    .id(2L)
+                                    .name("카테고리2")
+                                    .build())
+                                .build())
+                            .createdAt(LocalDateTime.of(2024, 4, 23, 20, 17, 15))
+                            .likesCount(19)
+                            .commentsCount(10)
+                            .writer(MemberResponse.builder()
+                                .id(1L)
+                                .nickname("닉네임2")
+                                .profileImage("profile-image-2")
+                                .build())
+                            .build()
+                    )
+                ).build()
         );
 
     mvc.perform(get("/topic/{topicId}/tierlist", topicId)
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")
-            .queryParam("pageCount", String.valueOf(pageCount))
-            .queryParam("pageSize", String.valueOf(pageSize))
+            .queryParam("page", String.valueOf(page))
+            .queryParam("size", String.valueOf(size))
             .queryParam("query", query)
             .queryParam("filter", filter.name())
         )
@@ -745,12 +820,11 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("Topic ID")
             ),
             queryParameters(
-                parameterWithName("pageCount")
-                    .description("페이지 넘버")
-                    .attributes(constraints("1부터 시작")),
-                parameterWithName("pageSize")
-                    .description("페이지 당 컨텐츠 갯수")
-                    .attributes(constraints("1부터 시작")),
+                parameterWithName("page")
+                    .description("페이지 넘버, default = 0")
+                    .attributes(constraints("0부터 시작")),
+                parameterWithName("size")
+                    .description("페이지 당 컨텐츠 갯수, default = 20"),
                 parameterWithName("query")
                     .description("검색어")
                     .optional()
@@ -760,30 +834,51 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .attributes(constraints("RECENT, HOT만 가능"))
             ),
             responseFields(
-                fieldWithPath("[]")
+                fieldWithPath("numberOfElements")
+                    .description("컨텐츠의 갯수"),
+                fieldWithPath("pageNumber")
+                    .description("현재 페이지 번호(0부터 시작)"),
+                fieldWithPath("pageSize")
+                    .description("페이지당 컨텐츠 갯수"),
+                fieldWithPath("totalPages")
+                    .description("전체 페이지 갯수"),
+                fieldWithPath("totalElements")
+                    .description("컨텐츠 전체의 갯수"),
+                fieldWithPath("content.[]")
                     .description("티어리스트 목록"),
-                fieldWithPath("[].id")
+                fieldWithPath("content.[].id")
                     .description("티어리스트 식별번호"),
-                fieldWithPath("[].title")
+                fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
-                fieldWithPath("[].createdAt")
+                fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
-                fieldWithPath("[].likesCount")
+                fieldWithPath("content.[].topic")
+                    .description("티어리스트가 해당되는 토픽"),
+                fieldWithPath("content.[].topic.id")
+                    .description("티어리스트가 해당되는 토픽 식별번호"),
+                fieldWithPath("content.[].topic.name")
+                    .description("티어리스트가 해당되는 토픽 이름"),
+                fieldWithPath("content.[].topic.category")
+                    .description("토픽이 해당되는 카테고리"),
+                fieldWithPath("content.[].topic.category.id")
+                    .description("토픽이 해당되는 카테고리 식별번호"),
+                fieldWithPath("content.[].topic.category.name")
+                    .description("토픽이 해당되는 카테고리 즐겨찾기 갯수"),
+                fieldWithPath("content.[].likesCount")
                     .description("티어리스트 좋아요 갯수"),
-                fieldWithPath("[].commentsCount")
+                fieldWithPath("content.[].commentsCount")
                     .description("티어리스트 댓글 갯수"),
-                fieldWithPath("[].viewCount")
-                    .description("티어리스트 조회수"),
-                fieldWithPath("[].writer")
+                fieldWithPath("content.[].writer")
                     .description("티어리스트 작성자"),
-                fieldWithPath("[].writer.id")
+                fieldWithPath("content.[].writer.id")
                     .description("티어리스트 작성자 식별번호"),
-                fieldWithPath("[].writer.nickname")
+                fieldWithPath("content.[].writer.nickname")
                     .description("티어리스트 작성자 닉네임"),
-                fieldWithPath("[].writer.profileImage")
+                fieldWithPath("content.[].writer.profileImage")
                     .description("티어리스트 작성자 프로필 이미지 파일명")
             )
         ));
+
   }
 
   @Test
@@ -797,7 +892,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
     TierlistFilter filter = TierlistFilter.HOT;
 
     given(
-        tierlistReadUseCase.getTierlistsOfTopic(any(), any(), anyInt(), anyInt(), any(), any()))
+        tierlistReadUseCase.getTierlistsOfTopic(any(), any(), any(), any(), any()))
         .willThrow(new TopicNotFoundException());
 
     mvc.perform(get("/topic/{topicId}/tierlist", topicId)

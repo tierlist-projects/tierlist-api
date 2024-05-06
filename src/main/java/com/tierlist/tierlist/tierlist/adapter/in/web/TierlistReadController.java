@@ -1,11 +1,12 @@
 package com.tierlist.tierlist.tierlist.adapter.in.web;
 
+import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.tierlist.application.domain.model.TierlistFilter;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistDetailResponse;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistResponse;
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistReadUseCase;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,57 +28,53 @@ public class TierlistReadController {
   }
 
   @GetMapping("/tierlist")
-  public ResponseEntity<List<TierlistResponse>> getTierlists(
+  public ResponseEntity<PageResponse<TierlistResponse>> getTierlists(
       @AuthenticationPrincipal String email,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize,
-      @RequestParam String query,
-      @RequestParam TierlistFilter filter) {
+      Pageable pageable,
+      @RequestParam(required = false) String query,
+      @RequestParam(defaultValue = "RECENT") TierlistFilter filter) {
 
-    List<TierlistResponse> response = tierlistReadUseCase
-        .getTierlists(email, pageCount, pageSize, query, filter);
+    PageResponse<TierlistResponse> response = tierlistReadUseCase
+        .getTierlists(email, pageable, query, filter);
     return ResponseEntity.ok(response);
   }
 
   @GetMapping("/me/tierlist")
-  public ResponseEntity<List<TierlistResponse>> getMyTierlists(
+  public ResponseEntity<PageResponse<TierlistResponse>> getMyTierlists(
       @AuthenticationPrincipal String email,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize,
-      @RequestParam String query,
-      @RequestParam TierlistFilter filter) {
+      Pageable pageable,
+      @RequestParam(required = false) String query,
+      @RequestParam(defaultValue = "RECENT") TierlistFilter filter) {
 
-    List<TierlistResponse> response = tierlistReadUseCase
-        .getMyTierlists(email, pageCount, pageSize, query, filter);
+    PageResponse<TierlistResponse> response = tierlistReadUseCase
+        .getMyTierlists(email, pageable, query, filter);
     return ResponseEntity.ok(response);
   }
 
   @GetMapping("/category/{categoryId}/tierlist")
-  public ResponseEntity<List<TierlistResponse>> getTierlistsOfCategory(
+  public ResponseEntity<PageResponse<TierlistResponse>> getTierlistsOfCategory(
       @AuthenticationPrincipal String email,
       @PathVariable Long categoryId,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize,
-      @RequestParam String query,
-      @RequestParam TierlistFilter filter) {
+      Pageable pageable,
+      @RequestParam(required = false) String query,
+      @RequestParam(defaultValue = "RECENT") TierlistFilter filter) {
 
-    List<TierlistResponse> response = tierlistReadUseCase
-        .getTierlistsOfCategory(email, categoryId, pageCount, pageSize, query, filter);
+    PageResponse<TierlistResponse> response = tierlistReadUseCase
+        .getTierlistsOfCategory(email, categoryId, pageable, query, filter);
     return ResponseEntity.ok(response);
 
   }
 
   @GetMapping("/topic/{topicId}/tierlist")
-  public ResponseEntity<List<TierlistResponse>> getTierlistsOfTopic(
+  public ResponseEntity<PageResponse<TierlistResponse>> getTierlistsOfTopic(
       @AuthenticationPrincipal String email,
       @PathVariable Long topicId,
-      @RequestParam int pageCount,
-      @RequestParam int pageSize,
-      @RequestParam String query,
-      @RequestParam TierlistFilter filter) {
+      Pageable pageable,
+      @RequestParam(required = false) String query,
+      @RequestParam(defaultValue = "RECENT") TierlistFilter filter) {
 
-    List<TierlistResponse> response = tierlistReadUseCase
-        .getTierlistsOfTopic(email, topicId, pageCount, pageSize, query, filter);
+    PageResponse<TierlistResponse> response = tierlistReadUseCase
+        .getTierlistsOfTopic(email, topicId, pageable, query, filter);
     return ResponseEntity.ok(response);
 
   }

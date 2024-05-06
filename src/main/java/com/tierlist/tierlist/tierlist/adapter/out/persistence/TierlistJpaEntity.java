@@ -48,6 +48,7 @@ public class TierlistJpaEntity extends TimeBaseEntity {
         .topicId(tierlist.getTopicId())
         .isPublished(tierlist.isPublished())
         .likeCount(tierlist.getLikeCount())
+        .commentCount(tierlist.getCommentCount())
         .createdAt(tierlist.getCreatedAt())
         .modifiedAt(tierlist.getModifiedAt())
         .build();
@@ -62,6 +63,7 @@ public class TierlistJpaEntity extends TimeBaseEntity {
         .topicId(topicId)
         .isPublished(isPublished)
         .likeCount(likeCount)
+        .commentCount(commentCount)
         .createdAt(getCreatedAt())
         .modifiedAt(getModifiedAt())
         .build();

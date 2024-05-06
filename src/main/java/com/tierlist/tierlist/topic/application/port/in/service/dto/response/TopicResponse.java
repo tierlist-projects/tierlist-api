@@ -18,11 +18,11 @@ public class TopicResponse {
 
   private Long id;
   private String name;
-  private int favoriteCount;
+  private Integer favoriteCount;
   private Boolean isFavorite;
   private CategoryResponse category;
 
-  public TopicResponse(Long id, String name, int favoriteCount, Long categoryId,
+  public TopicResponse(Long id, String name, Integer favoriteCount, Long categoryId,
       String categoryName,
       int categoryFavoriteCount) {
     this.id = id;

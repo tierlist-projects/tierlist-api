@@ -26,6 +26,8 @@ public class Tierlist {
 
   private int likeCount;
 
+  private int commentCount;
+
   private LocalDateTime createdAt;
 
   private LocalDateTime modifiedAt;
@@ -53,5 +55,9 @@ public class Tierlist {
 
   public boolean canAddComment() {
     return isPublished;
+  }
+
+  public void addComment() {
+    commentCount++;
   }
 }
