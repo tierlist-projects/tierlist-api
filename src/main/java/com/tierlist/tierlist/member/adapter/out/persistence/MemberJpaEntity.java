@@ -42,6 +42,7 @@ public class MemberJpaEntity {
     Password password = member.getPassword();
 
     return MemberJpaEntity.builder()
+        .id(member.getId())
         .nickname(member.getNickname())
         .encodedPassword(password.getEncodedPassword())
         .email(member.getEmail())
