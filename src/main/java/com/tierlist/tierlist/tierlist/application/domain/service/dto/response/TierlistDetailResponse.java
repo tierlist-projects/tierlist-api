@@ -35,7 +35,7 @@ public class TierlistDetailResponse {
   private ItemRanksResponse ranks;
 
   public TierlistDetailResponse(Long id, String title, String content,
-      Long writerId, String writerEmail, String writerProfileImage,
+      Long writerId, String writerNickname, String writerProfileImage,
       Long topicId, String topicName,
       Long categoryId, String categoryName,
       boolean isPublished, boolean isMyTierlist, boolean liked, int likesCount, int commentsCount,
@@ -45,7 +45,7 @@ public class TierlistDetailResponse {
     this.content = content;
     this.writer = MemberResponse.builder()
         .id(writerId)
-        .email(writerEmail)
+        .nickname(writerNickname)
         .profileImage(writerProfileImage)
         .build();
     this.topic = TopicResponse.builder()

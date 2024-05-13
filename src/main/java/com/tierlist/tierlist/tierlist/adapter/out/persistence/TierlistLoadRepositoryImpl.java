@@ -69,7 +69,7 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
                 tierlistJpaEntity.title,
                 tierlistJpaEntity.content,
                 memberJpaEntity.id,
-                memberJpaEntity.email,
+                memberJpaEntity.nickname,
                 memberJpaEntity.profileImage,
                 topicJpaEntity.id,
                 topicJpaEntity.name,
