@@ -12,4 +12,5 @@ public interface CategoryReadUseCase {
 
   PageResponse<CategoryResponse> getFavoriteCategories(String email, Pageable pageable);
 
+  CategoryResponse getCategory(String email, Long id);
 }

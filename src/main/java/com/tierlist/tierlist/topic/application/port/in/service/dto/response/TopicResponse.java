@@ -30,4 +30,15 @@ public class TopicResponse {
     this.favoriteCount = favoriteCount;
     this.category = new CategoryResponse(categoryId, categoryName, categoryFavoriteCount);
   }
+
+  public TopicResponse(Long id, String name, Integer favoriteCount, Boolean isFavorite,
+      Long categoryId,
+      String categoryName,
+      int categoryFavoriteCount) {
+    this.id = id;
+    this.name = name;
+    this.favoriteCount = favoriteCount;
+    this.isFavorite = isFavorite;
+    this.category = new CategoryResponse(categoryId, categoryName, categoryFavoriteCount);
+  }
 }

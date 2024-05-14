@@ -12,4 +12,6 @@ public interface CategoryLoadRepository {
 
   Page<CategoryResponse> loadCategories(String email, Pageable pageable, String query,
       CategoryFilter filter);
+
+  CategoryResponse loadCategoryById(String viewerEmail, Long id);
 }

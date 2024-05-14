@@ -19,6 +19,13 @@ public class TopicReadController {
 
   private final TopicReadUseCase topicReadUseCase;
 
+  @GetMapping("/topic/{topicId}")
+  public ResponseEntity<TopicResponse> getTopic(
+      @AuthenticationPrincipal String email,
+      @PathVariable Long topicId) {
+    return ResponseEntity.ok(topicReadUseCase.getTopic(email, topicId));
+  }
+
   @GetMapping("/topic")
   public ResponseEntity<PageResponse<TopicResponse>> getTopics(
       @AuthenticationPrincipal String email,

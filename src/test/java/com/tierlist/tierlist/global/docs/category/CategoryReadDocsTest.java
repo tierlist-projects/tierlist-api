@@ -5,14 +5,17 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.tierlist.tierlist.category.adapter.in.web.CategoryReadController;
+import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
 import com.tierlist.tierlist.category.application.port.in.service.CategoryReadUseCase;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
@@ -22,12 +25,88 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 @WebMvcTest(CategoryReadController.class)
 class CategoryReadDocsTest extends RestDocsTestSupport {
 
   @MockBean
   private CategoryReadUseCase categoryReadUseCase;
+
+  @Test
+  void read_category_of_id_200() throws Exception {
+
+    Long categoryId = 1L;
+    given(categoryReadUseCase.getCategory(any(), any())).willReturn(
+        CategoryResponse.builder()
+            .id(1L)
+            .name("카테고리1")
+            .favoriteCount(0)
+            .isFavorite(false)
+            .build()
+    );
+
+    mvc.perform(RestDocumentationRequestBuilders.get("/category/{categoryId}", categoryId)
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+        )
+        .andExpect(status().isOk())
+        .andDo(restDocs.document(
+            pathParameters(
+                parameterWithName("categoryId")
+                    .description("Category ID")
+            ),
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+                    .optional()
+            ),
+            responseFields(
+                fieldWithPath("id")
+                    .description("카테고리 식별번호"),
+                fieldWithPath("name")
+                    .description("카테고리 이름"),
+                fieldWithPath("isFavorite")
+                    .description("카테고리 즐겨찾기 여부"),
+                fieldWithPath("favoriteCount")
+                    .description("카테고리 즐겨찾기 갯수")
+            )
+        ));
+  }
+
+  @Test
+  void read_category_of_id_404() throws Exception {
+
+    Long categoryId = 1L;
+    given(categoryReadUseCase.getCategory(any(), any())).willThrow(
+        new CategoryNotFoundException()
+    );
+
+    mvc.perform(RestDocumentationRequestBuilders.get("/category/{categoryId}", categoryId)
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+        )
+        .andExpect(status().isNotFound())
+        .andDo(restDocs.document(
+            pathParameters(
+                parameterWithName("categoryId")
+                    .description("Category ID")
+            ),
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+                    .optional()
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
+            )
+        ));
+  }
 
   @Test
   void read_category_200() throws Exception {
