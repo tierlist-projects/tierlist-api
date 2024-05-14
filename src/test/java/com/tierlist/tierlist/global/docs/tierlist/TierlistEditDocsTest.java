@@ -41,6 +41,7 @@ class TierlistEditDocsTest extends RestDocsTestSupport {
     TierlistEditRequest request = TierlistEditRequest.builder()
         .title("변경될 제목")
         .content("내용")
+        .thumbnailImage("thumbnail-image")
         .sRanks(List.of(
             ItemRankDto.builder()
                 .itemId(1L)
@@ -107,6 +108,9 @@ class TierlistEditDocsTest extends RestDocsTestSupport {
                 fieldWithPath("content")
                     .type(STRING)
                     .description("티어리스트에 작성할 내용"),
+                fieldWithPath("thumbnailImage")
+                    .type(STRING)
+                    .description("티어리스트 썸네일 이미지"),
                 fieldWithPath("sranks")
                     .type(ARRAY)
                     .description("S랭크에 해당될 아이템 목록"),

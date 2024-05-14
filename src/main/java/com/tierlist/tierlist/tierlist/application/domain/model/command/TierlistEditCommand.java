@@ -24,6 +24,7 @@ public class TierlistEditCommand {
   private List<ItemRankCommand> noneRanks;
 
   private String content;
+  private String thumbnailImage;
 
   public List<ItemRank> toItemRanks(Long tierlistId) {
     List<ItemRank> ret = new ArrayList<>();

@@ -24,6 +24,8 @@ public class TierlistEditRequest {
   @NotBlank
   private String content;
 
+  private String thumbnailImage;
+
   @NotNull
   private List<ItemRankDto> sRanks;
 
@@ -48,6 +50,7 @@ public class TierlistEditRequest {
   public TierlistEditCommand toCommand() {
     return TierlistEditCommand.builder()
         .title(title)
+        .thumbnailImage(thumbnailImage)
         .sRanks(sRanks.stream().map(ItemRankDto::toCommand).toList())
         .aRanks(aRanks.stream().map(ItemRankDto::toCommand).toList())
         .bRanks(bRanks.stream().map(ItemRankDto::toCommand).toList())

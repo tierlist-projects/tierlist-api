@@ -30,6 +30,8 @@ public class TierlistJpaEntity extends TimeBaseEntity {
 
   private String content;
 
+  private String thumbnailImage;
+
   private Long memberId;
 
   private Long topicId;
@@ -44,6 +46,7 @@ public class TierlistJpaEntity extends TimeBaseEntity {
         .id(tierlist.getId())
         .title(tierlist.getTitle())
         .content(tierlist.getContent())
+        .thumbnailImage(tierlist.getThumbnailImage())
         .memberId(tierlist.getMemberId())
         .topicId(tierlist.getTopicId())
         .isPublished(tierlist.isPublished())
@@ -59,6 +62,7 @@ public class TierlistJpaEntity extends TimeBaseEntity {
         .id(id)
         .title(title)
         .content(content)
+        .thumbnailImage(thumbnailImage)
         .memberId(memberId)
         .topicId(topicId)
         .isPublished(isPublished)

@@ -18,6 +18,7 @@ public class TierlistResponse {
 
   private Long id;
   private String title;
+  private String thumbnailImage;
 
   private TopicResponse topic;
 
@@ -31,13 +32,14 @@ public class TierlistResponse {
   private Boolean liked;
   private Boolean isPublished;
 
-  public TierlistResponse(Long id, String title, LocalDateTime createdAt,
+  public TierlistResponse(Long id, String title, String thumbnailImage, LocalDateTime createdAt,
       int likesCount, int commentsCount, Boolean liked, Boolean isPublished,
       Long writerId, String writerNickname, String writerProfileImage,
       Long topicId, String topicName,
       Long categoryId, String categoryName) {
     this.id = id;
     this.title = title;
+    this.thumbnailImage = thumbnailImage;
     this.createdAt = createdAt;
     this.likesCount = likesCount;
     this.commentsCount = commentsCount;

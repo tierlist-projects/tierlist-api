@@ -296,6 +296,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(1L)
                             .title("티어리스트 제목1")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(1L)
                                 .name("토픽1")
@@ -316,6 +317,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(2L)
                             .title("티어리스트 제목2")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(2L)
                                 .name("토픽2")
@@ -383,6 +385,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트 식별번호"),
                 fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
+                fieldWithPath("content.[].thumbnailImage")
+                    .description("티어리스트 썸네일 이미지"),
                 fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
                 fieldWithPath("content.[].topic")
@@ -434,6 +438,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(1L)
                             .title("티어리스트 제목1")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(1L)
                                 .name("토픽1")
@@ -454,6 +459,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(2L)
                             .title("티어리스트 제목2")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(2L)
                                 .name("토픽2")
@@ -521,6 +527,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트 식별번호"),
                 fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
+                fieldWithPath("content.[].thumbnailImage")
+                    .description("티어리스트 썸네일 이미지"),
                 fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
                 fieldWithPath("content.[].topic")
@@ -573,6 +581,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(1L)
                             .title("티어리스트 제목1")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(1L)
                                 .name("토픽1")
@@ -593,6 +602,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(2L)
                             .title("티어리스트 제목2")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(2L)
                                 .name("토픽2")
@@ -664,6 +674,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트 식별번호"),
                 fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
+                fieldWithPath("content.[].thumbnailImage")
+                    .description("티어리스트 썸네일 이미지"),
                 fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
                 fieldWithPath("content.[].topic")
@@ -775,6 +787,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(1L)
                             .title("티어리스트 제목1")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(1L)
                                 .name("토픽1")
@@ -795,6 +808,7 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                         TierlistResponse.builder()
                             .id(2L)
                             .title("티어리스트 제목2")
+                            .thumbnailImage("thumbnail-image")
                             .topic(TopicResponse.builder()
                                 .id(2L)
                                 .name("토픽2")
@@ -866,6 +880,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트 식별번호"),
                 fieldWithPath("content.[].title")
                     .description("티어리스트 제목"),
+                fieldWithPath("content.[].thumbnailImage")
+                    .description("티어리스트 썸네일 이미지"),
                 fieldWithPath("content.[].createdAt")
                     .description("티어리스트 생성 시간"),
                 fieldWithPath("content.[].topic")

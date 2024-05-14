@@ -18,6 +18,8 @@ public class Tierlist {
 
   private String content;
 
+  private String thumbnailImage;
+
   private Long topicId;
 
   private Long memberId;
@@ -47,6 +49,7 @@ public class Tierlist {
   public void edit(TierlistEditCommand command) {
     this.title = command.getTitle();
     this.content = command.getContent();
+    this.thumbnailImage = command.getThumbnailImage();
   }
 
   public boolean canView(Member member) {
