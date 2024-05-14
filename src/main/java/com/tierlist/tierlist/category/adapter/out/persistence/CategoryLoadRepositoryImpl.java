@@ -138,4 +138,23 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
     return new PageImpl<>(categoryResponses, pageable, Objects.isNull(count) ? 0 : count);
   }
 
+  @Override
+  public CategoryResponse loadCategoryById(String viewerEmail, Long id) {
+    return jpaQueryFactory.select(
+            Projections.constructor(CategoryResponse.class,
+                categoryJpaEntity.id,
+                categoryJpaEntity.name,
+                memberJpaEntity.id.isNotNull().as("isFavorite"),
+                categoryJpaEntity.favoriteCount
+            ))
+        .from(categoryJpaEntity)
+        .leftJoin(categoryFavoriteJpaEntity)
+        .on(categoryJpaEntity.id.eq(categoryFavoriteJpaEntity.categoryId))
+        .leftJoin(memberJpaEntity)
+        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id))
+        .where(categoryJpaEntity.id.eq(id),
+            memberJpaEntity.email.eq(viewerEmail).or(memberJpaEntity.isNull()))
+        .fetchOne();
+  }
+
 }
