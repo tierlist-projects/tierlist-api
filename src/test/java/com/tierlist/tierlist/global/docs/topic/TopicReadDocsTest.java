@@ -21,6 +21,7 @@ import com.tierlist.tierlist.category.application.port.in.service.dto.response.C
 import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.topic.adapter.in.web.TopicReadController;
+import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicReadUseCase;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
 import java.util.List;
@@ -34,6 +35,94 @@ class TopicReadDocsTest extends RestDocsTestSupport {
 
   @MockBean
   private TopicReadUseCase topicReadUseCase;
+
+  @Test
+  void read_topic_of_id_200() throws Exception {
+
+    Long topicId = 1L;
+    given(topicReadUseCase.getTopic(any(), any())).willReturn(
+        TopicResponse.builder()
+            .id(1L)
+            .name("토픽이름")
+            .favoriteCount(1)
+            .isFavorite(true)
+            .category(
+                CategoryResponse.builder()
+                    .id(1L)
+                    .name("카테고리1")
+                    .favoriteCount(0)
+                    .build()
+            )
+            .build()
+    );
+
+    mvc.perform(RestDocumentationRequestBuilders.get("/topic/{topicId}", topicId)
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+        )
+        .andExpect(status().isOk())
+        .andDo(restDocs.document(
+            pathParameters(
+                parameterWithName("topicId")
+                    .description("Topic ID")
+            ),
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+                    .optional()
+            ),
+            responseFields(
+                fieldWithPath("id")
+                    .description("토픽 식별번호"),
+                fieldWithPath("name")
+                    .description("토픽 이름"),
+                fieldWithPath("isFavorite")
+                    .description("토픽 즐겨찾기 여부"),
+                fieldWithPath("favoriteCount")
+                    .description("토픽 즐겨찾기 갯수"),
+                fieldWithPath("category.id")
+                    .description("카테고리 식별번호"),
+                fieldWithPath("category.name")
+                    .description("카테고리 이름"),
+                fieldWithPath("category.favoriteCount")
+                    .description("카테고리 즐겨찾기 갯수")
+            )
+        ));
+  }
+
+  @Test
+  void read_topic_of_id_404() throws Exception {
+
+    Long topicId = 1L;
+    given(topicReadUseCase.getTopic(any(), any())).willThrow(
+        new TopicNotFoundException()
+    );
+
+    mvc.perform(RestDocumentationRequestBuilders.get("/topic/{topicId}", topicId)
+            .contentType(APPLICATION_JSON)
+            .header("Access-Token", "sample.access.token")
+        )
+        .andExpect(status().isNotFound())
+        .andDo(restDocs.document(
+            pathParameters(
+                parameterWithName("topicId")
+                    .description("Topic ID")
+            ),
+            requestHeaders(
+                headerWithName("Access-Token")
+                    .description("JWT Access Token")
+                    .optional()
+            ),
+            responseFields(
+                fieldWithPath("errorCode")
+                    .type(STRING)
+                    .description("에러 코드"),
+                fieldWithPath("message")
+                    .type(STRING)
+                    .description("에러 메세지")
+            )
+        ));
+  }
 
   @Test
   void read_topic_200() throws Exception {
