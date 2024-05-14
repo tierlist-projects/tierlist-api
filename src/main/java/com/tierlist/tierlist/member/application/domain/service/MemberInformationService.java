@@ -55,5 +55,6 @@ public class MemberInformationService implements MemberInformationUseCase {
   public void changeMemberPassword(String email, ChangeMemberPasswordCommand command) {
     Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
     member.changePassword(command.getPassword(), command.getNewPassword(), passwordEncoder);
+    memberRepository.save(member);
   }
 }
