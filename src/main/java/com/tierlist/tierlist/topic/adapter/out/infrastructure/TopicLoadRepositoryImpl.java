@@ -119,6 +119,30 @@ public class TopicLoadRepositoryImpl implements TopicLoadRepository {
     return new PageImpl<>(topicResponses, pageable, Objects.isNull(count) ? 0 : count);
   }
 
+  @Override
+  public TopicResponse loadTopic(String viewerEmail, Long topicId) {
+    return jpaQueryFactory.select(
+            Projections.constructor(TopicResponse.class,
+                topicJpaEntity.id,
+                topicJpaEntity.name,
+                topicJpaEntity.favoriteCount,
+                memberJpaEntity.id.isNotNull().as("isFavorite"),
+                categoryJpaEntity.id,
+                categoryJpaEntity.name,
+                categoryJpaEntity.favoriteCount
+            ))
+        .from(topicJpaEntity)
+        .leftJoin(topicFavoriteJpaEntity)
+        .on(topicJpaEntity.id.eq(topicFavoriteJpaEntity.topicId))
+        .leftJoin(memberJpaEntity)
+        .on(topicFavoriteJpaEntity.memberId.eq(memberJpaEntity.id))
+        .leftJoin(categoryJpaEntity)
+        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
+        .where(topicJpaEntity.id.eq(topicId),
+            memberJpaEntity.email.eq(viewerEmail).or(memberJpaEntity.isNull()))
+        .fetchOne();
+  }
+
   private BooleanExpression hasCategoryId(Long categoryId) {
     return Objects.isNull(categoryId) ? null : categoryJpaEntity.id.eq(categoryId);
   }

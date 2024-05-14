@@ -12,4 +12,6 @@ public interface TopicLoadRepository {
 
   Page<TopicResponse> loadTopics(String email, Long categoryId, Pageable pageable, String query,
       TopicFilter filter);
+
+  TopicResponse loadTopic(String viewerEmail, Long topicId);
 }

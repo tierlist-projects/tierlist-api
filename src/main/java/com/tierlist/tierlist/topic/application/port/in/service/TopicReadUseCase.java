@@ -13,4 +13,5 @@ public interface TopicReadUseCase {
 
   PageResponse<TopicResponse> getFavoriteTopics(String email, Pageable pageable);
 
+  TopicResponse getTopic(String email, Long topicId);
 }
