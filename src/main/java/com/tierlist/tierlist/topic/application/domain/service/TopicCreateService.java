@@ -9,6 +9,7 @@ import com.tierlist.tierlist.topic.application.port.in.service.TopicCreateUseCas
 import com.tierlist.tierlist.topic.application.port.out.persistence.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +18,7 @@ public class TopicCreateService implements TopicCreateUseCase {
   private final CategoryRepository categoryRepository;
   private final TopicRepository topicRepository;
 
+  @Transactional
   @Override
   public Long create(TopicCreateCommand command) {
     if (!categoryRepository.existsById(command.getCategoryId())) {

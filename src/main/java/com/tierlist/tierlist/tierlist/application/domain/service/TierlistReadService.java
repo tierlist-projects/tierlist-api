@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +33,7 @@ public class TierlistReadService implements TierlistReadUseCase {
   private final TopicRepository topicRepository;
   private final CategoryRepository categoryRepository;
 
+  @Transactional(readOnly = true)
   @Override
   public TierlistDetailResponse getTierlist(String email, Long tierlistId) {
     Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
@@ -44,6 +46,7 @@ public class TierlistReadService implements TierlistReadUseCase {
     return tierlistLoadRepository.loadTierlistById(email, tierlistId);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public PageResponse<TierlistResponse> getTierlists(String email, Pageable pageable, String query,
       TierlistFilter filter) {
@@ -52,6 +55,7 @@ public class TierlistReadService implements TierlistReadUseCase {
     return PageResponse.fromPage(tierlistResponses);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public PageResponse<TierlistResponse> getMyTierlists(String email, Pageable pageable,
       String query, TierlistFilter filter) {
@@ -60,6 +64,7 @@ public class TierlistReadService implements TierlistReadUseCase {
     return PageResponse.fromPage(tierlistResponses);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public PageResponse<TierlistResponse> getTierlistsOfCategory(String email, Long categoryId,
       Pageable pageable, String query, TierlistFilter filter) {
@@ -72,6 +77,7 @@ public class TierlistReadService implements TierlistReadUseCase {
     return PageResponse.fromPage(tierlistResponses);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public PageResponse<TierlistResponse> getTierlistsOfTopic(String email, Long topicId,
       Pageable pageable, String query, TierlistFilter filter) {
