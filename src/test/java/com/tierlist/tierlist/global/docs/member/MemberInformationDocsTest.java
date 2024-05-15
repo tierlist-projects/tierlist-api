@@ -138,9 +138,6 @@ class MemberInformationDocsTest extends RestDocsTestSupport {
 
     ChangeMemberNicknameRequest request = new ChangeMemberNicknameRequest("1");
 
-    doThrow(new NicknameDuplicationException())
-        .when(memberInformationUseCase).changeMemberNickname(any(), any());
-
     mvc.perform(patch("/member/me/nickname")
             .contentType(APPLICATION_JSON)
             .header("Access-Token", "sample.access.token")

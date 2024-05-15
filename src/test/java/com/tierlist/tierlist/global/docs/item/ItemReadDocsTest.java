@@ -138,7 +138,6 @@ class ItemReadDocsTest extends RestDocsTestSupport {
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
-                    .optional()
             ),
             pathParameters(
                 parameterWithName("categoryId")

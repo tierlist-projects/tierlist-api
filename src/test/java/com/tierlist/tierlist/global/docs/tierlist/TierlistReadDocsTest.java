@@ -136,7 +136,6 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
-                    .optional()
             ),
             pathParameters(
                 parameterWithName("tierlistId")
@@ -224,7 +223,6 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
-                    .optional()
             ),
             pathParameters(
                 parameterWithName("tierlistId")
@@ -258,7 +256,6 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
-                    .optional()
             ),
             pathParameters(
                 parameterWithName("tierlistId")
@@ -494,7 +491,6 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
-                    .optional()
             ),
             queryParameters(
                 parameterWithName("page")
