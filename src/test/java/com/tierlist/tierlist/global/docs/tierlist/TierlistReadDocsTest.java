@@ -29,7 +29,7 @@ import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.It
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistDetailResponse;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistResponse;
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistReadUseCase;
-import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
 import java.time.LocalDateTime;
 import java.util.List;

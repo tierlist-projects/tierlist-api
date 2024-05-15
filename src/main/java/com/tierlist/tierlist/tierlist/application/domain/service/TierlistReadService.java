@@ -15,7 +15,7 @@ import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.Ti
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistReadUseCase;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistLoadRepository;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistRepository;
-import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.port.out.persistence.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.topic.adapter.in.web.TopicFavoriteController;
-import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicFavoriteUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

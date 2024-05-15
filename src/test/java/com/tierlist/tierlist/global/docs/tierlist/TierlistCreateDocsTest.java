@@ -21,7 +21,7 @@ import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.tierlist.adapter.in.web.TierlistCreateController;
 import com.tierlist.tierlist.tierlist.adapter.in.web.dto.request.TierlistCreateRequest;
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistCreateUseCase;
-import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

@@ -2,9 +2,9 @@ package com.tierlist.tierlist.topic.application.domain.service;
 
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
 import com.tierlist.tierlist.category.application.port.out.persistence.CategoryRepository;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicDuplicationException;
 import com.tierlist.tierlist.topic.application.domain.model.Topic;
 import com.tierlist.tierlist.topic.application.domain.model.command.TopicCreateCommand;
-import com.tierlist.tierlist.topic.application.exception.TopicDuplicationException;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicCreateUseCase;
 import com.tierlist.tierlist.topic.application.port.out.persistence.TopicRepository;
 import lombok.RequiredArgsConstructor;

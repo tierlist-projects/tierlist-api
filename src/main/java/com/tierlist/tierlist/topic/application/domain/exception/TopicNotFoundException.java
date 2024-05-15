@@ -1,4 +1,4 @@
-package com.tierlist.tierlist.topic.application.exception;
+package com.tierlist.tierlist.topic.application.domain.exception;
 
 import com.tierlist.tierlist.global.error.ErrorCode;
 import com.tierlist.tierlist.global.error.exception.NotFoundException;

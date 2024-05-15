@@ -21,7 +21,7 @@ import com.tierlist.tierlist.category.application.port.in.service.dto.response.C
 import com.tierlist.tierlist.global.common.response.PageResponse;
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.topic.adapter.in.web.TopicReadController;
-import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicReadUseCase;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
 import java.util.List;

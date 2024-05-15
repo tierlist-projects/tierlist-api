@@ -1,8 +1,8 @@
 package com.tierlist.tierlist.topic.application.domain.service;
 
 import com.tierlist.tierlist.global.common.response.PageResponse;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.domain.model.TopicFilter;
-import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicReadUseCase;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
 import com.tierlist.tierlist.topic.application.port.out.persistence.TopicLoadRepository;
