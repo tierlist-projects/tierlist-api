@@ -7,7 +7,7 @@ import com.tierlist.tierlist.tierlist.application.domain.model.Tierlist;
 import com.tierlist.tierlist.tierlist.application.domain.model.command.TierlistCreateCommand;
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistCreateUseCase;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistRepository;
-import com.tierlist.tierlist.topic.application.exception.TopicNotFoundException;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicNotFoundException;
 import com.tierlist.tierlist.topic.application.port.out.persistence.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -21,7 +21,7 @@ import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFo
 import com.tierlist.tierlist.global.docs.RestDocsTestSupport;
 import com.tierlist.tierlist.topic.adapter.in.web.TopicCreateController;
 import com.tierlist.tierlist.topic.adapter.in.web.dto.request.TopicCreateRequest;
-import com.tierlist.tierlist.topic.application.exception.TopicDuplicationException;
+import com.tierlist.tierlist.topic.application.domain.exception.TopicDuplicationException;
 import com.tierlist.tierlist.topic.application.port.in.service.TopicCreateUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

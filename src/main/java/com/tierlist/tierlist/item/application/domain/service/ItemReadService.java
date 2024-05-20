@@ -7,6 +7,7 @@ import com.tierlist.tierlist.item.application.port.out.persistence.ItemLoadRepos
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -14,6 +15,7 @@ public class ItemReadService implements ItemReadUseCase {
 
   private final ItemLoadRepository itemLoadRepository;
 
+  @Transactional(readOnly = true)
   @Override
   public PageResponse<ItemResponse> getItems(Long categoryId, Pageable pageable, String query) {
     return PageResponse.fromPage(itemLoadRepository.getItems(categoryId, pageable, query));

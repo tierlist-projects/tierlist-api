@@ -53,6 +53,19 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.POST, "/category").authenticated()
         .requestMatchers(HttpMethod.PATCH, "/category/*/favorite/toggle").authenticated()
         .requestMatchers(HttpMethod.GET, "/category/favorite").authenticated()
+        .requestMatchers(HttpMethod.POST, "/topic").authenticated()
+        .requestMatchers(HttpMethod.PATCH, "/topic/*/favorite/toggle").authenticated()
+        .requestMatchers(HttpMethod.GET, "/topic/favorite").authenticated()
+        .requestMatchers(HttpMethod.POST, "/tierlist").authenticated()
+        .requestMatchers(HttpMethod.PUT, "/tierlist/*").authenticated()
+        .requestMatchers(HttpMethod.POST, "/tierlist/*/comment").authenticated()
+        .requestMatchers(HttpMethod.GET, "/tierlist/*/comment").authenticated()
+        .requestMatchers(HttpMethod.PATCH, "/tierlist/*/publish/toggle").authenticated()
+        .requestMatchers(HttpMethod.PATCH, "/tierlist/*/like/toggle").authenticated()
+        .requestMatchers(HttpMethod.GET, "/tierlist/*").authenticated()
+        .requestMatchers(HttpMethod.GET, "/me/tierlist").authenticated()
+        .requestMatchers(HttpMethod.POST, "/item").authenticated()
+        .requestMatchers(HttpMethod.GET, "/category/*/item").authenticated()
         .anyRequest().permitAll());
 
     http.exceptionHandling(exceptionHandling ->

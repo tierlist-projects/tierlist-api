@@ -244,7 +244,6 @@ class CategoryReadDocsTest extends RestDocsTestSupport {
             requestHeaders(
                 headerWithName("Access-Token")
                     .description("JWT Access Token")
-                    .optional()
             ),
             queryParameters(
                 parameterWithName("page")

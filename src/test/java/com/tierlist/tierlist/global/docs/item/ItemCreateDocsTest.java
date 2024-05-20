@@ -130,7 +130,7 @@ class ItemCreateDocsTest extends RestDocsTestSupport {
 
     given(itemCreateUseCase.create(any())).willThrow(new CategoryNotFoundException());
 
-    mvc.perform(post("/topic")
+    mvc.perform(post("/item")
             .contentType(APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request))
             .header("Access-Token", "sample.access.token")

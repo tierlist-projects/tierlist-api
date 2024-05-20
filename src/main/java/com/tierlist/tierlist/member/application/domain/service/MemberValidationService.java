@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-@Transactional(readOnly = true)
 @Service
 public class MemberValidationService implements MemberValidationUseCase {
 
   private final MemberRepository memberRepository;
 
+  @Transactional(readOnly = true)
   @Override
   public void validateEmailDuplication(String email) {
     if (memberRepository.existsByEmail(email)) {
@@ -22,6 +22,7 @@ public class MemberValidationService implements MemberValidationUseCase {
     }
   }
 
+  @Transactional(readOnly = true)
   @Override
   public void validateNicknameDuplication(String nickname) {
     if (memberRepository.existsByNickname(nickname)) {
