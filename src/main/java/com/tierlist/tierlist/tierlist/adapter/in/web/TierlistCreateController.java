@@ -1,10 +1,11 @@
 package com.tierlist.tierlist.tierlist.adapter.in.web;
 
 import com.tierlist.tierlist.tierlist.adapter.in.web.dto.request.TierlistCreateRequest;
+import com.tierlist.tierlist.tierlist.adapter.in.web.dto.response.TierlistCreateResponse;
 import com.tierlist.tierlist.tierlist.application.port.in.service.TierlistCreateUseCase;
 import jakarta.validation.Valid;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,12 @@ public class TierlistCreateController {
   private final TierlistCreateUseCase tierlistCreateUseCase;
 
   @PostMapping
-  public ResponseEntity<Void> createTierlist(@AuthenticationPrincipal String email,
+  public ResponseEntity<TierlistCreateResponse> createTierlist(
+      @AuthenticationPrincipal String email,
       @RequestBody @Valid TierlistCreateRequest request) {
     Long tierlistId = tierlistCreateUseCase.create(email, request.toCommand());
-    return ResponseEntity.created(URI.create("/tierlist/" + tierlistId)).build();
+    return ResponseEntity.status(HttpStatus.CREATED).body(TierlistCreateResponse.builder()
+        .tierlistId(tierlistId)
+        .build());
   }
 }
