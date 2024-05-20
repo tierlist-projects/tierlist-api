@@ -2,18 +2,15 @@ package com.tierlist.tierlist.global.docs.category;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.tierlist.tierlist.category.adapter.in.web.CategoryCreateController;
@@ -46,7 +43,6 @@ class CategoryCreateDocsTest extends RestDocsTestSupport {
             .header("Access-Token", "sample.access.token")
         )
         .andExpect(status().isCreated())
-        .andExpect(header().string(LOCATION, "/category/1"))
         .andDo(restDocs.document(
             requestHeaders(
                 headerWithName("Access-Token")
@@ -60,9 +56,9 @@ class CategoryCreateDocsTest extends RestDocsTestSupport {
                         + " 영어, 숫자 한글 또는 스페이스로 구성되어야 하고,"
                         + "특수문자, 자음, 모음을 포함할 수 없습니다."))
             ),
-            responseHeaders( //응답 헤더 문서화
-                headerWithName(LOCATION)
-                    .description("생성된 category url")
+            responseFields(
+                fieldWithPath("categoryId")
+                    .description("생성된 카테고리 식별 번호")
             )
         ));
   }
