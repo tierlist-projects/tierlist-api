@@ -2,11 +2,9 @@ package com.tierlist.tierlist.global.docs.item;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -14,7 +12,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.tierlist.tierlist.category.application.domain.exception.CategoryNotFoundException;
@@ -50,7 +47,6 @@ class ItemCreateDocsTest extends RestDocsTestSupport {
             .header("Access-Token", "sample.access.token")
         )
         .andExpect(status().isCreated())
-        .andExpect(header().string(LOCATION, "/item/1"))
         .andDo(restDocs.document(
             requestHeaders(
                 headerWithName("Access-Token")
@@ -67,9 +63,9 @@ class ItemCreateDocsTest extends RestDocsTestSupport {
                         + " 영어, 숫자 한글 또는 스페이스로 구성되어야 하고,"
                         + "특수문자, 자음, 모음을 포함할 수 없습니다."))
             ),
-            responseHeaders( //응답 헤더 문서화
-                headerWithName(LOCATION)
-                    .description("생성된 item url")
+            responseFields(
+                fieldWithPath("itemId")
+                    .description("생성된 아이템 식별 번호")
             )
         ));
   }

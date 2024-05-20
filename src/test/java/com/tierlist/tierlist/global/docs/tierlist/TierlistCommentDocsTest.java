@@ -2,11 +2,9 @@ package com.tierlist.tierlist.global.docs.tierlist;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
@@ -18,7 +16,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.tierlist.tierlist.global.common.response.PageResponse;
@@ -66,7 +63,6 @@ class TierlistCommentDocsTest extends RestDocsTestSupport {
             .header("Access-Token", "sample.access.token")
         )
         .andExpect(status().isCreated())
-        .andExpect(header().string(LOCATION, "/tierlist/1/comment/2"))
         .andDo(restDocs.document(
             requestHeaders(
                 headerWithName("Access-Token")
@@ -85,9 +81,9 @@ class TierlistCommentDocsTest extends RestDocsTestSupport {
                     .type(STRING)
                     .description("댓글 내용")
             ),
-            responseHeaders( //응답 헤더 문서화
-                headerWithName(LOCATION)
-                    .description("생성된 tierlist comment url")
+            responseFields(
+                fieldWithPath("commentId")
+                    .description("생성된 코멘트 식별 번호")
             )
         ));
   }

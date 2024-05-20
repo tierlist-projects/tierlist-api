@@ -184,7 +184,7 @@ operation::member-information-docs-test/change_member_password_400[snippets='htt
 
 === 카테고리 생성
 
-operation::category-create-docs-test/create_category_201[snippets='http-request,request-headers,request-fields,http-response,response-headers']
+operation::category-create-docs-test/create_category_201[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 ==== 에러 응답
 
@@ -228,7 +228,7 @@ operation::category-favorite-docs-test/toggle_category_favorite_404[snippets='ht
 
 === 토픽 생성
 
-operation::topic-create-docs-test/create_topic_201[snippets='http-request,request-headers,request-fields,http-response']
+operation::topic-create-docs-test/create_topic_201[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 ==== 에러 응답
 
@@ -286,7 +286,7 @@ operation::topic-read-docs-test/read_favorite_topic_200[snippets='http-request,r
 
 === 티어리스트 생성
 
-operation::tierlist-create-docs-test/create_tierlist_201[snippets='http-request,request-headers,request-fields,http-response']
+operation::tierlist-create-docs-test/create_tierlist_201[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 ==== 에러 응답
 
@@ -352,7 +352,7 @@ operation::tierlist-publish-docs-test/toggle_tierlist_publish_403[snippets='http
 
 === 티어리스트 댓글 생성
 
-operation::tierlist-comment-docs-test/create_tierlist_comment_201[snippets='http-request,request-headers,request-fields,http-response']
+operation::tierlist-comment-docs-test/create_tierlist_comment_201[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 ==== 에러 응답
 
@@ -418,7 +418,7 @@ operation::tierlist-read-docs-test/read_tierlists_my_200[snippets='http-request,
 
 === 아이템 생성
 
-operation::item-create-docs-test/create_item_201[snippets='http-request,request-headers,request-fields,http-response']
+operation::item-create-docs-test/create_item_201[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 ==== 에러 응답
 
