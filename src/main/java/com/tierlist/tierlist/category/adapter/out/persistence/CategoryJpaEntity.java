@@ -42,6 +42,7 @@ public class CategoryJpaEntity {
     return Category.builder()
         .id(id)
         .name(name)
+        .favoriteCount(favoriteCount)
         .build();
   }
 }
