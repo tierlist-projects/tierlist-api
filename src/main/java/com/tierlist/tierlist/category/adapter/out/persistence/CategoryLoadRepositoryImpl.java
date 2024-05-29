@@ -120,9 +120,9 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
         .leftJoin(categoryFavoriteJpaEntity)
         .on(categoryJpaEntity.id.eq(categoryFavoriteJpaEntity.categoryId))
         .leftJoin(memberJpaEntity)
-        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id))
-        .where(categoryJpaEntity.id.eq(id),
-            memberJpaEntity.email.eq(viewerEmail).or(memberJpaEntity.isNull()))
+        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id),
+            memberJpaEntity.email.eq(viewerEmail))
+        .where(categoryJpaEntity.id.eq(id))
         .fetchOne();
   }
 
