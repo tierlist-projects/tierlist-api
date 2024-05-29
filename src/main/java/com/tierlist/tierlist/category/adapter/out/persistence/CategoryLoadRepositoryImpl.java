@@ -71,39 +71,10 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
     return new PageImpl<>(categories, pageable, Objects.isNull(count) ? 0 : count);
   }
 
-  private Page<CategoryResponse> loadCategories(Pageable pageable, String query,
-      CategoryFilter filter) {
-    List<CategoryResponse> categoryResponses = jpaQueryFactory.select(
-            Projections.constructor(CategoryResponse.class,
-                categoryJpaEntity.id,
-                categoryJpaEntity.name,
-                categoryJpaEntity.favoriteCount
-            ))
-        .from(categoryJpaEntity)
-        .orderBy(applyFilter(filter))
-        .where(applyQuery(query))
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize())
-        .fetch();
-
-    Long count = jpaQueryFactory
-        .select(categoryJpaEntity.count())
-        .from(categoryJpaEntity)
-        .where(applyQuery(query))
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize())
-        .fetchOne();
-
-    return new PageImpl<>(categoryResponses, pageable, Objects.isNull(count) ? 0 : count);
-  }
 
   @Override
   public Page<CategoryResponse> loadCategories(String email, Pageable pageable, String query,
       CategoryFilter filter) {
-
-    if (Strings.isBlank(email)) {
-      return loadCategories(pageable, query, filter);
-    }
 
     List<CategoryResponse> categoryResponses = jpaQueryFactory.select(
             Projections.constructor(CategoryResponse.class,
@@ -116,9 +87,11 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
         .leftJoin(categoryFavoriteJpaEntity)
         .on(categoryJpaEntity.id.eq(categoryFavoriteJpaEntity.categoryId))
         .leftJoin(memberJpaEntity)
-        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id))
+        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id),
+            memberJpaEntity.email.eq(email)
+        )
         .orderBy(applyFilter(filter))
-        .where(memberJpaEntity.email.eq(email).or(memberJpaEntity.isNull()).and(applyQuery(query)))
+        .where(applyQuery(query))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
@@ -126,11 +99,7 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
     Long count = jpaQueryFactory
         .select(categoryJpaEntity.count())
         .from(categoryJpaEntity)
-        .leftJoin(categoryFavoriteJpaEntity)
-        .on(categoryJpaEntity.id.eq(categoryFavoriteJpaEntity.categoryId))
-        .leftJoin(memberJpaEntity)
-        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id))
-        .where(memberJpaEntity.email.eq(email).or(memberJpaEntity.isNull()).and(applyQuery(query)))
+        .where(applyQuery(query))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetchOne();
@@ -151,9 +120,9 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
         .leftJoin(categoryFavoriteJpaEntity)
         .on(categoryJpaEntity.id.eq(categoryFavoriteJpaEntity.categoryId))
         .leftJoin(memberJpaEntity)
-        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id))
-        .where(categoryJpaEntity.id.eq(id),
-            memberJpaEntity.email.eq(viewerEmail).or(memberJpaEntity.isNull()))
+        .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id),
+            memberJpaEntity.email.eq(viewerEmail))
+        .where(categoryJpaEntity.id.eq(id))
         .fetchOne();
   }
 
