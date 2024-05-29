@@ -221,7 +221,7 @@ class CategoryLoadRepositoryImplTest {
         .build());
 
     Page<CategoryResponse> categoryResponses = categoryLoadRepository.loadCategories(
-        null,
+        "anonymousUser",
         PageRequest.of(0, 3), "1", CategoryFilter.HOT);
 
     assertThat(categoryResponses.getContent()).hasSize(2);
@@ -244,7 +244,7 @@ class CategoryLoadRepositoryImplTest {
         .build());
 
     Page<CategoryResponse> categoryResponses = categoryLoadRepository.loadCategories(
-        null,
+        "anonymousUser",
         PageRequest.of(0, 3), "1", CategoryFilter.NONE);
 
     assertThat(categoryResponses.getContent()).hasSize(2);
