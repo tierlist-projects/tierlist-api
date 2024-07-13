@@ -1,6 +1,7 @@
 package com.tierlist.tierlist.global.security.config;
 
 import java.util.Collections;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -14,7 +15,7 @@ public class CorsConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+    configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://dev.tierlist.site"));
     configuration.setAllowedMethods(Collections.singletonList("*"));
     configuration.setAllowedHeaders(Collections.singletonList("*"));
     configuration.setAllowCredentials(true);
