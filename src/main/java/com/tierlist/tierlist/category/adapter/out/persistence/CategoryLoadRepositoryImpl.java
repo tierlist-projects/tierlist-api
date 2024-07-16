@@ -7,6 +7,7 @@ import static com.tierlist.tierlist.member.adapter.out.persistence.QMemberJpaEnt
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tierlist.tierlist.category.application.domain.model.Category;
 import com.tierlist.tierlist.category.application.domain.model.CategoryFilter;
@@ -80,7 +81,9 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
             Projections.constructor(CategoryResponse.class,
                 categoryJpaEntity.id,
                 categoryJpaEntity.name,
-                memberJpaEntity.id.isNotNull().as("isFavorite"),
+                new CaseBuilder()
+                    .when(memberJpaEntity.id.isNotNull()).then(1).otherwise(0)
+                    .max().gt(1).as("isFavorite"),
                 categoryJpaEntity.favoriteCount
             ))
         .from(categoryJpaEntity)
@@ -92,6 +95,7 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
         )
         .orderBy(applyFilter(filter))
         .where(applyQuery(query))
+        .groupBy(categoryJpaEntity.id, categoryJpaEntity.name, categoryJpaEntity.favoriteCount)
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
