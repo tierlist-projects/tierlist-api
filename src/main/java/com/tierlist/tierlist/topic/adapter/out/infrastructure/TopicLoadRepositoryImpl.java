@@ -8,6 +8,7 @@ import static com.tierlist.tierlist.topic.adapter.out.infrastructure.QTopicJpaEn
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tierlist.tierlist.topic.application.domain.model.TopicFilter;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
@@ -126,7 +127,9 @@ public class TopicLoadRepositoryImpl implements TopicLoadRepository {
                 topicJpaEntity.id,
                 topicJpaEntity.name,
                 topicJpaEntity.favoriteCount,
-                memberJpaEntity.id.isNotNull().as("isFavorite"),
+                new CaseBuilder()
+                    .when(memberJpaEntity.id.isNotNull()).then(1).otherwise(0)
+                    .max().gt(1).as("isFavorite"),
                 categoryJpaEntity.id,
                 categoryJpaEntity.name,
                 categoryJpaEntity.favoriteCount
@@ -135,11 +138,12 @@ public class TopicLoadRepositoryImpl implements TopicLoadRepository {
         .leftJoin(topicFavoriteJpaEntity)
         .on(topicJpaEntity.id.eq(topicFavoriteJpaEntity.topicId))
         .leftJoin(memberJpaEntity)
-        .on(topicFavoriteJpaEntity.memberId.eq(memberJpaEntity.id))
+        .on(topicFavoriteJpaEntity.memberId.eq(memberJpaEntity.id),
+            memberJpaEntity.email.eq(viewerEmail))
         .leftJoin(categoryJpaEntity)
         .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
-        .where(topicJpaEntity.id.eq(topicId),
-            memberJpaEntity.email.eq(viewerEmail).or(memberJpaEntity.isNull()))
+        .where(topicJpaEntity.id.eq(topicId))
+        .groupBy(topicJpaEntity.id)
         .fetchOne();
   }
 
