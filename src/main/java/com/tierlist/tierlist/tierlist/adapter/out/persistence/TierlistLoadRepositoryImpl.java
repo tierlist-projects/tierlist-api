@@ -231,7 +231,9 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
                 tierlistJpaEntity.createdAt,
                 tierlistJpaEntity.likeCount,
                 tierlistJpaEntity.commentCount,
-                viewer.email.isNotNull().as("liked"),
+                new CaseBuilder()
+                    .when(viewer.email.isNotNull()).then(1).otherwise(0)
+                    .max().gt(1).as("liked"),
                 tierlistJpaEntity.isPublished,
                 writer.id,
                 writer.nickname,
@@ -254,6 +256,7 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
         .on(viewer.email.eq(viewerEmail), viewer.id.eq(tierlistLikeJpaEntity.tierlistId))
         .where(categoryJpaEntity.id.eq(categoryId), hasQuery(query), tierlistJpaEntity.isPublished)
         .orderBy(orderByFilter(filter))
+        .groupBy(tierlistJpaEntity.id)
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
