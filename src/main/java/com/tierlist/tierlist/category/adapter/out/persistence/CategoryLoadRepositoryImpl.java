@@ -117,7 +117,9 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
             Projections.constructor(CategoryResponse.class,
                 categoryJpaEntity.id,
                 categoryJpaEntity.name,
-                memberJpaEntity.id.isNotNull().as("isFavorite"),
+                new CaseBuilder()
+                    .when(memberJpaEntity.id.isNotNull()).then(1).otherwise(0)
+                    .max().gt(1).as("isFavorite"),
                 categoryJpaEntity.favoriteCount
             ))
         .from(categoryJpaEntity)
@@ -127,6 +129,7 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
         .on(categoryFavoriteJpaEntity.memberId.eq(memberJpaEntity.id),
             memberJpaEntity.email.eq(viewerEmail))
         .where(categoryJpaEntity.id.eq(id))
+        .groupBy(categoryJpaEntity.id)
         .fetchOne();
   }
 
