@@ -67,6 +67,7 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
                 tierlistJpaEntity.id,
                 tierlistJpaEntity.title,
                 tierlistJpaEntity.content,
+                tierlistJpaEntity.thumbnailImage,
                 writer.id,
                 writer.nickname,
                 writer.profileImage,

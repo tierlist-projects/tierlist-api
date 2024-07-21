@@ -148,6 +148,8 @@ class TierlistReadDocsTest extends RestDocsTestSupport {
                     .description("티어리스트 제목"),
                 fieldWithPath("content")
                     .description("티어리스트 내용"),
+                fieldWithPath("thumbnailImage")
+                    .description("티어리스트 썸네일 이미지"),
                 fieldWithPath("createdAt")
                     .description("티어리스트 생성 시간"),
                 fieldWithPath("writer")
