@@ -295,7 +295,7 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
                 tierlistJpaEntity.commentCount,
                 new CaseBuilder()
                     .when(viewer.email.isNotNull()).then(1).otherwise(0)
-                    .max().gt(1).as("liked"),
+                    .max().gt(0).as("liked"),
                 tierlistJpaEntity.isPublished,
                 writer.id,
                 writer.nickname,
