@@ -18,6 +18,7 @@ public class TierlistDetailResponse {
 
   private String title;
   private String content;
+  private String thumbnailImage;
 
   private MemberResponse writer;
   private TopicResponse topic;
@@ -34,7 +35,7 @@ public class TierlistDetailResponse {
   @Setter
   private ItemRanksResponse ranks;
 
-  public TierlistDetailResponse(Long id, String title, String content,
+  public TierlistDetailResponse(Long id, String title, String content, String thumbnailImage,
       Long writerId, String writerNickname, String writerProfileImage,
       Long topicId, String topicName,
       Long categoryId, String categoryName,
@@ -43,6 +44,7 @@ public class TierlistDetailResponse {
     this.id = id;
     this.title = title;
     this.content = content;
+    this.thumbnailImage = thumbnailImage;
     this.writer = MemberResponse.builder()
         .id(writerId)
         .nickname(writerNickname)
