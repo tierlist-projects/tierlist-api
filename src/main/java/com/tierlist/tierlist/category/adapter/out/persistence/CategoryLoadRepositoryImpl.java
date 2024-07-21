@@ -119,7 +119,7 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
                 categoryJpaEntity.name,
                 new CaseBuilder()
                     .when(memberJpaEntity.id.isNotNull()).then(1).otherwise(0)
-                    .max().gt(1).as("isFavorite"),
+                    .max().gt(0).as("isFavorite"),
                 categoryJpaEntity.favoriteCount
             ))
         .from(categoryJpaEntity)
