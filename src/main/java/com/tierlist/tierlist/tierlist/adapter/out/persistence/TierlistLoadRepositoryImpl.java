@@ -2,7 +2,6 @@ package com.tierlist.tierlist.tierlist.adapter.out.persistence;
 
 import static com.tierlist.tierlist.category.adapter.out.persistence.QCategoryJpaEntity.categoryJpaEntity;
 import static com.tierlist.tierlist.item.adapter.out.persistence.QItemJpaEntity.itemJpaEntity;
-import static com.tierlist.tierlist.member.adapter.out.persistence.QMemberJpaEntity.memberJpaEntity;
 import static com.tierlist.tierlist.tierlist.adapter.out.persistence.QItemRankJpaEntity.itemRankJpaEntity;
 import static com.tierlist.tierlist.tierlist.adapter.out.persistence.QTierlistJpaEntity.tierlistJpaEntity;
 import static com.tierlist.tierlist.tierlist.adapter.out.persistence.QTierlistLikeJpaEntity.tierlistLikeJpaEntity;
@@ -13,7 +12,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tierlist.tierlist.member.adapter.out.persistence.MemberJpaEntity;
 import com.tierlist.tierlist.member.adapter.out.persistence.QMemberJpaEntity;
 import com.tierlist.tierlist.tierlist.application.domain.model.TierlistFilter;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.ItemRankResponse;
@@ -61,38 +59,46 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
 
   @Override
   public TierlistDetailResponse loadTierlistById(String viewerEmail, Long tierlistId) {
-    MemberJpaEntity member = jpaQueryFactory.selectFrom(memberJpaEntity)
-        .where(memberJpaEntity.email.eq(viewerEmail)).fetchFirst();
+    QMemberJpaEntity viewer = new QMemberJpaEntity("viewer");
+    QMemberJpaEntity writer = new QMemberJpaEntity("writer");
 
     TierlistDetailResponse tierlistDetailResponse = jpaQueryFactory.select(
             Projections.constructor(TierlistDetailResponse.class,
                 tierlistJpaEntity.id,
                 tierlistJpaEntity.title,
                 tierlistJpaEntity.content,
-                memberJpaEntity.id,
-                memberJpaEntity.nickname,
-                memberJpaEntity.profileImage,
+                writer.id,
+                writer.nickname,
+                writer.profileImage,
                 topicJpaEntity.id,
                 topicJpaEntity.name,
                 categoryJpaEntity.id,
                 categoryJpaEntity.name,
                 tierlistJpaEntity.isPublished,
-                memberJpaEntity.email.eq(viewerEmail),
-                tierlistLikeJpaEntity.isNotNull(),
+                writer.email.eq(viewerEmail),
+                new CaseBuilder()
+                    .when(viewer.id.isNotNull()).then(1).otherwise(0)
+                    .max().gt(0).as("liked"),
                 tierlistJpaEntity.likeCount,
                 tierlistJpaEntity.commentCount,
                 tierlistJpaEntity.createdAt))
         .from(tierlistJpaEntity)
-        .leftJoin(tierlistLikeJpaEntity)
-        .on(tierlistJpaEntity.id.eq(tierlistLikeJpaEntity.tierlistId),
-            tierlistJpaEntity.memberId.eq(member.getId()))
+        .join(writer)
+        .on(tierlistJpaEntity.memberId.eq(writer.id))
         .join(topicJpaEntity)
         .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
         .join(categoryJpaEntity)
         .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
+
+        .leftJoin(tierlistLikeJpaEntity)
+        .on(tierlistJpaEntity.id.eq(tierlistLikeJpaEntity.tierlistId))
+        .leftJoin(viewer)
+        .on(tierlistLikeJpaEntity.memberId.eq(viewer.id), viewer.email.eq(viewerEmail))
+
         .where(tierlistJpaEntity.id.eq(tierlistId))
-        .leftJoin(memberJpaEntity)
-        .on(memberJpaEntity.id.eq(tierlistJpaEntity.memberId))
+
+        .groupBy(tierlistJpaEntity.id)
+
         .fetchFirst();
 
     List<ItemRankResponse> itemRankResponses = jpaQueryFactory.select(
