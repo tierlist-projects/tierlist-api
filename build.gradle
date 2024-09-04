@@ -45,6 +45,9 @@ dependencies {
     implementation(platform("software.amazon.awssdk:bom:2.21.1"))
     implementation("software.amazon.awssdk:s3")
 
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'org.flywaydb:flyway-mysql'
+
     implementation 'com.auth0:java-jwt:4.4.0'
 
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
