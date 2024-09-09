@@ -11,6 +11,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tierlist.tierlist.member.adapter.out.persistence.QMemberJpaEntity;
 import com.tierlist.tierlist.tierlist.application.domain.model.TierlistFilter;
@@ -61,6 +62,18 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
   public TierlistDetailResponse loadTierlistById(String viewerEmail, Long tierlistId) {
     QMemberJpaEntity viewer = new QMemberJpaEntity("viewer");
     QMemberJpaEntity writer = new QMemberJpaEntity("writer");
+    QMemberJpaEntity memberSub = new QMemberJpaEntity("memberSub");
+
+    BooleanExpression likedSubquery = JPAExpressions.selectOne()
+        .from(tierlistLikeJpaEntity)
+        .where(
+            tierlistLikeJpaEntity.tierlistId.eq(tierlistJpaEntity.id)
+                .and(tierlistLikeJpaEntity.memberId.eq(
+                    JPAExpressions.select(memberSub.id)
+                        .from(memberSub)
+                        .where(memberSub.email.eq(viewerEmail))
+                ))
+        ).exists();
 
     TierlistDetailResponse tierlistDetailResponse = jpaQueryFactory.select(
             Projections.constructor(TierlistDetailResponse.class,
@@ -77,9 +90,7 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
                 categoryJpaEntity.name,
                 tierlistJpaEntity.isPublished,
                 writer.email.eq(viewerEmail),
-                new CaseBuilder()
-                    .when(viewer.id.isNotNull()).then(1).otherwise(0)
-                    .max().gt(0).as("liked"),
+                likedSubquery.as("liked"),
                 tierlistJpaEntity.likeCount,
                 tierlistJpaEntity.commentCount,
                 tierlistJpaEntity.createdAt))
