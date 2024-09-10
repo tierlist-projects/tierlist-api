@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.tierlist.tierlist.category.application.port.in.service.dto.response.CategoryResponse;
 import com.tierlist.tierlist.member.adapter.in.web.dto.response.MemberResponse;
 import com.tierlist.tierlist.topic.application.port.in.service.dto.response.TopicResponse;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,18 @@ public class TierlistResponse {
 
   private Boolean liked;
   private Boolean isPublished;
+
+  public TierlistResponse(Long id, String title, String thumbnailImage, Timestamp createdAt,
+      Integer likesCount, Integer commentsCount, Boolean liked, Boolean isPublished,
+      Long writerId, String writerNickname, String writerProfileImage,
+      Long topicId, String topicName,
+      Long categoryId, String categoryName) {
+    this(id, title, thumbnailImage, createdAt.toLocalDateTime(),
+        likesCount, commentsCount, liked, isPublished,
+        writerId, writerNickname, writerProfileImage,
+        topicId, topicName,
+        categoryId, categoryName);
+  }
 
   public TierlistResponse(Long id, String title, String thumbnailImage, LocalDateTime createdAt,
       int likesCount, int commentsCount, Boolean liked, Boolean isPublished,

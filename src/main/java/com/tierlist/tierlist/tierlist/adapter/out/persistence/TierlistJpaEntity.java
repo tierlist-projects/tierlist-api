@@ -30,15 +30,21 @@ public class TierlistJpaEntity extends TimeBaseEntity {
 
   private String content;
 
+  @Column(name = "thumbnail_image")
   private String thumbnailImage;
 
+  @Column(name = "member_id")
   private Long memberId;
 
+  @Column(name = "topic_id")
   private Long topicId;
 
+  @Column(name = "is_published")
   private boolean isPublished;
 
+  @Column(name = "like_count")
   private int likeCount;
+  @Column(name = "comment_count")
   private int commentCount;
 
   public static TierlistJpaEntity from(Tierlist tierlist) {

@@ -2,6 +2,7 @@ package com.tierlist.tierlist.topic.adapter.out.infrastructure;
 
 
 import com.tierlist.tierlist.topic.application.domain.model.Topic;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,9 +29,11 @@ public class TopicJpaEntity {
 
   private String name;
 
+  @Column(name = "category_id")
   private Long categoryId;
 
   @ColumnDefault("0")
+  @Column(name = "favorite_count")
   private int favoriteCount;
 
   public static TopicJpaEntity from(Topic topic) {
