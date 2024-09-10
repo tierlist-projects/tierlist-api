@@ -1,7 +1,10 @@
 package com.tierlist.tierlist.tierlist.adapter.out.persistence;
 
+import static com.querydsl.core.types.dsl.Expressions.numberPath;
+import static com.querydsl.core.types.dsl.Expressions.stringPath;
 import static com.tierlist.tierlist.category.adapter.out.persistence.QCategoryJpaEntity.categoryJpaEntity;
 import static com.tierlist.tierlist.item.adapter.out.persistence.QItemJpaEntity.itemJpaEntity;
+import static com.tierlist.tierlist.member.adapter.out.persistence.QMemberJpaEntity.memberJpaEntity;
 import static com.tierlist.tierlist.tierlist.adapter.out.persistence.QItemRankJpaEntity.itemRankJpaEntity;
 import static com.tierlist.tierlist.tierlist.adapter.out.persistence.QTierlistJpaEntity.tierlistJpaEntity;
 import static com.tierlist.tierlist.tierlist.adapter.out.persistence.QTierlistLikeJpaEntity.tierlistLikeJpaEntity;
@@ -11,8 +14,14 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.sql.JPASQLQuery;
+import com.querydsl.sql.SQLTemplates;
 import com.tierlist.tierlist.member.adapter.out.persistence.QMemberJpaEntity;
 import com.tierlist.tierlist.tierlist.application.domain.model.TierlistFilter;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.ItemRankResponse;
@@ -20,6 +29,8 @@ import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.It
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistDetailResponse;
 import com.tierlist.tierlist.tierlist.application.domain.service.dto.response.TierlistResponse;
 import com.tierlist.tierlist.tierlist.application.port.out.persistence.TierlistLoadRepository;
+import jakarta.persistence.EntityManager;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +46,8 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
 
   private final JPAQueryFactory jpaQueryFactory;
 
+  private final EntityManager entityManager;
+  private final SQLTemplates sqlTemplates;
 
   private BooleanExpression hasQuery(String query) {
     if (Strings.isBlank(query)) {
@@ -135,53 +148,65 @@ public class TierlistLoadRepositoryImpl implements TierlistLoadRepository {
   public Page<TierlistResponse> loadTierlists(String viewerEmail, Pageable pageable,
       String query,
       TierlistFilter filter) {
+    JPASQLQuery<?> jpaSqlQuery = new JPASQLQuery<>(entityManager, sqlTemplates);
+
     QMemberJpaEntity viewer = new QMemberJpaEntity("viewer");
     QMemberJpaEntity writer = new QMemberJpaEntity("writer");
 
-    List<TierlistResponse> tierlistResponses = jpaQueryFactory.select(
-            Projections.constructor(TierlistResponse.class,
-                tierlistJpaEntity.id,
-                tierlistJpaEntity.title,
-                tierlistJpaEntity.thumbnailImage,
-                tierlistJpaEntity.createdAt,
-                tierlistJpaEntity.likeCount,
-                tierlistJpaEntity.commentCount,
-                new CaseBuilder()
-                    .when(viewer.email.isNotNull()).then(1).otherwise(0)
-                    .max().gt(0).as("liked"),
-                tierlistJpaEntity.isPublished,
-                writer.id,
-                writer.nickname,
-                writer.profileImage,
-                topicJpaEntity.id,
-                topicJpaEntity.name,
-                categoryJpaEntity.id,
-                categoryJpaEntity.name
-            ))
+    StringPath tierlistLike = stringPath("tl");
+    NumberPath<Long> likedTierlistId = numberPath(Long.class, tierlistLike,
+        "tierlist_id");
+
+    JPQLQuery<Long> viewerIdSubQuery = JPAExpressions
+        .select(memberJpaEntity.id)
+        .from(memberJpaEntity)
+        .where(memberJpaEntity.email.eq(viewerEmail))
+        .limit(1);
+
+    JPQLQuery<Long> likedTierlistSubquery = JPAExpressions
+        .select(tierlistLikeJpaEntity.tierlistId)
+        .distinct()
+        .from(tierlistLikeJpaEntity)
+        .where(tierlistLikeJpaEntity.memberId.eq(viewerIdSubQuery));
+
+    List<TierlistResponse> tierlistResponses = jpaSqlQuery
+        .select(Projections.constructor(TierlistResponse.class,
+            tierlistJpaEntity.id,
+            tierlistJpaEntity.title,
+            tierlistJpaEntity.thumbnailImage,
+            Expressions.dateTimePath(Timestamp.class, tierlistJpaEntity, "created_at"),
+            tierlistJpaEntity.likeCount,
+            tierlistJpaEntity.commentCount,
+            new CaseBuilder()
+                .when(viewer.email.isNotNull()).then(true).otherwise(false).as("liked"),
+            tierlistJpaEntity.isPublished,
+            writer.id,
+            writer.nickname,
+            writer.profileImage,
+            topicJpaEntity.id,
+            topicJpaEntity.name,
+            categoryJpaEntity.id,
+            categoryJpaEntity.name
+        ))
         .from(tierlistJpaEntity)
-        .join(topicJpaEntity)
-        .on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
-        .join(categoryJpaEntity)
-        .on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
-        .join(writer)
-        .on(tierlistJpaEntity.memberId.eq(writer.id))
-        .leftJoin(tierlistLikeJpaEntity)
-        .on(tierlistLikeJpaEntity.tierlistId.eq(tierlistJpaEntity.id))
-        .leftJoin(viewer)
-        .on(viewer.email.eq(viewerEmail), viewer.id.eq(tierlistLikeJpaEntity.tierlistId))
-        .where(hasQuery(query), tierlistJpaEntity.isPublished)
+        .innerJoin(topicJpaEntity).on(tierlistJpaEntity.topicId.eq(topicJpaEntity.id))
+        .innerJoin(categoryJpaEntity).on(topicJpaEntity.categoryId.eq(categoryJpaEntity.id))
+        .innerJoin(writer).on(tierlistJpaEntity.memberId.eq(writer.id))
+        .leftJoin(likedTierlistSubquery, tierlistLike)
+        .on(tierlistJpaEntity.id.eq(likedTierlistId))
+        .leftJoin(viewer).on(viewer.email.eq(viewerEmail).and(likedTierlistId.isNotNull()))
+        .where(tierlistJpaEntity.isPublished.isTrue(), hasQuery(query))
         .orderBy(orderByFilter(filter))
-        .groupBy(tierlistJpaEntity.id)
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
 
-    Long count = jpaQueryFactory.select(tierlistJpaEntity.count())
-        .from(tierlistJpaEntity)
-        .where(hasQuery(query), tierlistJpaEntity.isPublished)
-        .fetchOne();
+    long count = jpaQueryFactory
+        .selectFrom(tierlistJpaEntity)
+        .where(tierlistJpaEntity.isPublished.isTrue(), hasQuery(query))
+        .fetch().size();
 
-    return new PageImpl<>(tierlistResponses, pageable, Objects.isNull(count) ? 0 : count);
+    return new PageImpl<>(tierlistResponses, pageable, count);
   }
 
   @Override

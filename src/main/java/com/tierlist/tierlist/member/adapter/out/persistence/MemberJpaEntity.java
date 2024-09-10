@@ -35,6 +35,7 @@ public class MemberJpaEntity {
   @Column(name = "password", nullable = false)
   private String encodedPassword;
 
+  @Column(name = "profile_image")
   private String profileImage;
 
 

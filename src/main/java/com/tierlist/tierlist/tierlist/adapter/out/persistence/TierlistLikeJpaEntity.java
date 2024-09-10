@@ -1,6 +1,7 @@
 package com.tierlist.tierlist.tierlist.adapter.out.persistence;
 
 import com.tierlist.tierlist.tierlist.application.domain.model.TierlistLike;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,16 +16,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tierlistLike")
+@Table(name = "tierlist_like")
 @Entity
 public class TierlistLikeJpaEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
 
+  @Column(name = "member_id")
   private Long memberId;
 
+  @Column(name = "tierlist_id")
   private Long tierlistId;
 
   public static TierlistLikeJpaEntity from(TierlistLike tierlistLike) {
