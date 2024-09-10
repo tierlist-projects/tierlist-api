@@ -1,6 +1,8 @@
 package com.tierlist.tierlist.global.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.SQLTemplates;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -17,4 +19,8 @@ public class TestQuerydslConfig {
     return new JPAQueryFactory(entityManager);
   }
 
+  @Bean
+  public SQLTemplates sqlTemplates() {
+    return H2Templates.builder().build();
+  }
 }
