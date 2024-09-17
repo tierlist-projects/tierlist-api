@@ -104,8 +104,6 @@ public class CategoryLoadRepositoryImpl implements CategoryLoadRepository {
         .select(categoryJpaEntity.count())
         .from(categoryJpaEntity)
         .where(applyQuery(query))
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize())
         .fetchOne();
 
     return new PageImpl<>(categoryResponses, pageable, Objects.isNull(count) ? 0 : count);
